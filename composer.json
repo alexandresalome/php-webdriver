@@ -1,0 +1,19 @@
+{
+    "name": "alexandresalome/php-webdriver",
+    "description": "WebDriver client for PHP",
+
+    "license": "MIT",
+    "authors": [
+        { "name": "Alexandre Salomé", "email": "alexandre.salome@gmail.com", "homepage": "http://alexandre-salome.fr" }
+    ],
+
+    "autoload": {
+        "psr-0": { "WebDriver": ["src/", "tests/"] }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "kriswallsmith/buzz": "dev-master"
+    },
+
+    "minimum-stability": "dev"
+}
