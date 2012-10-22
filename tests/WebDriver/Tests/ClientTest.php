@@ -23,9 +23,11 @@ use WebDriver\Client;
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Verify the actual call to the server for creating a session
+     * Verify the actual call to the server for creating a session.
+     *
+     * @dataProvider provideCreateSession
      */
-    public function testCreateSession()
+    public function testCreateSession($withShortCapabilities)
     {
         $buzzClient = new BuzzClientFIFO();
         $client = new Client('http://localhost', $buzzClient);
@@ -35,13 +37,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response->addHeader('Location: http://localhost/session/12345');
         $buzzClient->sendToQueue($response);
 
-        $session = $client->createSession(new Capabilities('firefox'));
+        if ($withShortCapabilities) {
+            $session = $client->createSession(new Capabilities('firefox'));
+        } else {
+            $session = $client->createSession('firefox');
+        }
 
         $this->assertEquals(0, count($buzzClient->getQueue()), "Queue is empty");
 
         $this->assertInstanceOf('WebDriver\Message\Client\SessionCreateRequest', $buzzClient->getLastRequest());
 
         $this->assertEquals('12345', $session->getSessionId());
+    }
+
+    public function provideCreateSession()
+    {
+        return array(
+            array(true),
+            array(false)
+        );
     }
 
     /**

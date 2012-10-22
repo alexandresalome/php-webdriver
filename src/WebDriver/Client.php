@@ -70,13 +70,20 @@ class Client
     /**
      * Creates a new session from desired capabilities.
      *
-     * @param WebDriver\Capabilities $capabilities Capabilities to request to
-     * the server
+     * @param mixed $capabilities Capabilities to request to the server. Value
+     *                            can be a string (firefox) or a Capabilities
+     *                            object.
      *
-     * @return WebDriver\Session The instanciated session ready to be used
+     * @return Session The instanciated session ready to be used
      */
-    public function createSession(Capabilities $capabilities)
+    public function createSession($capabilities)
     {
+        if (is_string($capabilities)) {
+            $capabilities = new Capabilities($capabilities);
+        } elseif (!$capabilities instanceof Capabilities) {
+            throw new \InvalidArgumentException(sprintf('Expected a Capabilities or a string, given a "%s"', gettype($capabilities)));
+        }
+
         $request  = new Message\Client\SessionCreateRequest($capabilities);
         $response = new Message\Client\SessionCreateResponse();
 

@@ -12,7 +12,7 @@ Here is a full-example for a classic selenium server, running on *localhost*:
 .. code-block:: php
 
     $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
-    $session = $client->createSession(new WebDriver\Capabilities('firefox'));
+    $session = $client->createSession('firefox');
 
 At this moment, the server should have launched a browser, waiting for your
 instructions!

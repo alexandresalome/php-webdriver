@@ -47,10 +47,13 @@ To create a new *Session* from a *Client*, use the method *createSession*:
 
 .. code-block:: php
 
-    $client->createSession($capabilities);
+    $client->createSession(new Capabilities('firefox'));
 
-See chapter above for more informations about how to create a *Capabilities*
-object.
+If you don't need to specify anything else except the browser name:
+
+.. code-block:: php
+
+    $client->createSession('firefox');
 
 Getting status of a client
 --------------------------

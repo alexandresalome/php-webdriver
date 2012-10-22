@@ -16,7 +16,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $target = __DIR__.'/screenshot.png';
 
 $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
-$session = $client->createSession(new WebDriver\Capabilities('firefox'));
+$session = $client->createSession('firefox');
 
 $session->navigation()->open('http://google.fr');
 

@@ -15,6 +15,6 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
-$session = $client->createSession(new WebDriver\Capabilities('firefox'));
+$session = $client->createSession('firefox');
 
 $session->close();
