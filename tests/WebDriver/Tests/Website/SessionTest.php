@@ -26,7 +26,7 @@ class SessionTest extends AbstractTestCase
         }
 
         $session = $this->getSession();
-        $session->navigation()->open($this->getUrl('index.php'));
+        $session->open($this->getUrl('index.php'));
 
         $data = $session->screenshot();
 
@@ -56,7 +56,7 @@ class SessionTest extends AbstractTestCase
     public function testTitle()
     {
         $session = $this->getSession();
-        $session->navigation()->open($this->getUrl('index.php'));
+        $session->open($this->getUrl('index.php'));
 
         $this->assertEquals('Sample website', $session->getTitle());
     }
@@ -64,7 +64,7 @@ class SessionTest extends AbstractTestCase
     public function testGetSource()
     {
         $session = $this->getSession();
-        $session->navigation()->open($this->getUrl('index.php'));
+        $session->open($this->getUrl('index.php'));
 
         $source = $session->getSource();
         $this->assertContains('This comment is only viewable with source code', $source);
