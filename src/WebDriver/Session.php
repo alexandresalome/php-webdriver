@@ -52,6 +52,8 @@ class Session
      * a value.
      *
      * @param string $url A URL to access
+     *
+     * @return Session
      */
     public function open($url)
     {
@@ -59,6 +61,8 @@ class Session
         $response  = new Response();
 
         $this->client->process($request, $response);
+
+        return $this;
     }
 
     /**
