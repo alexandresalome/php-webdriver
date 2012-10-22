@@ -81,6 +81,36 @@ class Session
     }
 
     /**
+     * Moves one toward in history.
+     *
+     * @return Session
+     */
+    public function forward()
+    {
+        $request  = new Message\Navigation\ForwardRequest($this->sessionId);
+        $response = new Response();
+
+        $this->client->process($request, $response);
+
+        return $this;
+    }
+
+    /**
+     * Moves one back in history.
+     *
+     * @return Session
+     */
+    public function back()
+    {
+        $request  = new Message\Navigation\BackRequest($this->sessionId);
+        $response = new Response();
+
+        $this->client->process($request, $response);
+
+        return $this;
+    }
+
+    /**
      * Closes the session and disable this session.
      */
     public function close()

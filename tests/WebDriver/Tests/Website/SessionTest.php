@@ -50,6 +50,20 @@ class SessionTest extends AbstractTestCase
         $this->assertEquals($url, $session->getUrl());
     }
 
+    public function testBackAndForward()
+    {
+        $urlA = $this->getUrl('index.php');
+        $urlB = $this->getUrl('page.php');
+
+        $session = $this->getSession();
+        $session->open($urlA);
+        $session->open($urlB);
+        $session->back();
+        $this->assertRegExp('/index\.php$/', $session->getUrl());
+        $session->forward();
+        $this->assertRegExp('/page\.php$/', $session->getUrl());
+    }
+
     /**
      * Test title getter
      */

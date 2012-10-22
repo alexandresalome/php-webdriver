@@ -26,7 +26,9 @@ Navigation
 .. code-block:: php
 
     $session->open($url);
-    echo "URL: ".$session->getUrl()."\n";
+    $session->getUrl();
+    $session->back();
+    $session->forward();
 
 Finish the session
 ------------------
