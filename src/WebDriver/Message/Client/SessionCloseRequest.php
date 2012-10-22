@@ -12,17 +12,10 @@ namespace WebDriver\Message\Client;
 use Buzz\Message\Request;
 
 /**
- * Request message for closing a session.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class SessionCloseRequest extends Request
 {
-    /**
-     * Constructs the request object
-     *
-     * @param string $sessionId A session ID
-     */
     public function __construct($sessionId)
     {
         parent::__construct(Request::METHOD_DELETE, sprintf('/session/%s', $sessionId));

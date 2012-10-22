@@ -15,8 +15,6 @@ use WebDriver\Session;
 use WebDriver\Client;
 
 /**
- * Tests for the session object.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class SessionTest extends \PHPUnit_Framework_TestCase
@@ -34,9 +32,6 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $this->session    = new Session($this->client, '12345');
     }
 
-    /**
-     * Tests the getSessionId method.
-     */
     public function testGetSessionId()
     {
 
@@ -44,9 +39,6 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     }
 
 
-    /**
-     * Tests the open method
-     */
     public function testOpen()
     {
         $response = new Response();
@@ -58,9 +50,6 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
     }
 
-    /**
-     * Tests the getUrl method of the session
-     */
     public function testGetUrl()
     {
         $response = new Response();
@@ -74,9 +63,6 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
     }
 
-    /**
-     * Tests the close method.
-     */
     public function testClose()
     {
         $response = new Response();

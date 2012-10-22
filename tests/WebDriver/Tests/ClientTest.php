@@ -16,15 +16,11 @@ use WebDriver\Capabilities;
 use WebDriver\Client;
 
 /**
- * Tests for the client object.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Verify the actual call to the server for creating a session.
-     *
      * @dataProvider provideCreateSession
      */
     public function testCreateSession($withShortCapabilities)
@@ -58,9 +54,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * Verify it's possible to fetch an existing session
-     */
     public function testGetSession()
     {
         $buzzClient = new BuzzClientFIFO();
@@ -85,9 +78,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * Verify session close
-     */
     public function testCloseSession()
     {
         $buzzClient = new BuzzClientFIFO();
@@ -103,9 +93,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, count($buzzClient->getQueue()));
     }
 
-    /**
-     * Verify the prefix is inserted in request
-     */
     public function testPrefix()
     {
         $buzzClient = new BuzzClientFIFO();
@@ -125,9 +112,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/prefix/session', $buzzClient->getLastRequest()->getResource());
     }
 
-    /**
-     * Tests the default instanciated client for WebDriver.
-     */
     public function testDefaultClient()
     {
         $client = new Client('http://localhost/prefix');
@@ -142,9 +126,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $buzzClient->getMaxRedirects());
     }
 
-    /**
-     * Tests the error handling of the client.
-     */
     public function testVerifyResponse()
     {
         $buzzClient = new BuzzClientFIFO();

@@ -17,13 +17,12 @@ use Buzz\Message\Response;
 /**
  * Client for a WebDriver server.
  *
+ * The client can mainly create new session objects.
+ *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class Client
 {
-    /**
-     * Default timeout for CURL connections
-     */
     const DEFAULT_TIMEOUT = 20000;
 
     /**
@@ -34,16 +33,12 @@ class Client
     protected $url;
 
     /**
-     * The Buzz client to use for requesting the service.
-     *
-     * @var Buzz\Client\ClientInterface
+     * @var ClientInterface
      */
     protected $client;
 
     /**
-     * Associative array containing all existing sessions
-     *
-     * @var array
+     * @var array Session objects, indexed by session ID
      */
     protected $sessions;
 

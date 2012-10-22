@@ -12,8 +12,6 @@ namespace WebDriver\Message;
 use Buzz\Message\Response;
 
 /**
- * Error message from WebDriver server
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class ErrorResponse extends Response
@@ -42,9 +40,7 @@ class ErrorResponse extends Response
     const STATUS_INVALID_SELECTOR             = 32;
 
     /**
-     * Converts the response to an exception
-     *
-     * @return \RuntimeException The exception associated to the error
+     * @return RuntimeException
      */
     public function getException()
     {

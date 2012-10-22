@@ -135,8 +135,6 @@ class Capabilities
     }
 
     /**
-     * Converts the object to an array.
-     *
      * @return array
      */
     public function toArray()

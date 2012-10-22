@@ -12,15 +12,11 @@ namespace WebDriver\Message\Client;
 use Buzz\Message\Response;
 
 /**
- * Response message of session creation.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class SessionCreateResponse extends Response
 {
     /**
-     * Returns the session ID of the created session.
-     *
      * @return string A session ID
      */
     public function getSessionId()

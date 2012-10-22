@@ -12,17 +12,10 @@ namespace WebDriver\Message\Navigation;
 use Buzz\Message\Response;
 
 /**
- * Response message of url getter.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class UrlGetResponse extends Response
 {
-    /**
-     * Returns the session ID of the created session.
-     *
-     * @return string A session ID
-     */
     public function getUrl()
     {
         $content = str_replace("\0", "", $this->getContent());

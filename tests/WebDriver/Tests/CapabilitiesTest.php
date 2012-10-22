@@ -12,15 +12,10 @@ namespace WebDriver\Tests;
 use WebDriver\Capabilities;
 
 /**
- * Tests for the capabilities object.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class CapabilitiesTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Tests the default behavior of the object.
-     */
     public function testDefault()
     {
         $capabilities = new Capabilities('browser');
@@ -37,9 +32,6 @@ class CapabilitiesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $capabilities->toArray());
     }
 
-    /**
-     * Tests a basic compability setting.
-     */
     public function testCapability()
     {
         $capabilities = new Capabilities('browser');
@@ -50,9 +42,6 @@ class CapabilitiesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result['takesScreenshot']);
     }
 
-    /**
-     * Ensure the capability flags are correctly casted to boolean.
-     */
     public function testBooleanCasting()
     {
         $capabilities = new Capabilities('browser');

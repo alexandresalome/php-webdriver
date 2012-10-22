@@ -12,17 +12,10 @@ namespace WebDriver\Message\Session;
 use Buzz\Message\Request;
 
 /**
- * Request for a screenshot.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class ScreenshotRequest extends Request
 {
-    /**
-     * Constructs the request object
-     *
-     * @param string $sessionId A session ID
-     */
     public function __construct($sessionId)
     {
         parent::__construct(Request::METHOD_GET, sprintf('/session/%s/screenshot', $sessionId));

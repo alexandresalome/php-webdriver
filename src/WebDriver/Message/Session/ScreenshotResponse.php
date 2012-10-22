@@ -12,16 +12,12 @@ namespace WebDriver\Message\Session;
 use Buzz\Message\Response;
 
 /**
- * Response message of screenshot request.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class ScreenshotResponse extends Response
 {
     /**
-     * Returns the content of screenshot response
-     *
-     * @return string The PNG file
+     * @return string Binary PNG data
      */
     public function getScreenshotData()
     {

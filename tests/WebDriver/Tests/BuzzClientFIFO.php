@@ -20,17 +20,10 @@ use Buzz\Message\MessageInterface;
 class BuzzClientFIFO implements ClientInterface
 {
     /**
-     * The last request executed
-     *
-     * @var Buzz\Message\RequestInterface
+     * @var RequestInterface
      */
     protected $lastRequest;
 
-    /**
-     * Queue of pending responses.
-     *
-     * @var array
-     */
     protected $queue = array();
 
     /**
@@ -55,15 +48,18 @@ class BuzzClientFIFO implements ClientInterface
     }
 
     /**
-     * Returns the last request.
-     *
-     * @return Buzz\Message\Request
+     * @return Request
      */
     public function getLastRequest()
     {
         return $this->lastRequest;
     }
 
+    /**
+     * Pending responses queue.
+     *
+     * @return array
+     */
     public function getQueue()
     {
         return $this->queue;

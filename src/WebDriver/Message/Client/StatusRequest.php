@@ -12,15 +12,10 @@ namespace WebDriver\Message\Client;
 use Buzz\Message\Request;
 
 /**
- * Request message for status polling.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class StatusRequest extends Request
 {
-    /**
-     * Constructs the request object
-     */
     public function __construct()
     {
         parent::__construct(Request::METHOD_GET, '/status');

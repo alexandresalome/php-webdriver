@@ -12,33 +12,29 @@ namespace WebDriver;
 use Buzz\Message\Response;
 
 /**
- * WebDriver Session
+ * WebDriver Session. Represents a given browser launch, and methods to
+ * manipulate this browser instance.
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class Session
 {
     /**
-     * The session ID on the current server
-     *
      * @var string
      */
     protected $sessionId;
 
     /**
-     * The WebDriver server
-     *
-     * @var WebDriver\Client
+     * @var Client
      */
     protected $client;
 
     /**
      * Instanciates the object.
      *
+     * @param Client $client    The client to use for exchanges with the
+     *                          server
      * @param string $sessionId The session ID
-     *
-     * @param WebDriver\Client $client The client to use for exchanges with the
-     * server
      */
     public function __construct(Client $client, $sessionId)
     {

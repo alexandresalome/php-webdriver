@@ -12,17 +12,10 @@ namespace WebDriver\Message\Session;
 use Buzz\Message\Response;
 
 /**
- * Response message of source request.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class SourceResponse extends Response
 {
-    /**
-     * Returns the source.
-     *
-     * @return string The source
-     */
     public function getSource()
     {
         $content = str_replace("\0", "", $this->getContent());

@@ -10,15 +10,10 @@
 namespace WebDriver\Tests\Website;
 
 /**
- * Verify the session features.
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class SessionTest extends AbstractTestCase
 {
-    /**
-     * Screenshots the page and make sure we have an image.
-     */
     public function testScreenshot()
     {
         if (!class_exists('Imagick')) {
@@ -37,9 +32,6 @@ class SessionTest extends AbstractTestCase
         $this->assertGreaterThan(100, $image->getImageHeight());
     }
 
-    /**
-     * Tests URL getter and setter.
-     */
     public function testUrl()
     {
         $url = $this->getUrl('index.php');
@@ -64,9 +56,6 @@ class SessionTest extends AbstractTestCase
         $this->assertRegExp('/page\.php$/', $session->getUrl());
     }
 
-    /**
-     * Test title getter
-     */
     public function testTitle()
     {
         $session = $this->getSession();

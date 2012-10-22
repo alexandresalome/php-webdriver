@@ -12,19 +12,10 @@ namespace WebDriver\Message\Navigation;
 use Buzz\Message\Request;
 
 /**
- * Request for setting the current URL of the page
- *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class UrlSetRequest extends Request
 {
-    /**
-     * Constructs the request object
-     *
-     * @param string $sessionId A session ID
-     *
-     * @param string $url A URL to set
-     */
     public function __construct($sessionId, $url)
     {
         parent::__construct(Request::METHOD_POST, sprintf('/session/%s/url', $sessionId));
