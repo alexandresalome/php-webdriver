@@ -22,5 +22,5 @@ Documentation
 
     installation
     clients
-    navigation
+    sessions
     progress

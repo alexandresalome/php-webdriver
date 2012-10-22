@@ -9,6 +9,8 @@
 
 namespace WebDriver;
 
+use Buzz\Message\Response;
+
 /**
  * WebDriver Session
  *
@@ -31,13 +33,6 @@ class Session
     protected $client;
 
     /**
-     * The navigation manager
-     *
-     * @var WebDriver\Navigation
-     */
-    protected $navigation;
-
-    /**
      * Instanciates the object.
      *
      * @param string $sessionId The session ID
@@ -49,7 +44,36 @@ class Session
     {
         $this->client     = $client;
         $this->sessionId  = $sessionId;
-        $this->navigation = new Navigation($this);
+    }
+
+    /**
+     * Open a URL. The function will wait for page to load before returning the
+     * value. If any redirection occurs, it will follow them before returning
+     * a value.
+     *
+     * @param string $url A URL to access
+     */
+    public function open($url)
+    {
+        $request   = new Message\Navigation\UrlSetRequest($this->sessionId, $url);
+        $response  = new Response();
+
+        $this->client->process($request, $response);
+    }
+
+    /**
+     * Returns the current session URL.
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        $request   = new Message\Navigation\UrlGetRequest($this->sessionId);
+        $response  = new Message\Navigation\UrlGetResponse();
+
+        $this->client->process($request, $response);
+
+        return $response->getUrl();
     }
 
     /**
@@ -73,26 +97,6 @@ class Session
         }
 
         return $this->sessionId;
-    }
-
-    /**
-     * Returns the client associated to the
-     * @return type
-     */
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Returns the navigation manager. Provides functionalities for navigating
-     * like opening URLs, gettin URLs, refreshing page, history features, etc.
-     *
-     * @return WebDriver\Navigation
-     */
-    public function navigation()
-    {
-        return $this->navigation;
     }
 
     /**

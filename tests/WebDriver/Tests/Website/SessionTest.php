@@ -38,6 +38,19 @@ class SessionTest extends AbstractTestCase
     }
 
     /**
+     * Tests URL getter and setter.
+     */
+    public function testUrl()
+    {
+        $url = $this->getUrl('index.php');
+
+        $session = $this->getSession();
+        $session->open($url);
+
+        $this->assertEquals($url, $session->getUrl());
+    }
+
+    /**
      * Test title getter
      */
     public function testTitle()

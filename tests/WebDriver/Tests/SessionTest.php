@@ -43,6 +43,37 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('12345', $this->session->getSessionId());
     }
 
+
+    /**
+     * Tests the open method
+     */
+    public function testOpen()
+    {
+        $response = new Response();
+        $response->addHeader('1.0 200 OK');
+        $this->buzzClient->sendToQueue($response);
+
+        $this->session->open('http://google.fr');
+
+        $this->assertEquals(0, count($this->buzzClient->getQueue()));
+    }
+
+    /**
+     * Tests the getUrl method of the session
+     */
+    public function testGetUrl()
+    {
+        $response = new Response();
+        $response->addHeader('1.0 200 OK');
+        $response->setContent(json_encode(array('value' => 'http://google.fr')));
+        $this->buzzClient->sendToQueue($response);
+
+        $url = $this->session->getUrl();
+
+        $this->assertEquals('http://google.fr', $url);
+        $this->assertEquals(0, count($this->buzzClient->getQueue()));
+    }
+
     /**
      * Tests the close method.
      */
@@ -99,12 +130,5 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('foo', $data);
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
-    }
-
-    public function testNavigation()
-    {
-        $navigation = $this->session->navigation();
-
-        $this->assertInstanceOf('WebDriver\Navigation', $navigation);
     }
 }
