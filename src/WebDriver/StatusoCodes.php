@@ -9,8 +9,6 @@
 
 namespace WebDriver\Message;
 
-use Buzz\Message\Response;
-
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -38,19 +36,4 @@ class ErrorResponse extends Response
     const STATUS_IME_NOT_AVAILABLE            = 30;
     const STATUS_IME_ENGINE_ACTIVATION_FAILED = 31;
     const STATUS_INVALID_SELECTOR             = 32;
-
-    /**
-     * @return RuntimeException
-     */
-    public function getException()
-    {
-        $content = str_replace("\0", "", $this->getContent());
-        $content = json_decode($content, true);
-
-        if (null !== $content) {
-            return new \RuntimeException(sprintf('Error %s: %s', $content['status'], $content['value']['message']), $content['status']);
-        } else {
-            return new \RuntimeException($this->getContent());
-        }
-    }
 }

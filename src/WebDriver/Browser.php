@@ -53,10 +53,7 @@ class Browser
      */
     public function open($url)
     {
-        $request   = new Message\Navigation\UrlSetRequest($this->sessionId, $url);
-        $response  = new Response();
-
-        $this->client->process($request, $response);
+        $this->request('POST', 'url', json_encode(array('url' => $url)));
 
         return $this;
     }
@@ -68,12 +65,7 @@ class Browser
      */
     public function getUrl()
     {
-        $request   = new Message\Navigation\UrlGetRequest($this->sessionId);
-        $response  = new Message\Navigation\UrlGetResponse();
-
-        $this->client->process($request, $response);
-
-        return $response->getUrl();
+        return $this->getValue('url');
     }
 
     /**
@@ -83,10 +75,7 @@ class Browser
      */
     public function forward()
     {
-        $request  = new Message\Navigation\ForwardRequest($this->sessionId);
-        $response = new Response();
-
-        $this->client->process($request, $response);
+        $this->request('POST', 'forward');
 
         return $this;
     }
@@ -98,10 +87,7 @@ class Browser
      */
     public function back()
     {
-        $request  = new Message\Navigation\BackRequest($this->sessionId);
-        $response = new Response();
-
-        $this->client->process($request, $response);
+        $this->request('POST', 'back');
 
         return $this;
     }
@@ -136,12 +122,7 @@ class Browser
      */
     public function screenshot()
     {
-        $request  = new Message\Session\ScreenshotRequest($this->getSessionId());
-        $response = new Message\Session\ScreenshotResponse();
-
-        $this->client->process($request, $response);
-
-        return $response->getScreenshotData();
+        return base64_decode($this->getValue('screenshot'));
     }
 
     /**
@@ -151,12 +132,7 @@ class Browser
      */
     public function getSource()
     {
-        $request  = new Message\Session\SourceRequest($this->getSessionId());
-        $response = new Message\Session\SourceResponse();
-
-        $this->client->process($request, $response);
-
-        return $response->getSource();
+        return $this->getValue('source');
     }
 
     /**
@@ -166,11 +142,53 @@ class Browser
      */
     public function getTitle()
     {
-        $request  = new Message\Session\TitleRequest($this->getSessionId());
-        $response = new Message\Session\TitleResponse();
+        return $this->getValue('title');
+    }
 
-        $this->client->process($request, $response);
+    /**
+     * Method to select an element, using a selector (css, xpath, etc.).
+     *
+     * @param By $by Indicates how to search for the element
+     *
+     * @see By
+     */
+    public function element(By $by)
+    {
+        $response = $this->request('POST', 'element', json_encode($by->toArray()));
+        $data = json_decode($response->getContent(), true);
 
-        return $response->getTitle();
+        if (!isset($data['value']['ELEMENT'])) {
+            throw new \RuntimeException('Missing key value.ELEMENT');
+        }
+        $id = $data['value']['ELEMENT'];
+
+        return new Element($this, $id);
+    }
+
+    /**
+     * Ease requesting in session directory.
+     *
+     * @return Response
+     */
+    public function request($verb, $path, $content = null, array $headers = array())
+    {
+        return $this->client->request($verb, sprintf('/session/%s/%s', $this->sessionId, $path), $content, $headers);
+    }
+
+    /**
+     * Internal method to get a scalar value from server.
+     *
+     * @return mixed
+     */
+    protected function getValue($name)
+    {
+        $response = $this->client->request('GET', sprintf('/session/%s/%s', $this->sessionId, $name));
+        $content = json_decode($response->getContent(), true);
+
+        if (!isset($content['value'])) {
+            throw new \RuntimeException('Malformed response: expected a key "value" in JSON response: '.$response->getContent());
+        }
+
+        return $content['value'];
     }
 }

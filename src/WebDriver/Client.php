@@ -63,6 +63,20 @@ class Client
         $this->browsers = array();
     }
 
+    public function request($verb, $path, $content = null, array $headers = array())
+    {
+        $url = $this->url.$path;
+        $request = new Request($verb, $url);
+        $request->setContent($content);
+        $response = new Response();
+
+        $this->client->send($request, $response);
+        $this->verifyResponse($response);
+        $response->setContent(str_replace("\0", "", $response->getContent()));
+
+        return $response;
+    }
+
     /**
      * Creates a new browser with desired capabilities.
      *
@@ -80,12 +94,8 @@ class Client
             throw new \InvalidArgumentException(sprintf('Expected a Capabilities or a string, given a "%s"', gettype($capabilities)));
         }
 
-        $request  = new Message\Client\SessionCreateRequest($capabilities);
-        $response = new Message\Client\SessionCreateResponse();
-
-        $this->process($request, $response);
-
-        $sessionId = $response->getSessionId();
+        $response = $this->request('POST', '/session', json_encode(array('desiredCapabilities' => $capabilities->toArray())));
+        $sessionId = $this->getSessionIdFromRedirect($response);
 
         return $this->browsers[$sessionId] = new Browser($this, $sessionId);
     }
@@ -95,12 +105,9 @@ class Client
      */
     public function getStatus()
     {
-        $request  = new Message\Client\StatusRequest();
-        $response = new Message\Client\StatusResponse();
+        $response = $this->request('GET', '/status');
 
-        $this->process($request, $response);
-
-        return $response->getStatus();
+        return ClientStatus::fromArray(json_decode($content, true));
     }
 
     /**
@@ -130,36 +137,9 @@ class Client
      */
     public function closeBrowser($sessionId)
     {
-        $request = new Message\Client\SessionCloseRequest($sessionId);
-        $response = new Response();
-
-        $this->process($request, $response);
+        $this->request('DELETE', '/session/'.$sessionId);
 
         unset($this->browsers[$sessionId]);
-    }
-
-    /**
-     * Plumber method to request the server, using the base URL.
-     *
-     * @param Buzz\Message\Request $request The request to send
-     *
-     * @param Buzz\Message\Response $response The response to fill
-     */
-    public function process(Request $request, Response $response)
-    {
-        $url = $this->url.$request->getResource();
-
-        $newRequest = clone $request;
-        $newRequest->fromUrl($url);
-
-        $newResponse = new Response();
-
-        $this->client->send($newRequest, $newResponse);
-
-        $this->verifyResponse($newResponse);
-
-        $response->setHeaders($newResponse->getHeaders());
-        $response->setContent($newResponse->getContent());
     }
 
     /**
@@ -175,10 +155,27 @@ class Client
             return;
         }
 
-        $errorResponse = new Message\ErrorResponse();
-        $errorResponse->setHeaders($response->getHeaders());
-        $errorResponse->setContent($response->getContent());
+        $content = json_decode($response->getContent(), true);
+        if (null !== $content) {
+            throw new \RuntimeException(sprintf('Error %s: %s', $content['status'], $content['value']['message']), $content['status']);
+        } else {
+            throw new \RuntimeException('Unparsable error: '.$response->getContent());
+        }
+    }
 
-        throw $errorResponse->getException();
+    protected function getSessionIdFromRedirect(Response $response)
+    {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode !== 302) {
+            throw new \RuntimeException(sprintf('The response should be a redirection, response code from server was "%s"', $statusCode));
+        }
+
+        $location = $response->getHeader('Location');
+        if (!preg_match('#/session/(\d+)$#', $location, $vars)) {
+            throw new \RuntimeException(sprintf('The Location should end with /session/<session-id> (location returned: %s)', $location));
+        }
+
+        return $vars[1];
+
     }
 }

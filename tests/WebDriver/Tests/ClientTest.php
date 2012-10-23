@@ -40,9 +40,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(0, count($buzzClient->getQueue()), "Queue is empty");
-
-        $this->assertInstanceOf('WebDriver\Message\Client\SessionCreateRequest', $buzzClient->getLastRequest());
-
         $this->assertEquals('12345', $session->getSessionId());
     }
 
@@ -89,27 +86,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $session = $client->closeBrowser('12345');
 
-        $this->assertInstanceOf('WebDriver\Message\Client\SessionCloseRequest', $buzzClient->getLastRequest());
         $this->assertEquals(0, count($buzzClient->getQueue()));
-    }
-
-    public function testPrefix()
-    {
-        $buzzClient = new BuzzClientFIFO();
-
-        $response = new Response();
-        $response->addHeader('1.0 200 OK');
-        $buzzClient->sendToQueue($response);
-
-        $client = new Client('http://localhost/prefix', $buzzClient);
-
-        $request = new Request();
-        $request->setResource('/session');
-        $response = new Response();
-
-        $client->process($request, $response);
-
-        $this->assertEquals('/prefix/session', $buzzClient->getLastRequest()->getResource());
+        try {
+            $client->getBrowser('12345');
+            $this->fail();
+        } catch (\RuntimeException $e) {}
     }
 
     public function testDefaultClient()
@@ -124,39 +105,5 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Buzz\Client\Curl', $buzzClient);
         $this->assertEquals(Client::DEFAULT_TIMEOUT, $buzzClient->getTimeout());
         $this->assertEquals(0, $buzzClient->getMaxRedirects());
-    }
-
-    public function testVerifyResponse()
-    {
-        $buzzClient = new BuzzClientFIFO();
-        $client = new Client('http://localhost', $buzzClient);
-
-        // Test the standard error
-        $request  = new Request();
-        $response = new Response();
-        $response->addHeader('1.0 400 Bad Request');
-        $response->setContent(json_encode(array('status' => 123, 'value' => array('message' => 'Message'))));
-        $buzzClient->sendToQueue($response);
-
-        try {
-            $client->process($request, $response);
-            $this->fail();
-        } catch (\RuntimeException $e) {
-            $this->assertEquals('Error 123: Message', $e->getMessage());
-        }
-
-        // Test the unparsable error
-        $request  = new Request();
-        $response = new Response();
-        $response->addHeader('1.0 500 Internal Error');
-        $response->setContent('Unparsable');
-        $buzzClient->sendToQueue($response);
-
-        try {
-            $client->process($request, $response);
-            $this->fail();
-        } catch (\RuntimeException $e) {
-            $this->assertEquals('Unparsable', $e->getMessage());
-        }
     }
 }
