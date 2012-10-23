@@ -11,15 +11,16 @@ namespace WebDriver\Tests;
 
 use Buzz\Message\Response;
 
-use WebDriver\Session;
+use WebDriver\Browser;
 use WebDriver\Client;
 
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class SessionTest extends \PHPUnit_Framework_TestCase
+class BrowserTest extends \PHPUnit_Framework_TestCase
 {
     protected $client;
+    protected $browser;
     protected $buzzClient;
 
     /**
@@ -29,13 +30,13 @@ class SessionTest extends \PHPUnit_Framework_TestCase
     {
         $this->buzzClient = new BuzzClientFIFO();
         $this->client     = new Client('http://localhost', $this->buzzClient);
-        $this->session    = new Session($this->client, '12345');
+        $this->browser    = new Browser($this->client, '12345');
     }
 
-    public function testGetSessionId()
+    public function testGetBrowserId()
     {
 
-        $this->assertEquals('12345', $this->session->getSessionId());
+        $this->assertEquals('12345', $this->browser->getSessionId());
     }
 
 
@@ -45,7 +46,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->addHeader('1.0 200 OK');
         $this->buzzClient->sendToQueue($response);
 
-        $this->session->open('http://google.fr');
+        $this->browser->open('http://google.fr');
 
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
     }
@@ -57,7 +58,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->setContent(json_encode(array('value' => 'http://google.fr')));
         $this->buzzClient->sendToQueue($response);
 
-        $url = $this->session->getUrl();
+        $url = $this->browser->getUrl();
 
         $this->assertEquals('http://google.fr', $url);
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
@@ -69,10 +70,10 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->addHeader('1.0 200 OK');
         $this->buzzClient->sendToQueue($response);
 
-        $this->session->close();
+        $this->browser->close();
 
         try {
-            $this->session->getSessionId();
+            $this->browser->getSessionId();
             $this->fail();
         } catch (\RuntimeException $e) {
             $this->assertEquals('This session was closed', $e->getMessage());
@@ -86,7 +87,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->setContent(json_encode(array('value' => base64_encode('!~éfoo'))));
         $this->buzzClient->sendToQueue($response);
 
-        $data = $this->session->screenshot();
+        $data = $this->browser->screenshot();
 
         $this->assertEquals('!~éfoo', $data);
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
@@ -99,7 +100,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->setContent(json_encode(array('value' => 'foo')));
         $this->buzzClient->sendToQueue($response);
 
-        $data = $this->session->getSource();
+        $data = $this->browser->getSource();
 
         $this->assertEquals('foo', $data);
         $this->assertEquals(0, count($this->buzzClient->getQueue()));
@@ -112,7 +113,7 @@ class SessionTest extends \PHPUnit_Framework_TestCase
         $response->setContent(json_encode(array('value' => "foo")));
         $this->buzzClient->sendToQueue($response);
 
-        $data = $this->session->getTitle();
+        $data = $this->browser->getTitle();
 
         $this->assertEquals('foo', $data);
         $this->assertEquals(0, count($this->buzzClient->getQueue()));

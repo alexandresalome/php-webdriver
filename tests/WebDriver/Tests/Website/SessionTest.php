@@ -20,7 +20,7 @@ class SessionTest extends AbstractTestCase
             $this->markTestSkipped('Imagick is not installed');
         }
 
-        $session = $this->getSession();
+        $session = $this->getBrowser();
         $session->open($this->getUrl('index.php'));
 
         $data = $session->screenshot();
@@ -36,7 +36,7 @@ class SessionTest extends AbstractTestCase
     {
         $url = $this->getUrl('index.php');
 
-        $session = $this->getSession();
+        $session = $this->getBrowser();
         $session->open($url);
 
         $this->assertEquals($url, $session->getUrl());
@@ -47,7 +47,7 @@ class SessionTest extends AbstractTestCase
         $urlA = $this->getUrl('index.php');
         $urlB = $this->getUrl('page.php');
 
-        $session = $this->getSession();
+        $session = $this->getBrowser();
         $session->open($urlA);
         $session->open($urlB);
         $session->back();
@@ -58,7 +58,7 @@ class SessionTest extends AbstractTestCase
 
     public function testTitle()
     {
-        $session = $this->getSession();
+        $session = $this->getBrowser();
         $session->open($this->getUrl('index.php'));
 
         $this->assertEquals('Sample website', $session->getTitle());
@@ -66,7 +66,7 @@ class SessionTest extends AbstractTestCase
 
     public function testGetSource()
     {
-        $session = $this->getSession();
+        $session = $this->getBrowser();
         $session->open($this->getUrl('index.php'));
 
         $source = $session->getSource();

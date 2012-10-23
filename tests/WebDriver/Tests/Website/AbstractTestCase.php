@@ -17,28 +17,28 @@ namespace WebDriver\Tests\Website;
 class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var WebDriver\Session
+     * @var WebDriver\Browser
      */
-    static protected $session;
+    static protected $browser;
 
     /**
-     * Returns the unique session.
+     * Returns the unique browser.
      *
-     * @return WebDriver\Session
+     * @return WebDriver\Browser
      */
-    public function getSession()
+    public function getBrowser()
     {
         if (!isset($_SERVER['WD_SERVER_URL']) || !isset($_SERVER['WD_BROWSER'])) {
             $this->markTestSkipped('server URL or browser is not defined in environment variable');
 
             return;
         }
-        if (null === self::$session) {
+        if (null === self::$browser) {
             $client = new \WebDriver\Client($_SERVER['WD_SERVER_URL']);
-            self::$session = $client->createSession(new \WebDriver\Capabilities($_SERVER['WD_BROWSER']));
+            self::$browser = $client->createBrowser(new \WebDriver\Capabilities($_SERVER['WD_BROWSER']));
         }
 
-        return self::$session;
+        return self::$browser;
     }
 
     /**

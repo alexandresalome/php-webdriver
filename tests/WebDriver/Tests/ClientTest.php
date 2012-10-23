@@ -21,9 +21,9 @@ use WebDriver\Client;
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @dataProvider provideCreateSession
+     * @dataProvider provideCreateBrowser
      */
-    public function testCreateSession($withShortCapabilities)
+    public function testCreateBrowser($withShortCapabilities)
     {
         $buzzClient = new BuzzClientFIFO();
         $client = new Client('http://localhost', $buzzClient);
@@ -34,9 +34,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $buzzClient->sendToQueue($response);
 
         if ($withShortCapabilities) {
-            $session = $client->createSession(new Capabilities('firefox'));
+            $session = $client->createBrowser(new Capabilities('firefox'));
         } else {
-            $session = $client->createSession('firefox');
+            $session = $client->createBrowser('firefox');
         }
 
         $this->assertEquals(0, count($buzzClient->getQueue()), "Queue is empty");
@@ -46,7 +46,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('12345', $session->getSessionId());
     }
 
-    public function provideCreateSession()
+    public function provideCreateBrowser()
     {
         return array(
             array(true),
@@ -54,7 +54,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetSession()
+    public function testGetBrowser()
     {
         $buzzClient = new BuzzClientFIFO();
         $client = new Client('http://localhost', $buzzClient);
@@ -64,21 +64,21 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response->addHeader('Location: http://localhost/session/12345');
         $buzzClient->sendToQueue($response);
 
-        $session = $client->createSession(new Capabilities('firefox'));
+        $session = $client->createBrowser(new Capabilities('firefox'));
 
         $this->assertEquals('12345', $session->getSessionId());
-        $this->assertEquals($session, $client->getSession('12345'));
+        $this->assertEquals($session, $client->getBrowser('12345'));
 
         try
         {
-            $client->getSession('54321');
+            $client->getBrowser('54321');
             $this->fail();
         } catch (\RuntimeException $e) {
             $this->assertEquals('The session "54321" was not found', $e->getMessage());
         }
     }
 
-    public function testCloseSession()
+    public function testCloseBrowser()
     {
         $buzzClient = new BuzzClientFIFO();
         $client = new Client('http://localhost', $buzzClient);
@@ -87,7 +87,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response->addHeader('1.0 200 OK');
         $buzzClient->sendToQueue($response);
 
-        $session = $client->closeSession('12345');
+        $session = $client->closeBrowser('12345');
 
         $this->assertInstanceOf('WebDriver\Message\Client\SessionCloseRequest', $buzzClient->getLastRequest());
         $this->assertEquals(0, count($buzzClient->getQueue()));

@@ -18,6 +18,17 @@ require alexandresalome/php-web-driver``.
 
 Read documentation for more informations about how to use it.
 
+Sample upsage
+:::::::::::::
+
+.. code-block:: php
+
+    $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
+    $firefox = $client->createBrowser('firefox');
+    $ie      = $client->createBrowser('internet explorer');
+
+    // start fight!
+
 Documentation
 :::::::::::::
 

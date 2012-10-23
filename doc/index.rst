@@ -9,11 +9,15 @@ This library offers a PHP client for such a server, simple as:
 .. code-block:: php
 
     $client  = new Selenium\Client('http://...');
-    $session = $client->createSession(new Selenium\Capabilities('firefox'));
+    $browser = $client->createBrowser('firefox');
 
-You can easily get a WebDriver server:
+    $browser->open('http://google.fr');
 
-* http://selenium.org
+    $title = $browser->getTitle();
+
+You can easily get a server to run servers on your local machine or remote one:
+
+* http://seleniumhq.org
 
 Documentation
 -------------
@@ -22,5 +26,5 @@ Documentation
 
     installation
     clients
-    sessions
+    browsers
     progress

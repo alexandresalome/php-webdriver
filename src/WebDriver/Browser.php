@@ -12,12 +12,12 @@ namespace WebDriver;
 use Buzz\Message\Response;
 
 /**
- * WebDriver Session. Represents a given browser launch, and methods to
+ * WebDriver Browser. Represents a given browser launch, and methods to
  * manipulate this browser instance.
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class Session
+class Browser
 {
     /**
      * @var string
@@ -111,7 +111,7 @@ class Session
      */
     public function close()
     {
-        $this->client->closeSession($this->getSessionId());
+        $this->client->closeBrowser($this->getSessionId());
         $this->sessionId = null;
     }
 

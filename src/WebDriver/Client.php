@@ -17,7 +17,7 @@ use Buzz\Message\Response;
 /**
  * Client for a WebDriver server.
  *
- * The client can mainly create new session objects.
+ * The client can mainly create new browser objects.
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -38,9 +38,9 @@ class Client
     protected $client;
 
     /**
-     * @var array Session objects, indexed by session ID
+     * @var array Browser objects, indexed by session ID
      */
-    protected $sessions;
+    protected $browsers;
 
     /**
      * Constructs the client.
@@ -58,20 +58,21 @@ class Client
             $client->setMaxRedirects(0);
         }
 
-        $this->url    = $url;
-        $this->client = $client;
+        $this->url      = $url;
+        $this->client   = $client;
+        $this->browsers = array();
     }
 
     /**
-     * Creates a new session from desired capabilities.
+     * Creates a new browser with desired capabilities.
      *
      * @param mixed $capabilities Capabilities to request to the server. Value
      *                            can be a string (firefox) or a Capabilities
      *                            object.
      *
-     * @return Session The instanciated session ready to be used
+     * @return Browser
      */
-    public function createSession($capabilities)
+    public function createBrowser($capabilities)
     {
         if (is_string($capabilities)) {
             $capabilities = new Capabilities($capabilities);
@@ -86,7 +87,7 @@ class Client
 
         $sessionId = $response->getSessionId();
 
-        return $this->sessions[$sessionId] = new Session($this, $sessionId);
+        return $this->browsers[$sessionId] = new Browser($this, $sessionId);
     }
 
     /**
@@ -103,23 +104,23 @@ class Client
     }
 
     /**
-     * Returns a session according to his ID. To get it, it must first have
+     * Returns a browser associated to a session ID. To get it, it must have
      * been created.
      *
      * @param string $sessionId The session ID to fetch
      *
-     * @return WebDriver\Session The session associated
+     * @return Browser
      *
      * @throws RuntimeException An exception is thrown if the session does not
      * exists.
      */
-    public function getSession($sessionId)
+    public function getBrowser($sessionId)
     {
-        if (!isset($this->sessions[$sessionId])) {
+        if (!isset($this->browsers[$sessionId])) {
             throw new \RuntimeException(sprintf('The session "%s" was not found', $sessionId));
         }
 
-        return $this->sessions[$sessionId];
+        return $this->browsers[$sessionId];
     }
 
     /**
@@ -127,14 +128,14 @@ class Client
      *
      * @param string $sessionId A session ID
      */
-    public function closeSession($sessionId)
+    public function closeBrowser($sessionId)
     {
         $request = new Message\Client\SessionCloseRequest($sessionId);
         $response = new Response();
 
         $this->process($request, $response);
 
-        unset($this->sessions[$sessionId]);
+        unset($this->browsers[$sessionId]);
     }
 
     /**
