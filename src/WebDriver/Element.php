@@ -35,6 +35,16 @@ class Element
         return $this->request('POST', 'click');
     }
 
+    public function attribute($name)
+    {
+        return $this->getValue('attribute/'.$name);
+    }
+
+    public function value($value)
+    {
+        $this->request('POST', 'value', json_encode(array('value' => array($value))));
+    }
+
     public function request($verb, $path, $content = null, array $headers = array())
     {
         return $this->browser->request($verb, sprintf('element/%s/%s', $this->id, $path), $content, $headers);

@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
  */
 
-namespace WebDriver\Message;
+namespace WebDriver\Exception;
 
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class ErrorResponse extends Response
+class ExceptionFactory
 {
     const STATUS_SUCCESS                      = 0;
     const STATUS_NO_SUCH_ELEMENT              = 7;
@@ -36,4 +36,15 @@ class ErrorResponse extends Response
     const STATUS_IME_NOT_AVAILABLE            = 30;
     const STATUS_IME_ENGINE_ACTIVATION_FAILED = 31;
     const STATUS_INVALID_SELECTOR             = 32;
+
+    static public function createExceptionFromArray(array $array)
+    {
+        $status  = $array['status'];
+        $message = $array['value']['message'];
+        if ($status == self::STATUS_NO_SUCH_ELEMENT) {
+            return new NoSuchElementException($message);
+        }
+
+        throw new \RuntimeException('Unable to find exception class for status code : '.$status);
+    }
 }

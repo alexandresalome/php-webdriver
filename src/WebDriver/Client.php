@@ -14,6 +14,8 @@ use Buzz\Client\ClientInterface;
 use Buzz\Message\Request;
 use Buzz\Message\Response;
 
+use WebDriver\Exception\ExceptionFactory;
+
 /**
  * Client for a WebDriver server.
  *
@@ -71,8 +73,8 @@ class Client
         $response = new Response();
 
         $this->client->send($request, $response);
-        $this->verifyResponse($response);
         $response->setContent(str_replace("\0", "", $response->getContent()));
+        $this->verifyResponse($response);
 
         return $response;
     }
@@ -157,7 +159,7 @@ class Client
 
         $content = json_decode($response->getContent(), true);
         if (null !== $content) {
-            throw new \RuntimeException(sprintf('Error %s: %s', $content['status'], $content['value']['message']), $content['status']);
+            throw ExceptionFactory::createExceptionFromArray($content);
         } else {
             throw new \RuntimeException('Unparsable error: '.$response->getContent());
         }

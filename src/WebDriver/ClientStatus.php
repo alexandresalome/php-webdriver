@@ -28,15 +28,15 @@ class ClientStatus
     {
         $status = new ClientStatus();
 
-        $status->sessionId = isset($array['sessionId']) ? $array['sessionId'] : null;
-        $status->status = isset($array['status']) ? $array['status'] : null;
+        $status->sessionId      = isset($array['sessionId']) ? $array['sessionId'] : null;
+        $status->status         = isset($array['status']) ? $array['status'] : null;
         $status->osArchitecture = isset($array['value']['os']['arch']) ? $array['value']['os']['arch'] : null;
-        $status->osName = isset($array['value']['os']['name']) ? $array['value']['os']['name'] : null;
-        $status->osVersion = isset($array['value']['os']['version']) ? $array['value']['os']['version'] : null;
-        $status->javaVersion = isset($array['value']['java']['version']) ? $array['value']['java']['version'] : null;
-        $status->buildRevision = isset($array['value']['build']['revision']) ? $array['value']['build']['revision'] : null;
-        $status->buildTime = isset($array['value']['build']['time']) ? $array['value']['build']['time'] : null;
-        $status->buildVersion = isset($array['value']['build']['version']) ? $array['value']['build']['version'] : null;
+        $status->osName         = isset($array['value']['os']['name']) ? $array['value']['os']['name'] : null;
+        $status->osVersion      = isset($array['value']['os']['version']) ? $array['value']['os']['version'] : null;
+        $status->javaVersion    = isset($array['value']['java']['version']) ? $array['value']['java']['version'] : null;
+        $status->buildRevision  = isset($array['value']['build']['revision']) ? $array['value']['build']['revision'] : null;
+        $status->buildTime      = isset($array['value']['build']['time']) ? $array['value']['build']['time'] : null;
+        $status->buildVersion   = isset($array['value']['build']['version']) ? $array['value']['build']['version'] : null;
 
         return $status;
     }
