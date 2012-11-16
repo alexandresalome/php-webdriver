@@ -82,7 +82,7 @@ class By
      */
     static public function css($value)
     {
-        return new By(self::CSS_SELECTOR);
+        return new By(self::CSS_SELECTOR, $value);
     }
 
     /**
