@@ -43,6 +43,8 @@ class ExceptionFactory
         $message = $array['value']['message'];
         if ($status == self::STATUS_NO_SUCH_ELEMENT) {
             return new NoSuchElementException($message);
+        } elseif ($status == self::STATUS_UNKNOWN_ERROR) {
+            return new UnknownException($message);
         }
 
         throw new \RuntimeException('Unable to find exception class for status code : '.$status);
