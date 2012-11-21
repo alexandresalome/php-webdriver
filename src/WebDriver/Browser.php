@@ -30,6 +30,25 @@ class Browser
     protected $client;
 
     /**
+     * Flag to make browser close hiself (with HTTP request) on destruction
+     *
+     * @var boolean
+     */
+    protected $closeOnDestruct = false;
+
+    /**
+     * A shortcut method to quickly get a browser up and running.
+     *
+     * @return Browser
+     */
+    static public function create($capabilities, $url)
+    {
+        $client = new Client($url);
+
+        return $client->createBrowser($capabilities);
+    }
+
+    /**
      * Instanciates the object.
      *
      * @param Client $client    The client to use for exchanges with the
@@ -56,6 +75,18 @@ class Browser
         $this->request('POST', 'url', json_encode(array('url' => $url)));
 
         return $this;
+    }
+
+    public function execute($javascript, array $args = array())
+    {
+        $response = $this->request('POST', 'execute', json_encode(array(
+            'script' => $javascript,
+            'args'   => $args
+        )));
+
+        $data = json_decode($response->getContent(), true);
+
+        return $data['value'];
     }
 
     /**
@@ -88,6 +119,13 @@ class Browser
     public function back()
     {
         $this->request('POST', 'back');
+
+        return $this;
+    }
+
+    public function refresh()
+    {
+        $this->request('POST', 'refresh');
 
         return $this;
     }
@@ -175,6 +213,11 @@ class Browser
         return $this->client->request($verb, sprintf('/session/%s/%s', $this->sessionId, $path), $content, $headers);
     }
 
+    public function closeOnDestruct($value = true)
+    {
+        $this->closeOnDestruct = $value;
+    }
+
     /**
      * Internal method to get a scalar value from server.
      *
@@ -190,5 +233,12 @@ class Browser
         }
 
         return $content['value'];
+    }
+
+    public function __destruct()
+    {
+        if ($this->closeOnDestruct) {
+            $this->close();
+        }
     }
 }

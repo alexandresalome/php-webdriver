@@ -9,6 +9,8 @@
 
 namespace WebDriver\Tests\Website;
 
+use WebDriver\Browser;
+
 /**
  * Base class for functional testing of the website.
  *
@@ -34,8 +36,8 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
             return;
         }
         if (null === self::$browser) {
-            $client = new \WebDriver\Client($_SERVER['WD_SERVER_URL']);
-            self::$browser = $client->createBrowser(new \WebDriver\Capabilities($_SERVER['WD_BROWSER']));
+            self::$browser = Browser::create($_SERVER['WD_BROWSER'], $_SERVER['WD_SERVER_URL']);
+            self::$browser->closeOnDestruct();
         }
 
         return self::$browser;

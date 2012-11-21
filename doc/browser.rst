@@ -4,14 +4,24 @@ The Browser object
 The *Browser* object is the main entry point for WebDriver API. With it, you
 can explore document, navigate, manipulate mouse, keyboard and many more.
 
-Those browser are created by a *Client* object, responsible of communication
+Those browsers are created by a *Client* object, responsible of communication
 with server. Here is a full-example for a classic selenium server, running on
 *localhost*:
 
 .. code-block:: php
 
-    $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
+    use WebDriver\Client;
+
+    $client  = new Client('http://localhost:4444/wd/hub');
     $browser = $client->createBrowser('firefox');
+
+If you are in a hurry, you can use this useful shortcut:
+
+.. code-block:: php
+
+    use WebDriver\Browser;
+
+    $browser = Browser::create('firefox', 'http://localhost:4444/wd/hub');
 
 When you're done with the browser object, you need to close it explicitly. See
 chapter "Finish the browser" below to know how and why.
@@ -19,12 +29,18 @@ chapter "Finish the browser" below to know how and why.
 Navigation
 ----------
 
+See the example to see how to manipulate history and go to URLs:
+
 .. code-block:: php
 
-    $browser->open($url);
-    $browser->getUrl();
+    $browser->open('http://www.google.fr');
+    $browser->open('http://www.google.pt');
+
+    $url = $browser->getUrl();
+
     $browser->back();
     $browser->forward();
+    $browser->refresh();
 
 Finish the browser
 ------------------

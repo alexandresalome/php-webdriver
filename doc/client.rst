@@ -23,6 +23,8 @@ The *Browser* provides facilities to manipulate the browser, like ``open``,
 Capabilities
 ------------
 
+If you're not very exhaustive about
+
 We use a *Capabilities* object to express your browser expectations.
 
 You define first the browser you want (firefox, internet explorer) and can tune

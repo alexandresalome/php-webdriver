@@ -20,8 +20,8 @@ In your ``composer.json``, add ``alexandresalome/php-webdriver`` to your *requir
 .. code-block:: json
 
     {
-        'require': {
-            'alexandresalome/php-webdriver'
+        "require": {
+            "alexandresalome/php-webdriver": "dev-master"
         }
     }
 

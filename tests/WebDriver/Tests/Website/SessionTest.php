@@ -9,6 +9,8 @@
 
 namespace WebDriver\Tests\Website;
 
+use WebDriver\By;
+
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -20,10 +22,10 @@ class SessionTest extends AbstractTestCase
             $this->markTestSkipped('Imagick is not installed');
         }
 
-        $session = $this->getBrowser();
-        $session->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('index.php'));
 
-        $data = $session->screenshot();
+        $data = $browser->screenshot();
 
         $image = new \Imagick();
         $image->readimageblob($data);
@@ -32,14 +34,25 @@ class SessionTest extends AbstractTestCase
         $this->assertGreaterThan(100, $image->getImageHeight());
     }
 
+    public function testExecute()
+    {
+        $url     = $this->getUrl('index.php');
+        $browser = $this->getBrowser();
+
+        $browser->open($url);
+        $title = $browser->execute('return document.title;');
+
+        $this->assertEquals('Sample website', $title);
+    }
+
     public function testUrl()
     {
         $url = $this->getUrl('index.php');
 
-        $session = $this->getBrowser();
-        $session->open($url);
+        $browser = $this->getBrowser();
+        $browser->open($url);
 
-        $this->assertEquals($url, $session->getUrl());
+        $this->assertEquals($url, $browser->getUrl());
     }
 
     public function testBackAndForward()
@@ -47,29 +60,41 @@ class SessionTest extends AbstractTestCase
         $urlA = $this->getUrl('index.php');
         $urlB = $this->getUrl('page.php');
 
-        $session = $this->getBrowser();
-        $session->open($urlA);
-        $session->open($urlB);
-        $session->back();
-        $this->assertRegExp('/index\.php$/', $session->getUrl());
-        $session->forward();
-        $this->assertRegExp('/page\.php$/', $session->getUrl());
+        $browser = $this->getBrowser();
+        $browser->open($urlA);
+        $browser->open($urlB);
+        $browser->back();
+        $this->assertRegExp('/index\.php$/', $browser->getUrl());
+        $browser->forward();
+        $this->assertRegExp('/page\.php$/', $browser->getUrl());
+    }
+
+    public function testRefresh()
+    {
+        $browser = $this->getBrowser();
+
+        $browser->open($this->getUrl('rand.php'));
+        $before = $browser->element(By::id('strike'))->text();
+        $browser->refresh();
+        $after  = $browser->element(By::id('strike'))->text();
+
+        $this->assertTrue($before != $after, "The page was refreshed");
     }
 
     public function testTitle()
     {
-        $session = $this->getBrowser();
-        $session->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('index.php'));
 
-        $this->assertEquals('Sample website', $session->getTitle());
+        $this->assertEquals('Sample website', $browser->getTitle());
     }
 
     public function testGetSource()
     {
-        $session = $this->getBrowser();
-        $session->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('index.php'));
 
-        $source = $session->getSource();
+        $source = $browser->getSource();
         $this->assertContains('This comment is only viewable with source code', $source);
         $this->assertContains('<!DOCTYPE html>', $source);
         $this->assertContains('<head>', $source);

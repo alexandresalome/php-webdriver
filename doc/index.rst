@@ -1,23 +1,39 @@
 WebDriver client for PHP
 ========================
 
-WebDriver is a standard for manipulation of browsers remotely. This protocol
-was initiated by Selenium-group.
+This library allows you to manipulate browsers remotely.
 
-This library offers a PHP client for such a server, simple as:
+"WebDriver Wire Protocol" was initiated by Selenium-group and consists of a
+Restful API to manipulate a browser remotely (cookies, forms, DOM inspection,
+screenshots and so on).
+
+PHP client library
+------------------
+
+This library implements the WebDriver Wire Protocol in a fluid interface,
+feeling like this:
 
 .. code-block:: php
 
-    $client  = new Selenium\Client('http://...');
+    $client  = new Selenium\Client('http://localhost:4444/wd/hub');
     $browser = $client->createBrowser('firefox');
 
     $browser->open('http://google.fr');
 
     $title = $browser->getTitle();
 
-You can easily get a server to run servers on your local machine or remote one:
+    $links = $browser->elements(Selenium\By::tag('a'));
+    foreach ($links as $link) {
+        echo sprintf("href: %s\n", $link->attribute('href'));
+        echo sprintf("text: %s\n", $link->text());
+    }
 
-* http://seleniumhq.org
+Get the server
+--------------
+
+`Download Selenium Server <http://seleniumhq.org>`_ or use Sauce Labs services
+to get a "WebDriver server" up and running. You can also take a look at
+`GhostDriver <https://github.com/detro/ghostdriver>`_, a 
 
 Documentation
 -------------
