@@ -15,7 +15,7 @@ use WebDriver\By;
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
-class SessionTest extends AbstractTestCase
+class BrowserTest extends AbstractTestCase
 {
     public function testScreenshot()
     {
@@ -100,5 +100,28 @@ class SessionTest extends AbstractTestCase
         $this->assertContains('<!DOCTYPE html>', $source);
         $this->assertContains('<head>', $source);
         $this->assertContains('<body>', $source);
+    }
+
+    public function testElement()
+    {
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('index.php'));
+
+        $title = $browser->element(By::css('#danger-zone h2'))->text();
+
+        $this->assertEquals('DANGER ZONE', $title);
+    }
+
+    public function testElements()
+    {
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('index.php'));
+
+        $elements = $browser->elements(By::css('#pagination a'));
+
+        $this->assertCount(3, $elements);
+
+        $this->assertRegExp('/\?page=1$/', $elements[0]->attribute('href'));
+        $this->assertRegExp('/\?page=3$/', $elements[2]->attribute('href'));
     }
 }

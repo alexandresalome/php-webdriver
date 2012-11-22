@@ -1,13 +1,11 @@
 PHP WebDriver Library
 =====================
 
-This is still a work in progress.
-
 Requirements
 ::::::::::::
 
 * **PHP 5.3**
-* **Buzz**: This library is using Buzz for communicating with WebDriver Server.
+* **Buzz**: HTTP request library
 
 Installation
 ::::::::::::
@@ -18,21 +16,30 @@ require alexandresalome/php-web-driver``.
 
 Read documentation for more informations about how to use it.
 
-Sample upsage
-:::::::::::::
+Sample usage
+::::::::::::
 
 .. code-block:: php
 
-    $client  = new WebDriver\Client('http://localhost:4444/wd/hub');
-    $firefox = $client->createBrowser('firefox');
-    $ie      = $client->createBrowser('internet explorer');
+    use WebDriver\Browser;
+    use WebDriver\By;
 
-    // start fight!
+    $browser = Browser::create('firefox', 'http://localhost:4444/wd/hub');
+
+    $title = $browser->getTitle();
+    echo sprintf("Title: %s\n", $title);
+
+    $url = $browser->getTitle();
+    echo sprintf("URL: %s\n", $url);
+
+    foreach ($browser->elements(By::tag('a')) as $link) {
+        echo sprintf("%s (href: %s)\n", $link->text(), $link->attribute('href')));
+    }
 
 Documentation
 :::::::::::::
 
-``doc/`` folder is present.
+Documentation is located in ``doc/`` for the moment. API should be verbose enough.
 
 References
 ::::::::::

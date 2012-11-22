@@ -204,6 +204,8 @@ class Browser
      *
      * @param By $by Indicates how to search for the element
      *
+     * @return Element
+     *
      * @see By
      */
     public function element(By $by)
@@ -217,6 +219,31 @@ class Browser
         $id = $data['value']['ELEMENT'];
 
         return new Element($this, $id);
+    }
+
+    /**
+     * Method to select elements, usinga sleector (css, xpath, etc.).
+     *
+     * @param By $by Indicates how to search for elements
+     *
+     * @return array An array of elements
+     */
+    public function elements(By $by)
+    {
+        $response = $this->request('POST', 'elements', json_encode($by->toArray()));
+        $data = json_decode($response->getContent(), true);
+
+        if (!isset($data['value'])) {
+            throw new LibraryException('Missing key value');
+        }
+
+        $elements = array();
+
+        foreach ($data['value'] as $val) {
+            $elements[] = new Element($this, $val['ELEMENT']);
+        }
+
+        return $elements;
     }
 
     /**
