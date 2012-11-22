@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -8,6 +9,8 @@
  */
 
 namespace WebDriver;
+
+use WebDriver\Exception\LibraryException;
 
 /**
  * Allow to express an element selection on a given page.
@@ -37,7 +40,7 @@ class By
     public function __construct($using, $value)
     {
         if (!in_array($using, $this->getTypes())) {
-            throw new \InvalidArgumentException(sprintf('Unexpected selection of elements using "%s", known are: %s',
+            throw new LibraryException(sprintf('Unexpected selection of elements using "%s", known are: %s',
                 $using,
                 implode(' ', $this->getTypes())
             ));
@@ -136,6 +139,13 @@ class By
         return new By(self::TAG_NAME, $value);
     }
 
+    /**
+     * Select with an XPATH expression.
+     *
+     * @param string $value XPath expression
+     *
+     * @return By
+     */
     static public function xpath($value)
     {
         return new By(self::XPATH, $value);

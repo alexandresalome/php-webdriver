@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -11,6 +12,7 @@ namespace WebDriver\Tests;
 
 use Buzz\Message\Response;
 
+use WebDriver\Exception\LibraryException;
 use WebDriver\Browser;
 use WebDriver\Client;
 
@@ -75,7 +77,7 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
         try {
             $this->browser->getSessionId();
             $this->fail();
-        } catch (\RuntimeException $e) {
+        } catch (LibraryException $e) {
             $this->assertEquals('This session was closed', $e->getMessage());
         }
     }

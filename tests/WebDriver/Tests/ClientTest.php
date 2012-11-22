@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -12,6 +13,7 @@ namespace WebDriver\Tests;
 use Buzz\Message\Request;
 use Buzz\Message\Response;
 
+use WebDriver\Exception\LibraryException;
 use WebDriver\Capabilities;
 use WebDriver\Client;
 
@@ -70,7 +72,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         {
             $client->getBrowser('54321');
             $this->fail();
-        } catch (\RuntimeException $e) {
+        } catch (LibraryException $e) {
             $this->assertEquals('The session "54321" was not found', $e->getMessage());
         }
     }
@@ -90,7 +92,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         try {
             $client->getBrowser('12345');
             $this->fail();
-        } catch (\RuntimeException $e) {}
+        } catch (LibraryException $e) {}
     }
 
     public function testDefaultClient()

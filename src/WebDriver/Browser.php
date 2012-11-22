@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -11,9 +12,10 @@ namespace WebDriver;
 
 use Buzz\Message\Response;
 
+use WebDriver\Exception\LibraryException;
+
 /**
- * WebDriver Browser. Represents a given browser launch, and methods to
- * manipulate this browser instance.
+ * Root entry to manipulate browser.
  *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
@@ -30,8 +32,6 @@ class Browser
     protected $client;
 
     /**
-     * Flag to make browser close hiself (with HTTP request) on destruction
-     *
      * @var boolean
      */
     protected $closeOnDestruct = false;
@@ -39,7 +39,7 @@ class Browser
     /**
      * A shortcut method to quickly get a browser up and running.
      *
-     * @return Browser
+     * @return Browser fluid interface
      */
     static public function create($capabilities, $url)
     {
@@ -51,8 +51,7 @@ class Browser
     /**
      * Instanciates the object.
      *
-     * @param Client $client    The client to use for exchanges with the
-     *                          server
+     * @param Client $client    The client to use for exchanges with the server
      * @param string $sessionId The session ID
      */
     public function __construct(Client $client, $sessionId)
@@ -68,7 +67,7 @@ class Browser
      *
      * @param string $url A URL to access
      *
-     * @return Session
+     * @return Browser fluid interface
      */
     public function open($url)
     {
@@ -77,6 +76,14 @@ class Browser
         return $this;
     }
 
+    /**
+     * Run a Javascript snippet on browser.
+     *
+     * @param string $javascript The javascript snippet to execute
+     * @param array  $args       Arguments to pass to snippet
+     *
+     * @return mixed Result of javascript execution
+     */
     public function execute($javascript, array $args = array())
     {
         $response = $this->request('POST', 'execute', json_encode(array(
@@ -90,19 +97,19 @@ class Browser
     }
 
     /**
-     * Returns the current session URL.
+     * Returns current URL.
      *
-     * @return string
+     * @return string a URL
      */
     public function getUrl()
     {
-        return $this->getValue('url');
+        return $this->requestValue('url');
     }
 
     /**
      * Moves one toward in history.
      *
-     * @return Session
+     * @return Browser fluid interface
      */
     public function forward()
     {
@@ -114,7 +121,7 @@ class Browser
     /**
      * Moves one back in history.
      *
-     * @return Session
+     * @return Browser fluid interface
      */
     public function back()
     {
@@ -123,6 +130,11 @@ class Browser
         return $this;
     }
 
+    /**
+     * Request browser to refresh current page.
+     *
+     * @return Browser fluid interface
+     */
     public function refresh()
     {
         $this->request('POST', 'refresh');
@@ -132,11 +144,15 @@ class Browser
 
     /**
      * Closes the session and disable this session.
+     *
+     * @return Browser fluid interface
      */
     public function close()
     {
         $this->client->closeBrowser($this->getSessionId());
         $this->sessionId = null;
+
+        return $this;
     }
 
     /**
@@ -147,7 +163,7 @@ class Browser
     public function getSessionId()
     {
         if (null === $this->sessionId) {
-            throw new \RuntimeException('This session was closed');
+            throw new LibraryException('This session was closed');
         }
 
         return $this->sessionId;
@@ -160,7 +176,7 @@ class Browser
      */
     public function screenshot()
     {
-        return base64_decode($this->getValue('screenshot'));
+        return base64_decode($this->requestValue('screenshot'));
     }
 
     /**
@@ -170,7 +186,7 @@ class Browser
      */
     public function getSource()
     {
-        return $this->getValue('source');
+        return $this->requestValue('source');
     }
 
     /**
@@ -180,7 +196,7 @@ class Browser
      */
     public function getTitle()
     {
-        return $this->getValue('title');
+        return $this->requestValue('title');
     }
 
     /**
@@ -196,11 +212,26 @@ class Browser
         $data = json_decode($response->getContent(), true);
 
         if (!isset($data['value']['ELEMENT'])) {
-            throw new \RuntimeException('Missing key value.ELEMENT');
+            throw new LibraryException('Missing key value.ELEMENT');
         }
         $id = $data['value']['ELEMENT'];
 
         return new Element($this, $id);
+    }
+
+    /**
+     * Request for browser to close session on object destruction.
+     *
+     * This will actually make an HTTP call before destruction of object. Be
+     * careful when using it.
+     *
+     * @return Browser fluid interface
+     */
+    public function closeOnDestruct($value = true)
+    {
+        $this->closeOnDestruct = $value;
+
+        return $this;
     }
 
     /**
@@ -213,23 +244,18 @@ class Browser
         return $this->client->request($verb, sprintf('/session/%s/%s', $this->sessionId, $path), $content, $headers);
     }
 
-    public function closeOnDestruct($value = true)
-    {
-        $this->closeOnDestruct = $value;
-    }
-
     /**
      * Internal method to get a scalar value from server.
      *
      * @return mixed
      */
-    protected function getValue($name)
+    protected function requestValue($name)
     {
         $response = $this->client->request('GET', sprintf('/session/%s/%s', $this->sessionId, $name));
         $content = json_decode($response->getContent(), true);
 
         if (!isset($content['value'])) {
-            throw new \RuntimeException('Malformed response: expected a key "value" in JSON response: '.$response->getContent());
+            throw new LibraryException('Malformed response: expected a key "value" in JSON response: '.$response->getContent());
         }
 
         return $content['value'];

@@ -10,6 +10,9 @@
 
 namespace WebDriver\Exception;
 
-class UnknownException extends \RuntimeException implements ExceptionInterface
+/**
+ * @author Alexandre Salomé <alexandre.salome@gmail.com>
+ */
+class LibraryException extends \RuntimeException implements ExceptionInterface
 {
 }

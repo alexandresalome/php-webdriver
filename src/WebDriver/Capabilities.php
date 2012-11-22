@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -8,6 +9,8 @@
  */
 
 namespace WebDriver;
+
+use WebDriver\Exception\LibraryException;
 
 /**
  * Representation of a browser capabilities.

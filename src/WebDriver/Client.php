@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -15,6 +16,7 @@ use Buzz\Message\Request;
 use Buzz\Message\Response;
 
 use WebDriver\Exception\ExceptionFactory;
+use WebDriver\Exception\LibraryException;
 
 /**
  * Client for a WebDriver server.
@@ -93,7 +95,7 @@ class Client
         if (is_string($capabilities)) {
             $capabilities = new Capabilities($capabilities);
         } elseif (!$capabilities instanceof Capabilities) {
-            throw new \InvalidArgumentException(sprintf('Expected a Capabilities or a string, given a "%s"', gettype($capabilities)));
+            throw new LibraryException(sprintf('Expected a Capabilities or a string, given a "%s"', gettype($capabilities)));
         }
 
         $response = $this->request('POST', '/session', json_encode(array('desiredCapabilities' => $capabilities->toArray())));
@@ -126,7 +128,7 @@ class Client
     public function getBrowser($sessionId)
     {
         if (!isset($this->browsers[$sessionId])) {
-            throw new \RuntimeException(sprintf('The session "%s" was not found', $sessionId));
+            throw new LibraryException(sprintf('The session "%s" was not found', $sessionId));
         }
 
         return $this->browsers[$sessionId];
@@ -161,7 +163,7 @@ class Client
         if (null !== $content) {
             throw ExceptionFactory::createExceptionFromArray($content);
         } else {
-            throw new \RuntimeException('Unparsable error: '.$response->getContent());
+            throw new LibraryException('Unparsable error: '.$response->getContent());
         }
     }
 
@@ -169,12 +171,12 @@ class Client
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode !== 302) {
-            throw new \RuntimeException(sprintf('The response should be a redirection, response code from server was "%s"', $statusCode));
+            throw new LibraryException(sprintf('The response should be a redirection, response code from server was "%s"', $statusCode));
         }
 
         $location = $response->getHeader('Location');
         if (!preg_match('#/session/(\d+)$#', $location, $vars)) {
-            throw new \RuntimeException(sprintf('The Location should end with /session/<session-id> (location returned: %s)', $location));
+            throw new LibraryException(sprintf('The Location should end with /session/<session-id> (location returned: %s)', $location));
         }
 
         return $vars[1];

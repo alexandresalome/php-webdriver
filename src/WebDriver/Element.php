@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of PHP WebDriver Library.
  * (c) Alexandre Salomé <alexandre.salome@gmail.com>
@@ -9,6 +10,11 @@
 
 namespace WebDriver;
 
+use WebDriver\Exception\LibraryException;
+
+/**
+ * @author Alexandre Salomé <alexandre.salome@gmail.com>
+ */
 class Element
 {
     protected $browser;
@@ -56,7 +62,7 @@ class Element
         $content  = json_decode($response->getContent(), true);
 
         if (!isset($content['value'])) {
-            throw new \RuntimeException('Malformed expression, no key "value" in response: '.$response->getContent());
+            throw new LibraryException('Malformed expression, no key "value" in response: '.$response->getContent());
         }
 
         return $content['value'];
