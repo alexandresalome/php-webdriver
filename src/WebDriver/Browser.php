@@ -208,9 +208,14 @@ class Browser
      *
      * @see By
      */
-    public function element(By $by)
+    public function element(By $by, Element $from = null)
     {
-        $response = $this->request('POST', 'element', json_encode($by->toArray()));
+        if (null === $from) {
+            $uri = 'element';
+        } else {
+            $uri = 'element/'.$from->getId().'/element';
+        }
+        $response = $this->request('POST', $uri, json_encode($by->toArray()));
         $data = json_decode($response->getContent(), true);
 
         if (!isset($data['value']['ELEMENT'])) {
@@ -230,7 +235,12 @@ class Browser
      */
     public function elements(By $by)
     {
-        $response = $this->request('POST', 'elements', json_encode($by->toArray()));
+        if (null === $from) {
+            $uri = 'elements';
+        } else {
+            $uri = 'element/'.$from->getId().'/elements';
+        }
+        $response = $this->request('POST', $uri, json_encode($by->toArray()));
         $data = json_decode($response->getContent(), true);
 
         if (!isset($data['value'])) {

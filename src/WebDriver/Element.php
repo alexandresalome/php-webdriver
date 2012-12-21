@@ -26,6 +26,31 @@ class Element
         $this->id      = $id;
     }
 
+    public function element(By $by)
+    {
+        return $this->browser->element($by, $this);
+    }
+
+    public function elements(By $by)
+    {
+        return $this->browser->elements($by, $this);
+    }
+
+    /**
+     * Returns the tag name.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->getValue('name');
+    }
+
+    public function clear()
+    {
+        return $this->request('POST', 'clear');
+    }
+
     public function text()
     {
         return $this->getValue('text');
@@ -54,6 +79,11 @@ class Element
     public function request($verb, $path, $content = null, array $headers = array())
     {
         return $this->browser->request($verb, sprintf('element/%s/%s', $this->id, $path), $content, $headers);
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     protected function getValue($name)
