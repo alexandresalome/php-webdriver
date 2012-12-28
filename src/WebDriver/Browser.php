@@ -233,7 +233,7 @@ class Browser
      *
      * @return array An array of elements
      */
-    public function elements(By $by)
+    public function elements(By $by, $from = null)
     {
         if (null === $from) {
             $uri = 'elements';
