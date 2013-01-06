@@ -47,6 +47,8 @@ class ExceptionFactory
             return new NoSuchElementException($message);
         } elseif ($status == self::STATUS_UNKNOWN_ERROR) {
             return new UnknownException($message);
+        } elseif ($status == self::STATUS_INVALID_SELECTOR) {
+            return new InvalidSelectorException($message);
         }
 
         throw new LibraryException(sprintf('An error occured: #%s: %s', $status, $message));

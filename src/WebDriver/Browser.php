@@ -256,6 +256,42 @@ class Browser
         return $elements;
     }
 
+    public function setScriptTimeout($milliseconds)
+    {
+        $this->request('POST', 'timeouts', json_encode(array('type' => 'script', 'ms' => $milliseconds)));
+    }
+
+    /**
+     * Set the amount of time, in milliseconds, that asynchronous scripts
+     * executed by executeAsync are permitted to run before they are
+     * aborted and a TimeoutException occurs.
+     *
+     * @param int $milliseconds
+     */
+    public function setAsyncScriptTimeout($milliseconds)
+    {
+        $this->request('POST', 'timeouts/async_script', json_encode(array('ms' => $milliseconds)));
+    }
+
+    public function setPageLoadTimeout($milliseconds)
+    {
+        $this->request('POST', 'timeouts', json_encode(array('type' => 'page load', 'ms' => $milliseconds)));
+    }
+
+    /**
+     * Set the amount of time the driver should wait when searching for
+     * elements.
+     *
+     * If this command is never sent, the driver should default to an
+     * implicit wait of 0ms.
+     *
+     * @param int $milliseconds
+     */
+    public function setImplicitTimeout($milliseconds)
+    {
+        $this->request('POST', 'timeouts', json_encode(array('type' => 'implicit', 'ms' => $milliseconds)));
+    }
+
     /**
      * Request for browser to close session on object destruction.
      *

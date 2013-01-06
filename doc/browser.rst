@@ -42,6 +42,23 @@ See the example to see how to manipulate history and go to URLs:
     $browser->forward();
     $browser->refresh();
 
+Set timeouts
+------------
+
+Different type of timeouts exist with Selenium:
+
+* **script timeout**
+* **async script timeout**
+* **page load**
+* **implicit** (when querying elements)
+
+.. code-block:: php
+
+    $browser->setScriptTimeout(5000); // milliseconds
+    $browser->setAsyncScriptTimeout(5000); // milliseconds
+    $browser->setPageLoadTimeout(5000); // milliseconds
+    $browser->setImplicitTimeout(5n000); // milliseconds
+
 Finish the browser
 ------------------
 
