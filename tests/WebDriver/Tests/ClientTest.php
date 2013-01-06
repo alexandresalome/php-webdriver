@@ -32,7 +32,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $response = new Response();
         $response->addHeader('1.0 302 Moved Temporarly');
-        $response->addHeader('Location: http://localhost/session/12345');
+        $response->addHeader('Location: http://localhost/session/7340440e-0bf0-4120-8131-2b3563d63bed');
         $buzzClient->sendToQueue($response);
 
         if ($withShortCapabilities) {
@@ -42,7 +42,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(0, count($buzzClient->getQueue()), "Queue is empty");
-        $this->assertEquals('12345', $session->getSessionId());
+        $this->assertEquals('7340440e-0bf0-4120-8131-2b3563d63bed', $session->getSessionId());
     }
 
     public function provideCreateBrowser()

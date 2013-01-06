@@ -175,7 +175,7 @@ class Client
         }
 
         $location = $response->getHeader('Location');
-        if (!preg_match('#/session/(\d+)$#', $location, $vars)) {
+        if (!preg_match('#/session/([0-9a-f\-]+)?#', $location, $vars)) {
             throw new LibraryException(sprintf('The Location should end with /session/<session-id> (location returned: %s)', $location));
         }
 
