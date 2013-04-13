@@ -11,26 +11,58 @@
 namespace WebDriver;
 
 use WebDriver\Exception\LibraryException;
+use WebDriver\Util\Zip;
 
 /**
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class Element
 {
+    /**
+     * @var Browser
+     */
     protected $browser;
+
+    /**
+     * server identifier of element.
+     *
+     * @var string
+     */
     protected $id;
 
+    /**
+     * Instanciates a new element.
+     *
+     * @param Browser $browser Browser attached to the element
+     * @param string  $id      Identifier of element from server
+     */
     public function __construct(Browser $browser, $id)
     {
         $this->browser = $browser;
         $this->id      = $id;
     }
 
+    /**
+     * Search an element starting from current element.
+     *
+     * @param By $by Selection method
+     *
+     * @return Element
+     *
+     * @see Browser::element
+     */
     public function element(By $by)
     {
         return $this->browser->element($by, $this);
     }
 
+    /**
+     * Search for elements starting from current element.
+     *
+     * @param By $by Selection method
+     *
+     * @see Browser::elements
+     */
     public function elements(By $by)
     {
         return $this->browser->elements($by, $this);
@@ -41,19 +73,25 @@ class Element
      *
      * @return string
      */
-    public function name()
+    public function getTagName()
     {
-        return $this->getValue('name');
+        return $this->requestValue('name');
     }
 
+    /**
+     * Clears the field value.
+     */
     public function clear()
     {
         return $this->request('POST', 'clear');
     }
 
-    public function text()
+    /**
+     * Returns text representation of element.
+     */
+    public function getText()
     {
-        return $this->getValue('text');
+        return $this->requestValue('text');
     }
 
     public function submit()
@@ -66,12 +104,12 @@ class Element
         return $this->request('POST', 'click');
     }
 
-    public function attribute($name)
+    public function getAttribute($name)
     {
-        return $this->getValue('attribute/'.$name);
+        return $this->requestValue('attribute/'.$name);
     }
 
-    public function value($value)
+    public function type($value)
     {
         $this->request('POST', 'value', json_encode(array('value' => array($value))));
     }
@@ -86,7 +124,33 @@ class Element
         return $this->id;
     }
 
-    protected function getValue($name)
+    /**
+     * Uploads a file to the selected field.
+     *
+     * @param string $file Absolute path to the file
+     *
+     * @return string Path on server.
+     */
+    public function upload($file)
+    {
+        $zip = new Zip();
+        $zip->addFile($file);
+
+        $response = $this->browser->request('POST', 'file', json_encode(array('file' => base64_encode($zip->getContent()))));
+        $content  = json_decode($response->getContent(), true);
+
+        if (!isset($content['value'])) {
+            throw new LibraryException('Malformed expression, no key "value" in response: '.$response->getContent());
+        }
+
+        $file = $content['value'];
+
+        $this->type($file);
+
+        return $file;
+    }
+
+    protected function requestValue($name)
     {
         $response = $this->request('GET', $name);
         $content  = json_decode($response->getContent(), true);

@@ -12,7 +12,8 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/buzz": "dev-master"
+        "kriswallsmith/buzz": "dev-master",
+        "symfony/process": "2.2.*"
     },
 
     "minimum-stability": "dev"

@@ -32,8 +32,7 @@ Get the server
 --------------
 
 `Download Selenium Server <http://seleniumhq.org>`_ or use Sauce Labs services
-to get a "WebDriver server" up and running. You can also take a look at
-`GhostDriver <https://github.com/detro/ghostdriver>`_, a 
+to get a "WebDriver server" up and running.
 
 Documentation
 -------------
@@ -41,6 +40,7 @@ Documentation
 .. toctree::
 
     installation
-    clients
-    browsers
-    progress
+    client
+    browser
+    elements
+    tests

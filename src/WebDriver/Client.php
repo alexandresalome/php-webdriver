@@ -67,6 +67,14 @@ class Client
         $this->browsers = array();
     }
 
+    /**
+     * Plumbery method to request webdriver server.
+     *
+     * @param string $verb    HTTP method to use (GET, POST, DELETE)
+     * @param string $path    Relative URL to server, without prefix "/"
+     * @param string $content Content of request
+     * @param array  $headers Additional HTTP headers
+     */
     public function request($verb, $path, $content = null, array $headers = array())
     {
         $url = $this->url.$path;
@@ -163,7 +171,7 @@ class Client
         if (null !== $content) {
             throw ExceptionFactory::createExceptionFromArray($content);
         } else {
-            throw new LibraryException('Unparsable error: '.$response->getContent());
+            throw new LibraryException('Unable to parse response from serveur (status code: '.$response->getStatusCode().') '.$response->getContent());
         }
     }
 

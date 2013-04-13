@@ -13,6 +13,8 @@ namespace WebDriver\Tests\Website;
 use WebDriver\By;
 
 /**
+ * Browser-related features (no page crawling).
+ *
  * @author Alexandre Salomé <alexandre.salome@gmail.com>
  */
 class BrowserTest extends AbstractTestCase
@@ -75,9 +77,9 @@ class BrowserTest extends AbstractTestCase
         $browser = $this->getBrowser();
 
         $browser->open($this->getUrl('rand.php'));
-        $before = $browser->element(By::id('strike'))->text();
+        $before = $browser->element(By::id('strike'))->getText();
         $browser->refresh();
-        $after  = $browser->element(By::id('strike'))->text();
+        $after  = $browser->element(By::id('strike'))->getText();
 
         $this->assertTrue($before != $after, "The page was refreshed");
     }
@@ -100,28 +102,5 @@ class BrowserTest extends AbstractTestCase
         $this->assertContains('<!DOCTYPE html>', $source);
         $this->assertContains('<head>', $source);
         $this->assertContains('<body>', $source);
-    }
-
-    public function testElement()
-    {
-        $browser = $this->getBrowser();
-        $browser->open($this->getUrl('index.php'));
-
-        $title = $browser->element(By::css('#danger-zone h2'))->text();
-
-        $this->assertEquals('DANGER ZONE', $title);
-    }
-
-    public function testElements()
-    {
-        $browser = $this->getBrowser();
-        $browser->open($this->getUrl('index.php'));
-
-        $elements = $browser->elements(By::css('#pagination a'));
-
-        $this->assertCount(3, $elements);
-
-        $this->assertRegExp('/\?page=1$/', $elements[0]->attribute('href'));
-        $this->assertRegExp('/\?page=3$/', $elements[2]->attribute('href'));
     }
 }
