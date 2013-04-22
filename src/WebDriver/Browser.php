@@ -27,14 +27,17 @@ class Browser
     protected $sessionId;
 
     /**
+     * NOTE: This attribute is private because lately, it might be necessary
+     * to refactor this part.
+     *
      * @var Client
      */
-    protected $client;
+    private $client;
 
     /**
      * @var boolean
      */
-    protected $closeOnDestruct = false;
+    protected $closeOnDestruct = true;
 
     /**
      * A shortcut method to quickly get a browser up and running.
@@ -80,7 +83,7 @@ class Browser
      * Run a Javascript snippet on browser.
      *
      * @param string $javascript The javascript snippet to execute
-     * @param array  $args       Arguments to pass to snippet
+     * @param array  $args       Arguments to pass to snippet (accessible by arguments[0], ...)
      *
      * @return mixed Result of javascript execution
      */

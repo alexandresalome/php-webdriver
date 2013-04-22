@@ -42,10 +42,15 @@ class BrowserTest extends AbstractTestCase
         $url     = $this->getUrl('index.php');
         $browser = $this->getBrowser();
 
+        // Interaction with current page
         $browser->open($url);
         $title = $browser->execute('return document.title;');
-
         $this->assertEquals('Sample website', $title);
+
+        // Arguments usage
+        $expected = array('a', 'b', 3, true);
+        $actual   = $browser->execute('return arguments;', $expected);
+        $this->assertEquals($expected, $actual, 'Casting through browser is successfully done');
     }
 
     public function testUrl()

@@ -59,6 +59,29 @@ Different type of timeouts exist with Selenium:
     $browser->setPageLoadTimeout(5000); // milliseconds
     $browser->setImplicitTimeout(5n000); // milliseconds
 
+Executing Javascript
+--------------------
+
+To run a snippet of Javascript, use the ``execute`` method or the
+``executeAsync`` method:
+
+The first one (``execute``) will block until the end of snippet's execution, or
+until the async script timeout has been reached. This function is useful if you
+want to process things on the browser side and get back some value:
+
+.. code-block:: php
+
+    $res = $browser->execute('return ["foo", "bar", 3, true];');
+    var_dump($res); // outputs array("foo", "bar", 3, true);
+
+If you're not expecting a return value, you can run ``executeAsync`` method. This will let the script
+run on side:
+
+    $browser->executeAsync('for (var i = 0; i < 1000000, i++) { doSomething(); }');
+
+* `Reference of execute method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute>`_
+* `Reference of execute_async method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute_async>`_
+
 Finish the browser
 ------------------
 
