@@ -59,6 +59,14 @@ class CookieBag
     }
 
     /**
+     * Deletes a given cookie.
+     */
+    public function delete($name)
+    {
+        $this->request('DELETE', 'cookie/'.$name);
+    }
+
+    /**
      * Deletes all visible cookies.
      */
     public function deleteAll()

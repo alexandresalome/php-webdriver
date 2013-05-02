@@ -74,3 +74,9 @@ To delete all cookies visible to the browser, run:
 
     $browser->getCookies()->deleteAll();
 
+If you want to delete a specific cookie:
+
+.. code-block:: php
+
+    $browser->getCookies()->delete('cookie_name');
+

@@ -34,6 +34,19 @@ class CookiesTest extends AbstractTestCase
         $this->assertContains('No cookie present', $browser->element(By::css('html'))->getText());
     }
 
+    public function testDelete()
+    {
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('cookies.php'));
+        $browser->getCookies()->set('foo', 'bar');
+        $browser->getCookies()->set('bar', 'baz');
+        $browser->refresh();
+        $browser->getCookies()->delete('bar');
+
+        $this->assertEquals('bar', $browser->getCookies()->getValue('foo'));
+        $this->assertNull($browser->getCookies()->get('bar'));
+    }
+
     public function testSet()
     {
         $browser = $this->getBrowser();
