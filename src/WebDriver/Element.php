@@ -88,6 +88,8 @@ class Element
 
     /**
      * Returns text representation of element.
+     *
+     * @return string
      */
     public function getText()
     {

@@ -10,6 +10,7 @@
             <li><a href="rand.php">A link to a random hash</a></li>
             <li><a href="other.php">Another page</a></li>
             <li><a href="form.php">Page to test form stuff</a></li>
+            <li><a href="cookies.php">Cookies page</a></li>
         </ul>
         <div id="danger-zone">
             <h2>DANGER ZONE</h2>

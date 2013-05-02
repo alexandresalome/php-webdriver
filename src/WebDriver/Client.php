@@ -171,7 +171,7 @@ class Client
         if (null !== $content) {
             throw ExceptionFactory::createExceptionFromArray($content);
         } else {
-            throw new LibraryException('Unable to parse response from serveur (status code: '.$response->getStatusCode().') '.$response->getContent());
+            throw new LibraryException('Unable to parse response from server (status code: '.$response->getStatusCode().') '.$response->getContent());
         }
     }
 

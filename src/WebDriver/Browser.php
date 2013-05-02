@@ -35,6 +35,11 @@ class Browser
     private $client;
 
     /**
+     * @var CookieBag
+     */
+    private $cookieBag;
+
+    /**
      * @var boolean
      */
     protected $closeOnDestruct = true;
@@ -61,6 +66,15 @@ class Browser
     {
         $this->client     = $client;
         $this->sessionId  = $sessionId;
+    }
+
+    public function getCookies()
+    {
+        if (null === $this->cookieBag) {
+            $this->cookieBag = new CookieBag($this);
+        }
+
+        return $this->cookieBag;
     }
 
     /**
@@ -325,7 +339,7 @@ class Browser
      *
      * @return mixed
      */
-    protected function requestValue($name)
+    public function requestValue($name)
     {
         $response = $this->client->request('GET', sprintf('/session/%s/%s', $this->sessionId, $name));
         $content = json_decode($response->getContent(), true);

@@ -15,17 +15,15 @@ feeling like this:
 
 .. code-block:: php
 
-    $client  = new Selenium\Client('http://localhost:4444/wd/hub');
-    $browser = $client->createBrowser('firefox');
-
+    $browser = WebDriver\Browser::create('firefox', 'http://localhost:4444/wd/hub');
     $browser->open('http://google.fr');
 
     $title = $browser->getTitle();
-
     $links = $browser->elements(Selenium\By::tag('a'));
+
     foreach ($links as $link) {
-        echo sprintf("href: %s\n", $link->attribute('href'));
-        echo sprintf("text: %s\n", $link->text());
+        echo sprintf("href: %s\n", $link->getAttribute('href'));
+        echo sprintf("text: %s\n", $link->getText());
     }
 
 Get the server
@@ -43,4 +41,5 @@ Documentation
     client
     browser
     elements
+    cookies
     tests

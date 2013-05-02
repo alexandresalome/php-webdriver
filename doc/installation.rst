@@ -1,16 +1,12 @@
 Installation of PHP-WebDriver
 =============================
 
-Dependencies
-------------
-
-This library depends of Buzz, responsible of communications with remote server.
-
 Requirements
 ------------
 
 * PHP 5.3
-* A server (usually Selenium Server)
+* Composer for dependencies
+* Selenium Server
 
 Install it with composer
 ------------------------
@@ -25,6 +21,6 @@ In your ``composer.json``, add ``alexandresalome/php-webdriver`` to your *requir
         }
     }
 
-Then run ``php composer.phar update`` from CLI.
+Then run ``php composer.phar update alexandresalome/php-webdriver`` from CLI.
 
 Package on packagist.org: https://packagist.org/packages/alexandresalome/php-webdriver

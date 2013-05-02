@@ -1,5 +1,5 @@
-Manipulating elements
-=====================
+Crawling the page
+=================
 
 DOM in browser can be accessed via a fluid interface in library. You need to have
 a *Browser* object, and starting from it you can request elements.
@@ -9,8 +9,8 @@ Element API
 
 .. code-block:: php
 
-    $element->text();
-    $element->attribute('name');
+    $element->getText();
+    $element->getAttribute('name');
     $element->click();
     // ...
 
@@ -20,7 +20,7 @@ Requesting a single element
 .. code-block:: php
 
     $title = $browser->element(By::name('title'));
-    echo $title->text();
+    echo $title->getText();
 
 Upload a file
 :::::::::::::
@@ -44,7 +44,7 @@ Requesting many elements
     $links = $browser->elements(By::name('a'));
     foreach ($links as $link) {
         sprintf("%s: %s\n",
-            $link->text(),
-            $link->attribute('href')
+            $link->getText(),
+            $link->getAttribute('href')
         );
     }
