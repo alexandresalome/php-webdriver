@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="behat.webdriver.client.class">WebDriver\Client</parameter>
+        <parameter key="behat.webdriver.context.initializer.class">WebDriver\Behat\WebDriverExtension\ContextInitializer</parameter>
+    </parameters>
+
+    <services>
+
+        <service id="behat.webdriver.client" class="%behat.webdriver.client.class%">
+            <argument>%behat.webdriver.client.url%</argument>
+        </service>
+
+        <service id="behat.webdriver.context.initializer" class="%behat.webdriver.context.initializer.class%">
+            <argument type="service" id="behat.webdriver.client" />
+            <argument>%behat.webdriver.base_url%</argument>
+
+            <tag name="behat.context.initializer" />
+        </service>
+    </services>
+</container>
