@@ -12,6 +12,7 @@ class ContextInitializer implements InitializerInterface
     protected $client;
     protected $baseUrl;
     protected $browserName;
+    protected $browser;
 
     public function __construct(Client $client, $baseUrl, $browserName = 'firefox')
     {
@@ -27,12 +28,19 @@ class ContextInitializer implements InitializerInterface
 
     public function initialize(ContextInterface $context)
     {
-        $client = $this->client;
-        $capabilities = $this->getCapabilities();
-
-        $context->setBrowserInformations(function () use ($client, $capabilities) {
-            return $client->createBrowser($capabilities);
+        $initializer = $this;
+        $context->setBrowserInformations(function () use ($initializer) {
+            return $initializer->getBrowser();
         }, $this->baseUrl);
+    }
+
+    public function getBrowser()
+    {
+        if (null === $this->browser) {
+            $this->browser = $this->client->createBrowser($this->getCapabilities());
+        }
+
+        return $this->browser;
     }
 
     private function getCapabilities()
