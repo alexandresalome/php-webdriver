@@ -70,7 +70,7 @@ class WebDriverContext extends AbstractWebDriverContext
     public function iClickOnType($type, $text)
     {
         if ($type == '' || $type == 'text') {
-            $selector = By::xpath('//a[contains(text(),"'.$text.'")]|//input[@type="submit" and contains(@value, "'.$text.'")]|//button[contains(text(),"'.$text.'")]|//button[contains(@value, "'.$text.'")]');
+            $selector = By::xpath('//a[contains(text(),"'.$text.'")]|//input[@type="submit" and contains(@value, "'.$text.'")]|//button[contains(text(),"'.$text.'")]|//button[contains(@value, "'.$text.'")]|//button[contains(., "'.$text.'")]');
         } elseif ($type == 'css') {
             $selector = By::css($text);
         } elseif ($type == 'id') {
