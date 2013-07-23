@@ -3,6 +3,7 @@
 namespace WebDriver\Behat;
 
 use Behat\Behat\Context\BehatContext;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use WebDriver\By;
 
@@ -124,5 +125,13 @@ class WebDriverContext extends AbstractWebDriverContext
             $input->clear();
             $input->type($value);
         }
+    }
+
+    /**
+     * @Then /^I fill "([^"]*)" with:$/
+     */
+    public function iFillWithText($field, PyStringNode $value)
+    {
+        $this->iFillWith($field, $value->getRaw());
     }
 }
