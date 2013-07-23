@@ -10,6 +10,14 @@ use WebDriver\By;
 class WebDriverContext extends AbstractWebDriverContext
 {
     /**
+     * @BeforeScenario
+     */
+    public function deleteCookies()
+    {
+        $this->getBrowser()->getCookies()->deleteAll();
+    }
+
+    /**
      * @When /^I refresh$/
      */
     public function iRefresh()
