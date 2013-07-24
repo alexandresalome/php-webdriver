@@ -45,10 +45,11 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Then /^I should see (\d+) (xpath|tag|css|class|id|name) elements? "(.*)"$/
+     * @Then /^I should see (\d+) (xpath|tag|css|class|id|name) elements? "((?:[^"]|"")+)"$/
      */
     public function iShouldSeeElements($count, $type, $value)
     {
+        $value = $this->unescape($value);
         if ($type == 'tag') {
             $type = 'tag name';
         } elseif ($type == 'css') {
@@ -141,5 +142,10 @@ class WebDriverContext extends AbstractWebDriverContext
     public function iFillWithText($field, PyStringNode $value)
     {
         $this->iFillWith($field, $value->getRaw());
+    }
+
+    private function unescape($value)
+    {
+        return str_replace('""', '"', $value);
     }
 }
