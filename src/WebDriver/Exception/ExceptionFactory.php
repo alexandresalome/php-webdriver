@@ -45,6 +45,8 @@ class ExceptionFactory
 
         if ($status == self::STATUS_NO_SUCH_ELEMENT) {
             return new NoSuchElementException($message);
+        } elseif ($status == self::STATUS_ELEMENT_NOT_VISIBLE) {
+            return new ElementNotVisibleException($message);
         } elseif ($status == self::STATUS_UNKNOWN_ERROR) {
             return new UnknownException($message);
         } elseif ($status == self::STATUS_INVALID_SELECTOR) {
