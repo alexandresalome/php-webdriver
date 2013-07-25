@@ -92,10 +92,12 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Then /^I should (not )?see "(.*)"$/
+     * @Then /^I should (not )?see "((?:[^"]|"")*)"$/
      */
     public function iShouldSee($not, $text)
     {
+        $text = $this->unescape($text);
+
         $all = $this->getBrowser()->element(By::tag('html'))->getText();
         $pos = strpos($all, $text);
         if ($not === "" && false === $pos) {
