@@ -4,7 +4,7 @@ namespace WebDriver\Behat\WebDriverExtension;
 
 use Behat\Behat\Context\ContextInterface;
 use Behat\Behat\Context\Initializer\InitializerInterface;
-use WebDriver\Behat\WebDriverContext;
+use WebDriver\Behat\AbstractWebDriverContext;
 use WebDriver\Client;
 
 class ContextInitializer implements InitializerInterface
@@ -23,7 +23,7 @@ class ContextInitializer implements InitializerInterface
 
     public function supports(ContextInterface $context)
     {
-        return $context instanceof WebDriverContext;
+        return $context instanceof AbstractWebDriverContext;
     }
 
     public function initialize(ContextInterface $context)
