@@ -53,6 +53,8 @@ class ExceptionFactory
             return new InvalidSelectorException($message);
         } elseif ($status == self::STATUS_INVALID_COOKIE_DOMAIN) {
             return new InvalidCookieDomainException($message);
+        } elseif ($status == self::STATUS_UNEXPECTED_ALERT_OPEN) {
+            return new UnexpectedAlertOpenException($message);
         }
 
         throw new LibraryException(sprintf('An error occured: #%s: %s', $status, $message));
