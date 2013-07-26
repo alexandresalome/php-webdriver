@@ -6,6 +6,7 @@ use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use WebDriver\By;
+use WebDriver\Util\Xpath;
 
 class WebDriverContext extends AbstractWebDriverContext
 {
@@ -66,12 +67,15 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @When /^I click on (xpath|css|id|text) "(.*)"$/
+     * @When /^I click on (xpath|css|id|text) "((?:[^"]|"")+)"$/
      */
     public function iClickOnType($type, $text)
     {
+        $text = $this->unescape($text);
+
         if ($type == '' || $type == 'text') {
-            $selector = By::xpath('//a[contains(text(),"'.$text.'")]|//input[@type="submit" and contains(@value, "'.$text.'")]|//button[contains(text(),"'.$text.'")]|//button[contains(@value, "'.$text.'")]|//button[contains(., "'.$text.'")]');
+            $text = Xpath::quote($text);
+            $selector = By::xpath('//a[contains(text(),'.$text.')]|//input[@type="submit" and contains(@value, '.$text.')]|//button[contains(text(),'.$text.')]|//button[contains(@value, '.$text.')]|//button[contains(., '.$text.')]');
         } elseif ($type == 'css') {
             $selector = By::css($text);
         } elseif ($type == 'id') {
@@ -84,7 +88,7 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Given /^I click on "([^"]*)"$/
+     * @Given /^I click on "((?:[^"]|"")+)"$/
      */
     public function iClickOn($text)
     {
@@ -113,28 +117,36 @@ class WebDriverContext extends AbstractWebDriverContext
     public function iFill(TableNode $table)
     {
         foreach ($table->getRowsHash() as $key => $value) {
-            $this->iFillWith($key, $value);
+            $this->iFillWith($this->escape($key), $this->escape($value));
         }
+
     }
 
     /**
-     * @Then /^I fill "(.*)" with "(.*)"$/
+     * @Then /^I fill "((?:[^"]|"")*)" with "((?:[^"]|"")*)"$/
      */
     public function iFillWith($field, $value)
     {
-        if (preg_match('/^#/', $field)) {
-            $input = $this->getBrowser()->element(By::id(substr($field, 1)));
+        $field = $this->unescape($field);
+        $value = $this->unescape($value);
+
+        if (0 === strpos($field, 'id=')) {
+            $field = $this->getBrowser()->element(By::id(substr($field, 3)));
+        } elseif (0 === strpos($field, 'xpath=')) {
+            $field = $this->getBrowser()->element(By::xpath(substr($field, 6)));
+        } elseif (0 === strpos($field, 'css=')) {
+            $field = $this->getBrowser()->element(By::css(substr($field, 6)));
         } else {
-            $label = $this->getBrowser()->element(By::xpath('//label[contains(text(), "'.$field.'")]'));
+            $label = $this->getBrowser()->element(By::xpath('//label[contains(text(), '.Xpath::quote($field).')]'));
             $for = $label->getAttribute('for');
-            $input = $this->getBrowser()->element(By::id($for));
+            $field = $this->getBrowser()->element(By::id($for));
         }
 
-        if ($input->getTagName() == 'select') {
-            $input->element(By::xpath('//option[contains(text(), "'.$value.'")]'))->click();
+        if ($field->getTagName() == 'select') {
+            $field->element(By::xpath('.//option[contains(text(), '.Xpath::quote($value).')]'))->click();
         } else {
-            $input->clear();
-            $input->type($value);
+            $field->clear();
+            $field->type($value);
         }
     }
 
@@ -149,5 +161,10 @@ class WebDriverContext extends AbstractWebDriverContext
     private function unescape($value)
     {
         return str_replace('""', '"', $value);
+    }
+
+    private function escape($value)
+    {
+        return str_replace('"', '""', $value);
     }
 }

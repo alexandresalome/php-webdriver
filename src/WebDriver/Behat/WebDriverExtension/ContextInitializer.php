@@ -38,6 +38,7 @@ class ContextInitializer implements InitializerInterface
     {
         if (null === $this->browser) {
             $this->browser = $this->client->createBrowser($this->getCapabilities());
+            $this->browser->setImplicitTimeout(5000);
         }
 
         return $this->browser;
