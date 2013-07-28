@@ -158,6 +158,14 @@ class WebDriverContext extends AbstractWebDriverContext
         $this->iFillWith($field, $value->getRaw());
     }
 
+    /**
+     * @When /^I delete cookie "([^"]+)"$/
+     */
+    public function iDeleteCookie($name)
+    {
+        $this->getBrowser()->getCookies()->delete($name);
+    }
+
     private function unescape($value)
     {
         return str_replace('""', '"', $value);
