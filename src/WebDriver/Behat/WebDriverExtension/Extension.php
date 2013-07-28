@@ -26,6 +26,7 @@ class Extension implements ExtensionInterface
 
         $container->setParameter('behat.webdriver.client.url', $config['url']);
         $container->setParameter('behat.webdriver.base_url', $config['base_url']);
+        $container->setParameter('behat.webdriver.browser', $config['browser']);
     }
 
     /**
@@ -37,6 +38,9 @@ class Extension implements ExtensionInterface
             ->children()
                 ->scalarNode('url')
                     ->defaultValue('http://localhost:4444/wd/hub')
+                ->end()
+                ->scalarNode('browser')
+                    ->defaultValue('firefox')
                 ->end()
                 ->scalarNode('base_url')
                     ->defaultValue('http://localhost')

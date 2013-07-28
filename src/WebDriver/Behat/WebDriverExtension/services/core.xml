@@ -17,6 +17,7 @@
         <service id="behat.webdriver.context.initializer" class="%behat.webdriver.context.initializer.class%">
             <argument type="service" id="behat.webdriver.client" />
             <argument>%behat.webdriver.base_url%</argument>
+            <argument>%behat.webdriver.browser%</argument>
 
             <tag name="behat.context.initializer" />
         </service>
