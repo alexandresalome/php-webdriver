@@ -3,6 +3,8 @@
 namespace WebDriver\Behat;
 
 use Behat\Behat\Context\BehatContext;
+use WebDriver\By;
+use WebDriver\Exception\NoSuchElementException;
 
 abstract class AbstractWebDriverContext extends BehatContext
 {
@@ -19,6 +21,44 @@ abstract class AbstractWebDriverContext extends BehatContext
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->browserReference = $browserReference;
         $this->browser = null;
+    }
+
+    /**
+     * @return WebDriver\Element
+     */
+    public function getElement(By $by)
+    {
+        try {
+            return $this->getBrowser()->element($by);
+        } catch (NoSuchElementException $e) {
+            throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowserVisibleText()));
+        }
+    }
+
+    /**
+     * Proxy to browser, catch errors to display body on error.
+     *
+     * @return array
+     */
+    public function getElements(By $by)
+    {
+        try {
+            return $this->getBrowser()->elements($by);
+        } catch (NoSuchElementException $e) {
+            throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowserVisibleText()));
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrowserVisibleText()
+    {
+        try {
+            return $this->getBrowser()->element(By::tag('body'))->getText();
+        } catch (NoSuchElementException $e) {
+            throw new \RuntimeException(sprintf('Page does not contain a body.'));
+        }
     }
 
     public function getBrowser()

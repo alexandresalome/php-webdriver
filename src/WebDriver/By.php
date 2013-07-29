@@ -51,6 +51,19 @@ class By
     }
 
     /**
+     * String representation of selector. Examples:
+     *
+     * - css=body.js-enabled
+     *   xpath=//.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return $this->using.'='.$this->value;
+    }
+
+    /**
      * Converts the selector to an array.
      *
      * @return array An array with two indexes: using and value

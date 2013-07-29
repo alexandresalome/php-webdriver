@@ -59,7 +59,7 @@ class WebDriverContext extends AbstractWebDriverContext
             $type = 'class name';
         }
 
-        $elements = $this->getBrowser()->elements(new By($type, $value));
+        $elements = $this->getElements(new By($type, $value));
 
         if (count($elements) != $count) {
             throw new \InvalidArgumentException(sprintf("Expected %s elements, got %s", $count, count($elements)));
@@ -84,7 +84,7 @@ class WebDriverContext extends AbstractWebDriverContext
             $selector = By::xpath($text);
         }
 
-        $this->getBrowser()->element($selector)->click();
+        $this->getElement($selector)->click();
     }
 
     /**
@@ -102,7 +102,7 @@ class WebDriverContext extends AbstractWebDriverContext
     {
         $text = $this->unescape($text);
 
-        $all = $this->getBrowser()->element(By::tag('html'))->getText();
+        $all = $this->getElement(By::tag('html'))->getText();
         $pos = strpos($all, $text);
         if ($not === "" && false === $pos) {
             throw new \RuntimeException('Unable to find "'.$text.'" in visible text :'."\n".$all);
@@ -131,15 +131,15 @@ class WebDriverContext extends AbstractWebDriverContext
         $value = $this->unescape($value);
 
         if (0 === strpos($field, 'id=')) {
-            $field = $this->getBrowser()->element(By::id(substr($field, 3)));
+            $field = $this->getElement(By::id(substr($field, 3)));
         } elseif (0 === strpos($field, 'xpath=')) {
-            $field = $this->getBrowser()->element(By::xpath(substr($field, 6)));
+            $field = $this->getElement(By::xpath(substr($field, 6)));
         } elseif (0 === strpos($field, 'css=')) {
-            $field = $this->getBrowser()->element(By::css(substr($field, 6)));
+            $field = $this->getElement(By::css(substr($field, 6)));
         } else {
-            $label = $this->getBrowser()->element(By::xpath('//label[contains(text(), '.Xpath::quote($field).')]'));
+            $label = $this->getElement(By::xpath('//label[contains(text(), '.Xpath::quote($field).')]'));
             $for = $label->getAttribute('for');
-            $field = $this->getBrowser()->element(By::id($for));
+            $field = $this->getElement(By::id($for));
         }
 
         if ($field->getTagName() == 'select') {
