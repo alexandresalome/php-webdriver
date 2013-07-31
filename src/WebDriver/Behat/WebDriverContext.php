@@ -11,6 +11,27 @@ use WebDriver\Util\Xpath;
 class WebDriverContext extends AbstractWebDriverContext
 {
     /**
+     * Timeout to wait for text to be visible (in ms).
+     */
+    const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
+
+    protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
+
+    /**
+     * Set timeout for "shouldSee" methods.
+     *
+     * @param int $shouldSeeTimeout (in milliseconds)
+     *
+     * @return WebDriverContext
+     */
+    public function setShouldSeeTimeout($shouldSeeTimeout)
+    {
+        $this->shouldSeeTimeout = $shouldSeeTimeout;
+
+        return $this;
+    }
+
+    /**
      * @BeforeScenario
      */
     public function deleteCookies()
@@ -96,18 +117,44 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Then /^I should (not )?see "((?:[^"]|"")*)"$/
+     * @Then /^I should see "((?:[^"]|"")*)"$/
      */
-    public function iShouldSee($not, $text)
+    public function iShouldSee($text)
     {
         $text = $this->unescape($text);
+        $time = $this->shouldSeeTimeout;
+        $all = '';
+
+        while ($time > 0) {
+            $all = $this->getBrowser()->element(By::tag('html'))->getText();
+            $pos = strpos($all, $text);
+
+            if (false !== $pos) {
+                return;
+            }
+
+            $wait = min(1000, $time);
+            $time -= $wait;
+            usleep($wait*1000);
+        }
+
+        throw new \RuntimeException('Unable to find "'.$text.'" in visible text :'."\n".$all);
+    }
+
+    /**
+     * @Then /^I should not see "((?:[^"]|"")*)"$/
+     */
+    public function iShouldNotSee($text)
+    {
+        $text = $this->unescape($text);
+        $time = $this->shouldSeeTimeout;
+        $all = '';
 
         $all = $this->getElement(By::tag('html'))->getText();
         $pos = strpos($all, $text);
-        if ($not === "" && false === $pos) {
-            throw new \RuntimeException('Unable to find "'.$text.'" in visible text :'."\n".$all);
-        } elseif ($not === "not " && false !== $pos) {
-            throw new \RuntimeException('Found text "'.$text.'" in visible text :'."\n".$all);
+
+        if (false !== $pos) {
+            throw new \RuntimeException(sprintf('Found text "%s" in visible text "%s".', $text, $all));
         }
     }
 
