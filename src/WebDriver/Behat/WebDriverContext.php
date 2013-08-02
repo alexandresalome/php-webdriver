@@ -15,7 +15,7 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
 
-    const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(text()),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(text()),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
+    const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
 
     protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
 
@@ -185,13 +185,13 @@ class WebDriverContext extends AbstractWebDriverContext
         } elseif (0 === strpos($field, 'css=')) {
             $field = $this->getElement(By::css(substr($field, 6)));
         } else {
-            $label = $this->getElement(By::xpath('//label[contains(text(), '.Xpath::quote($field).')]'));
+            $label = $this->getElement(By::xpath('//label[contains(., '.Xpath::quote($field).')]'));
             $for = $label->getAttribute('for');
             $field = $this->getElement(By::id($for));
         }
 
         if ($field->getTagName() == 'select') {
-            $field->element(By::xpath('.//option[contains(text(), '.Xpath::quote($value).')]'))->click();
+            $field->element(By::xpath('.//option[contains(., '.Xpath::quote($value).')]'))->click();
         } else {
             $field->clear();
             $field->type($value);
