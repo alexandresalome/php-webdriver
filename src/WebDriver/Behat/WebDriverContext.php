@@ -15,6 +15,8 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
 
+    const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(text()),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(text()),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
+
     protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
 
     /**
@@ -95,8 +97,7 @@ class WebDriverContext extends AbstractWebDriverContext
         $text = $this->unescape($text);
 
         if ($type == '' || $type == 'text') {
-            $text = Xpath::quote($text);
-            $selector = By::xpath('//a[contains(text(),'.$text.')]|//input[@type="submit" and contains(@value, '.$text.')]|//button[contains(text(),'.$text.')]|//button[contains(@value, '.$text.')]|//button[contains(., '.$text.')]');
+            $selector = By::xpath(strtr(self::CLICKABLE_TEXT_XPATH, array('{text}' => Xpath::quote($text))));
         } elseif ($type == 'css') {
             $selector = By::css($text);
         } elseif ($type == 'id') {
