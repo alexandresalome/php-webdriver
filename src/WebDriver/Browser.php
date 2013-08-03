@@ -187,6 +187,16 @@ class Browser
     }
 
     /**
+     * Tests is browser was closed.
+     *
+     * @return boolean
+     */
+    public function isClosed()
+    {
+        return null === $this->sessionId;
+    }
+
+    /**
      * Captures a screenshot of the page, PNG format.
      *
      * @return string The PNG file content
@@ -353,7 +363,7 @@ class Browser
 
     public function __destruct()
     {
-        if ($this->closeOnDestruct) {
+        if ($this->closeOnDestruct && !$this->isClosed()) {
             $this->close();
         }
     }
