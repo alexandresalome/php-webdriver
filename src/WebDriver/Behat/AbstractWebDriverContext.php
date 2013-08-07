@@ -4,6 +4,7 @@ namespace WebDriver\Behat;
 
 use Behat\Behat\Context\BehatContext;
 use WebDriver\By;
+use WebDriver\Element;
 use WebDriver\Exception\ExceptionInterface;
 use WebDriver\Exception\NoSuchElementException;
 
@@ -27,10 +28,12 @@ abstract class AbstractWebDriverContext extends BehatContext
     /**
      * @return WebDriver\Element
      */
-    public function getElement(By $by)
+    public function getElement(By $by, Element $element = null)
     {
         try {
-            return $this->getBrowser()->element($by);
+            $obj = null === $element ? $this->getBrowser() : $element;
+
+            return $obj->element($by);
         } catch (NoSuchElementException $e) {
             throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowserVisibleText()));
         } catch (ExceptionInterface $e) {
@@ -43,12 +46,12 @@ abstract class AbstractWebDriverContext extends BehatContext
      *
      * @return array
      */
-    public function getElements(By $by)
+    public function getElements(By $by, Element $element = null)
     {
         try {
-            return $this->getBrowser()->elements($by);
-        } catch (NoSuchElementException $e) {
-            throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowserVisibleText()));
+            $obj = null === $element ? $this->getBrowser() : $element;
+
+            return $obj->elements($by);
         } catch (ExceptionInterface $e) {
             throw new \RuntimeException(sprintf('Error while searching for element "%s" : %s (visible text: "%s").', $by->toString(), $e->getMessage(), $this->getBrowserVisibleText()));
         }
