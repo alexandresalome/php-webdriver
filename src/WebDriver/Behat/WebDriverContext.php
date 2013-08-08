@@ -16,6 +16,7 @@ class WebDriverContext extends AbstractWebDriverContext
     const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
 
     const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
+    const LABEL_TO_INPUT_XPATH = '//input[@id=//label[contains(normalize-space(.), {text})]/@for]|//input[contains(normalize-space(@placeholder), {text})]';
 
     protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
 
@@ -185,9 +186,7 @@ class WebDriverContext extends AbstractWebDriverContext
         } elseif (0 === strpos($field, 'css=')) {
             $field = $this->getElement(By::css(substr($field, 6)));
         } else {
-            $label = $this->getElement(By::xpath('//label[contains(., '.Xpath::quote($field).')]'));
-            $for = $label->getAttribute('for');
-            $field = $this->getElement(By::id($for));
+            $field = $this->getElement(By::xpath(strtr(self::LABEL_TO_INPUT_XPATH, array('{text}' => Xpath::quote($field)))));
         }
 
         if ($field->getTagName() == 'select') {
