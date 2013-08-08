@@ -79,6 +79,16 @@ class Element
     }
 
     /**
+     * Indicates if an OPTION or INPUT of type radio/checkbox element is selected currently selected.
+     *
+     * @return boolean
+     */
+    public function isSelected()
+    {
+        return $this->requestValue('selected');
+    }
+
+    /**
      * Clears the field value.
      */
     public function clear()

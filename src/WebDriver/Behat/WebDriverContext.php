@@ -191,10 +191,39 @@ class WebDriverContext extends AbstractWebDriverContext
 
         if ($field->getTagName() == 'select') {
             $field->element(By::xpath('.//option[contains(., '.Xpath::quote($value).')]'))->click();
-        } else {
-            $field->clear();
-            $field->type($value);
+
+            return;
         }
+
+        $type = $field->getAttribute('type');
+
+        if ($type === 'checkbox') {
+            $value = $value === '1' || $value === 'on' || $value === 'true';
+            $selected = $field->isSelected();
+
+            if ($value !== $selected) {
+                $field->click();
+            }
+
+            return;
+        }
+
+        if ($type === 'radio') {
+            $value = $value === '1' || $value === 'on' || $value === 'true';
+            $selected = $field->isSelected();
+
+            if ($selected && !$value) {
+                throw new \RuntimeException(sprintf('Cannot uncheck a radio (a user in a web browser can\'t neither'));
+            }
+
+            $field->click();
+
+            return;
+        }
+
+        // text
+        $field->clear();
+        $field->type($value);
     }
 
     /**
