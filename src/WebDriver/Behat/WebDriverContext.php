@@ -16,7 +16,7 @@ class WebDriverContext extends AbstractWebDriverContext
     const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
 
     const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
-    const LABEL_TO_INPUT_XPATH = '//input[@id=//label[contains(normalize-space(.), {text})]/@for]|//input[contains(normalize-space(@placeholder), {text})]';
+    const LABEL_TO_INPUT_XPATH = '//*[(self::select or self::input or self::textarea) and @id=//label[contains(normalize-space(.), {text})]/@for]|//*[(self::select or self::input or self::textarea) and contains(normalize-space(@placeholder), {text})]';
 
     protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
 
@@ -221,7 +221,7 @@ class WebDriverContext extends AbstractWebDriverContext
             return;
         }
 
-        // text
+        // text or textarea
         $field->clear();
         $field->type($value);
     }
