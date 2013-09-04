@@ -15,9 +15,6 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
 
-    const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
-    const LABEL_TO_INPUT_XPATH = '//*[(self::select or self::input or self::textarea) and @id=//label[contains(normalize-space(.), {text})]/@for]|//*[(self::select or self::input or self::textarea) and contains(normalize-space(@placeholder), {text})]';
-
     protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
 
     /**
@@ -179,15 +176,12 @@ class WebDriverContext extends AbstractWebDriverContext
         $field = $this->unescape($field);
         $value = $this->unescape($value);
 
-        if (0 === strpos($field, 'id=')) {
-            $field = $this->getElement(By::id(substr($field, 3)));
-        } elseif (0 === strpos($field, 'xpath=')) {
-            $field = $this->getElement(By::xpath(substr($field, 6)));
-        } elseif (0 === strpos($field, 'css=')) {
-            $field = $this->getElement(By::css(substr($field, 6)));
-        } else {
-            $field = $this->getElement(By::xpath(strtr(self::LABEL_TO_INPUT_XPATH, array('{text}' => Xpath::quote($field)))));
+        $selector = $this->parseSelector($field);
+        if (is_string($selector)) {
+            $selector = By::xpath(strtr(self::LABEL_TO_INPUT_XPATH, array('{text}' => Xpath::quote($field))));
         }
+
+        $field = $this->getElement($selector);
 
         if ($field->getTagName() == 'select') {
             $field->element(By::xpath('.//option[contains(., '.Xpath::quote($value).')]'))->click();
