@@ -51,6 +51,28 @@ class By
     }
 
     /**
+     * Returns using type (xpath, tag name, css...)
+     *
+     * @return string
+     */
+    public function getUsing()
+    {
+        return $this->using;
+    }
+
+    /**
+     * Returns the value expression (an xpath, a css selector or an id).
+     *
+     * Expression depends of using type.
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
      * String representation of selector. Examples:
      *
      * - css=body.js-enabled
