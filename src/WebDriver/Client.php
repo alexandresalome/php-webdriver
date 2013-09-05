@@ -107,7 +107,7 @@ class Client
         }
 
         $response = $this->request('POST', '/session', json_encode(array('desiredCapabilities' => $capabilities->toArray())));
-        $sessionId = $this->getSessionIdFromRedirect($response);
+        $sessionId = $this->getSessionIdFromResponse($response);
 
         return $this->browsers[$sessionId] = new Browser($this, $sessionId);
     }
@@ -175,10 +175,21 @@ class Client
         }
     }
 
-    protected function getSessionIdFromRedirect(Response $response)
+    protected function getSessionIdFromResponse(Response $response)
     {
         $statusCode = $response->getStatusCode();
+
+        if ($statusCode === 200) {
+            $content = json_decode($response->getContent(), true);
+            if ($content['status'] !== 0) {
+                throw new LibraryException(sprintf('Expected status 0, got "%s".', $content['status']));
+            }
+
+            return $content['sessionId'];
+        }
+
         if ($statusCode !== 302) {
+            echo $response->getContent();
             throw new LibraryException(sprintf('The response should be a redirection, response code from server was "%s"', $statusCode));
         }
 
