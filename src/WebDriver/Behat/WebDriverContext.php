@@ -149,12 +149,20 @@ class WebDriverContext extends AbstractWebDriverContext
         $time = $this->shouldSeeTimeout;
         $all = '';
 
-        $all = $this->getElement(By::tag('html'))->getText();
-        $pos = strpos($all, $text);
+        while ($time > 0) {
+            $all = $this->getBrowser()->element(By::tag('html'))->getText();
+            $pos = strpos($all, $text);
 
-        if (false !== $pos) {
-            throw new \RuntimeException(sprintf('Found text "%s" in visible text "%s".', $text, $all));
+            if (false === $pos) {
+                return;
+            }
+
+            $wait = min(1000, $time);
+            $time -= $wait;
+            usleep($wait*1000);
         }
+
+        throw new \RuntimeException(sprintf('Found text "%s" in visible text "%s".', $text, $all));
     }
 
     /**
