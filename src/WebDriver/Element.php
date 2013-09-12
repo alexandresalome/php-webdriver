@@ -89,6 +89,16 @@ class Element
     }
 
     /**
+     * Indicates if element is currently displayed on user screen.
+     *
+     * @return boolean
+     */
+    public function isDisplayed()
+    {
+        return $this->requestValue('displayed');
+    }
+
+    /**
      * Clears the field value.
      */
     public function clear()
