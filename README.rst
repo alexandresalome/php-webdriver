@@ -1,9 +1,24 @@
 PHP WebDriver
 =============
 
-`Documentation <doc/index.rst>`_
+This library allows you to manipulate browsers remotely.
 
-A library to manipulate a WebDriver server.
+**WebDriver** was initiated by Selenium-group and consists of a Restful API to
+manipulate a browser remotely (cookies, forms, DOM inspection, screenshots...).
+
+This library provides a PHP interface for WebDriver manipulation.
+
+Documentation:
+
+* The library
+
+  * `The Client object <doc/client.rst>`_
+  * `The Browser object <doc/browser.rst>`_
+  * `Crawling the page <doc/elements.rst>`_
+  * `Cookies <doc/cookies.rst>`_
+
+* `Behat extension <doc/behat.rst>`_
+* `Testing <doc/tests.rst>`_
 
 Installation
 ::::::::::::
@@ -46,5 +61,5 @@ Changelog
 References
 ::::::::::
 
-* WebDriver JSON Wire Protocol: http://code.google.com/p/WebDriver/wiki/JsonWireProtocol
+* WebDriver JSON Wire Protocol: http://www.w3.org/TR/webdriver/
 * Selenium downloads: http://docs.seleniumhq.org/download/
