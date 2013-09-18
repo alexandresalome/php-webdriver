@@ -229,14 +229,6 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Then /^I fill "([^"]*)" with:$/
-     */
-    public function iFillWithText($field, PyStringNode $value)
-    {
-        $this->iFillWith($field, $value->getRaw());
-    }
-
-    /**
      * @When /^I delete cookie "([^"]+)"$/
      */
     public function iDeleteCookie($name)

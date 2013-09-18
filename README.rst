@@ -1,47 +1,30 @@
-PHP WebDriver Library
-=====================
+PHP WebDriver
+=============
 
-Requirements
-::::::::::::
+`Documentation <doc/index.rst>`_
 
-* **PHP 5.3**
-* **Buzz**: HTTP request library
+A library to manipulate a WebDriver server.
 
 Installation
 ::::::::::::
 
-This library is distributed via Packagist, as package
-``alexandresalome/php-web-driver``. You can use it typing ``php composer.phar
-require alexandresalome/php-web-driver``.
+Add the library to your **composer.json**:
 
-Read documentation for more informations about how to use it.
+.. code-block:: yaml
 
-Sample usage
-::::::::::::
-
-.. code-block:: php
-
-    use WebDriver\Browser;
-    use WebDriver\By;
-
-    $browser = Browser::create('firefox', 'http://localhost:4444/wd/hub');
-
-    $title = $browser->getTitle();
-    echo sprintf("Title: %s\n", $title);
-
-    $url = $browser->getTitle();
-    echo sprintf("URL: %s\n", $url);
-
-    foreach ($browser->elements(By::tag('a')) as $link) {
-        echo sprintf("%s (href: %s)\n", $link->text(), $link->attribute('href')));
+    {
+        "require": {
+            "alexandresalome/php-webdriver": "~0.3"
+        }
     }
 
-Documentation
-:::::::::::::
+Changelog
+:::::::::
 
-Documentation is located in ``doc/`` for the moment. API should be verbose enough.
+- v0.3 - test if an element is displayed
 
 References
 ::::::::::
 
 * WebDriver JSON Wire Protocol: http://code.google.com/p/WebDriver/wiki/JsonWireProtocol
+* Selenium downloads: http://docs.seleniumhq.org/download/
