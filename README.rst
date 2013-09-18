@@ -21,7 +21,27 @@ Add the library to your **composer.json**:
 Changelog
 :::::::::
 
-- v0.3 - test if an element is displayed
+**v0.3**
+
+* New method to test if an element is displayed (``$element->isDisplayed()``)
+* *Behat*
+
+  * Add a timeout spin on step ``I should not see "some text"``
+
+**v0.2**
+
+* new element method on element ``$element->getElement($by)``
+
+* *Behat*
+
+  * Provide a context for Behat testing
+
+**v0.1**
+
+* Cookie management
+* Element crawling
+* Javascript methods
+* Client & Browser management
 
 References
 ::::::::::
