@@ -163,8 +163,8 @@ class Client
     protected function verifyResponse(Response $response)
     {
         $statusCode = $response->getStatusCode();
-        if ($statusCode === 200 || $statusCode === 204 || ($statusCode >= 300 && $statusCode <= 303)) {
-            return;
+        if ($statusCode !== 200 && $statusCode !== 204 && ($statusCode < 300 || $statusCode > 303)) {
+            throw new LibraryException(sprintf('Invalid status code (expected 200, 204, or 300-303. Got %s). Response content: %s', $statusCode, $response->getContent()));
         }
 
         $content = json_decode($response->getContent(), true);
