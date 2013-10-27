@@ -168,10 +168,13 @@ class Client
         }
 
         $content = json_decode($response->getContent(), true);
-        if (null !== $content) {
-            throw ExceptionFactory::createExceptionFromArray($content);
-        } else {
+
+        if ($statusCode !== 204 && null === $content) {
             throw new LibraryException('Unable to parse response from server (status code: '.$response->getStatusCode().') '.$response->getContent());
+        }
+
+        if (isset($content['status']) && $content['status'] !== ExceptionFactory::STATUS_SUCCESS) {
+            throw ExceptionFactory::createExceptionFromArray($content);
         }
     }
 
