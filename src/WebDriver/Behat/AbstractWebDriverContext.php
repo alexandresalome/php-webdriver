@@ -98,7 +98,7 @@ abstract class AbstractWebDriverContext extends BehatContext
     /**
      * Converts a text selector to a By object.
      *
-     * Tries to find magic expressions (css=#foo, xpath=//div[@id="foo"], id=foo).
+     * Tries to find magic expressions (css=#foo, xpath=//div[@id="foo"], id=foo, name=q, class=active).
      *
      * @return By|string returns a By instance when magic matched, the string otherwise
      */
@@ -114,6 +114,14 @@ abstract class AbstractWebDriverContext extends BehatContext
 
         if (0 === strpos($text, 'css=')) {
             return By::css(substr($text, 4));
+        }
+
+        if (0 === strpos($text, 'name=')) {
+            return By::name(substr($text, 5));
+        }
+
+        if (0 === strpos($text, 'class=')) {
+            return By::className(substr($text, 6));
         }
 
         return $text;
