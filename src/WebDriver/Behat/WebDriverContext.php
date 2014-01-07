@@ -56,6 +56,19 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @Then /^I should be on "(.+)"$/
+     */
+    public function iShouldBeOn($url)
+    {
+        $currentUrl = $this->getBrowser()->getUrl();
+        $checkedUrl = $this->getUrl($url);
+
+        if ($currentUrl !== $checkedUrl) {
+            throw new \RuntimeException(sprintf('Expected to be on "%s", but found to be on "%s"', $checkedUrl, $currentUrl));
+        }
+    }
+
+    /**
      * @Then /^title should be "(.*)"$/
      */
     public function iShouldSeeATitle($text)
