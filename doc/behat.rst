@@ -50,6 +50,8 @@ Available steps
 
 **Page assertions**
 
+    Then I should be on "**/page**"
+
     Then title should be "**some text**"
 
     Then I should see "**some text**"
@@ -61,6 +63,12 @@ Available steps
     Then I should see **14** **xpath** elements "**//a**"
 
     Then I should see **3** **css** elements "**a#link**"
+
+**Page manipulation**
+
+    When I scroll to bottom
+    
+    When I scroll to top
 
 **Elements manipulation**
 
