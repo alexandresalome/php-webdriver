@@ -121,6 +121,32 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @When /^I scroll to bottom$/
+     */
+    public function iScrollToBottom()
+    {
+        $javascript = <<<JAVASCRIPT
+        window.scrollTo(0,Math.max(
+            document.documentElement.scrollHeight,
+            document.body.scrollHeight,
+            document.documentElement.clientHeight
+        ));
+JAVASCRIPT;
+        $this->browser->execute($javascript);
+    }
+
+    /**
+     * @When /^I scroll to top$/
+     */
+    public function iScrollToTop()
+    {
+        $javascript = <<<JAVASCRIPT
+        window.scrollTo(0,0);
+JAVASCRIPT;
+        $this->browser->execute($javascript);
+    }
+
+    /**
      * @Given /^I click on "((?:[^"]|"")+)"$/
      */
     public function iClickOn($text)
