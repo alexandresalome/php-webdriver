@@ -92,3 +92,24 @@ Available steps
     | xpath=//input          | foobar             |
     | A select field         | The option label   |
 
+Create new browser steps
+------------------------
+
+If you need to manipulate Browser object, create a context class extending ``AbstractWebDriverContext`` class and implement your business:
+
+.. code-block:: php
+
+    use WebDriver\Behat\AbstractWebDriverContext;
+
+    class MyContext extends AbstractWebDriverContext
+    {
+        /** @Then /^I should see a unicorn */
+        public function iShouldSeeAUnicorn()
+        {
+            $browser = $this->getBrowser();
+
+            // now, you have a WebDriver\Browser instance
+        }
+    }
+
+Take a look at the `abstract class <https://github.com/alexandresalome/php-webdriver/blob/master/src/WebDriver/Behat/AbstractWebDriverContext.php>`_ to see facilities provided to you.
