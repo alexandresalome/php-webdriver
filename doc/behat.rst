@@ -12,7 +12,8 @@ Behat like this:
         extensions:
             WebDriver\Behat\WebDriverExtension\Extension:
                 base_url: http://localhost/
-                browser: chrome
+                browser:  chrome
+                timeout:  5000
 
 In your **FeatureContext** class, add WebDriver's context:
 

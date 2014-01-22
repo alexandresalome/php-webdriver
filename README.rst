@@ -36,6 +36,10 @@ Add the library to your **composer.json**:
 Changelog
 :::::::::
 
+**v0.4**
+
+* ``timeout`` is now configurable in Behat extension
+
 **v0.3**
 
 * New method to test if an element is displayed (``$element->isDisplayed()``)

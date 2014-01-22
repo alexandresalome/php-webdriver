@@ -13,12 +13,14 @@ class ContextInitializer implements InitializerInterface
     protected $baseUrl;
     protected $browserName;
     protected $browser;
+    protected $timeout;
 
-    public function __construct(Client $client, $baseUrl, $browserName = 'firefox')
+    public function __construct(Client $client, $baseUrl, $browserName = 'firefox', $timeout = 5000)
     {
         $this->client      = $client;
         $this->baseUrl     = $baseUrl;
         $this->browserName = $browserName;
+        $this->timeout     = $timeout;
     }
 
     public function supports(ContextInterface $context)
@@ -38,7 +40,7 @@ class ContextInitializer implements InitializerInterface
     {
         if (null === $this->browser) {
             $this->browser = $this->client->createBrowser($this->getCapabilities());
-            $this->browser->setImplicitTimeout(5000);
+            $this->browser->setImplicitTimeout($this->timeout);
         }
 
         return $this->browser;
