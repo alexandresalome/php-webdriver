@@ -162,12 +162,8 @@ class Client
      */
     protected function verifyResponse(Response $response)
     {
-        $statusCode = $response->getStatusCode();
-        if ($statusCode !== 200 && $statusCode !== 204 && ($statusCode < 300 || $statusCode > 303)) {
-            throw new LibraryException(sprintf('Invalid status code (expected 200, 204, or 300-303. Got %s). Response content: %s', $statusCode, $response->getContent()));
-        }
-
         $content = json_decode($response->getContent(), true);
+        $statusCode = $response->getStatusCode();
 
         if ($statusCode !== 204 && null === $content) {
             throw new LibraryException('Unable to parse response from server (status code: '.$response->getStatusCode().') '.$response->getContent());
@@ -175,6 +171,10 @@ class Client
 
         if (isset($content['status']) && $content['status'] !== ExceptionFactory::STATUS_SUCCESS) {
             throw ExceptionFactory::createExceptionFromArray($content);
+        }
+
+        if ($statusCode !== 200 && $statusCode !== 204 && ($statusCode < 300 || $statusCode > 303)) {
+            throw new LibraryException(sprintf('Invalid status code (expected 200, 204, or 300-303. Got %s). Response content: %s', $statusCode, $response->getContent()));
         }
     }
 
