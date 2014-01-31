@@ -30,12 +30,17 @@ Add the library to your **composer.json**:
 
     {
         "require": {
-            "alexandresalome/php-webdriver": "~0.3"
+            "alexandresalome/php-webdriver": "~0.5"
         }
     }
 
 Changelog
 :::::::::
+
+**v0.5**
+
+* New methods to move mouse: ``$browser->moveTo()`` and ``$element->moveTo()``: moves mouse to absolute or relative position
+* ``$browser->getText()``: returns text of the browser
 
 **v0.4**
 
