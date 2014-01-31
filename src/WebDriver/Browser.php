@@ -247,6 +247,14 @@ class Browser
     }
 
     /**
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->element(By::tag('html'))->getText();
+    }
+
+    /**
      * Method to select an element, using a selector (css, xpath, etc.).
      *
      * @param By $by Indicates how to search for the element
