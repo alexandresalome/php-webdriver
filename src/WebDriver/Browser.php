@@ -114,6 +114,26 @@ class Browser
     }
 
     /**
+     * Moves the mouse to a given position.
+     *
+     * @param int     $x       X offset
+     * @param int     $y       Y offset
+     * @param Element $element Relative to an element
+     *
+     * @return Browser
+     */
+    public function moveTo($x, $y, Element $element = null)
+    {
+        $this->request('POST', 'moveto', json_encode(array(
+            'element' => $element ? $element->getId() : null,
+            'xoffset' => $x,
+            'yoffset' => $y
+        )));
+
+        return $this;
+    }
+
+    /**
      * Returns current URL.
      *
      * @return string a URL

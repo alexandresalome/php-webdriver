@@ -107,6 +107,21 @@ class Element
     }
 
     /**
+     * Moves mouse to the element.
+     *
+     * @param int $x X offset
+     * @param int $y Y offset
+     *
+     * @return Element
+     */
+    public function moveTo($x = 0, $y = 0)
+    {
+        $this->browser->moveTo($x, $y, $this);
+
+        return $this;
+    }
+
+    /**
      * Returns text representation of element.
      *
      * @return string

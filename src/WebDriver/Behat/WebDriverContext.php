@@ -121,6 +121,20 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @When /^I move mouse to "((?:[^"]|"")+)"$/
+     */
+    public function iMoveMouseTo($text)
+    {
+        $text = $this->parseSelector($this->unescape($text));
+
+        if (!$text instanceof By) {
+            throw new \InvalidArgumentException(sprintf('Expected an expression with a type (css=..., id=...) and got "%s".', $text));
+        }
+
+        $this->getElement($text)->moveTo();
+    }
+
+    /**
      * @When /^I scroll to bottom$/
      */
     public function iScrollToBottom()

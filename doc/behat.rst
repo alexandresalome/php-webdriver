@@ -68,8 +68,12 @@ Available steps
 **Page manipulation**
 
     When I scroll to bottom
-    
+
     When I scroll to top
+
+**Mouse**
+
+    When I move mouse to "**css=#field**"
 
 **Elements manipulation**
 

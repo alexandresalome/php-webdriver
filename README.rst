@@ -15,6 +15,7 @@ Documentation:
   * `The Client object <doc/client.rst>`_
   * `The Browser object <doc/browser.rst>`_
   * `Crawling the page <doc/elements.rst>`_
+  * `Using mouse <doc/mouse.rst>`_
   * `Cookies <doc/cookies.rst>`_
 
 * `Behat extension <doc/behat.rst>`_
