@@ -41,6 +41,9 @@ Changelog
 
 * New methods to move mouse: ``$browser->moveTo()`` and ``$element->moveTo()``: moves mouse to absolute or relative position
 * ``$browser->getText()``: returns text of the browser
+* *Behat*
+
+  * New step: *I move mouse to "css=h1"*
 
 **v0.4**
 
