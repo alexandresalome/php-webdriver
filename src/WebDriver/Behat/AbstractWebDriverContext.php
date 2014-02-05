@@ -11,12 +11,62 @@ use WebDriver\Util\Xpath;
 
 abstract class AbstractWebDriverContext extends BehatContext
 {
+    /**
+     * Timeout to wait for text to be visible (in ms).
+     */
+    const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
+
     const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
     const LABEL_TO_INPUT_XPATH = '//*[(self::select or self::input or self::textarea) and @id=//label[contains(normalize-space(.), {text})]/@for]|//*[(self::select or self::input or self::textarea) and contains(normalize-space(@placeholder), {text})]';
 
     protected $baseUrl;
     protected $browserReference;
     protected $browser;
+
+    protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
+
+    /**
+     * Set timeout for "shouldSee" methods.
+     *
+     * @param int $shouldSeeTimeout (in milliseconds)
+     *
+     * @return WebDriverContext
+     */
+    public function setShouldSeeTimeout($shouldSeeTimeout)
+    {
+        $this->shouldSeeTimeout = $shouldSeeTimeout;
+
+        return $this;
+    }
+
+    /**
+     * Try repeating a statement until it stops throwing exception.
+     *
+     * It's used for operations having a fail-tolerated risk.
+     *
+     * @return mixed return value of closure
+     */
+    public function tryRepeating(\Closure $closure, $time = self::DEFAULT_SHOULD_SEE_TIMEOUT)
+    {
+        $last = null;
+        $count = 0;
+        while ($time > 0) {
+            $count++;
+            try {
+                return $closure($this->getBrowser());
+            } catch (\Exception $e) {
+                $last = $e;
+            }
+
+            $wait = min(1000, $time);
+            $time -= $wait;
+            usleep($wait*1000);
+        }
+
+        throw new \RuntimeException(sprintf('Repeatedly failed, %s time: %s', $count, $last->getMessage()), 0, $last);
+
+    }
+
 
     public function setBrowserInformations($browserReference, $baseUrl)
     {
@@ -61,18 +111,6 @@ abstract class AbstractWebDriverContext extends BehatContext
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getBrowserVisibleText()
-    {
-        try {
-            return $this->getBrowser()->element(By::tag('body'))->getText();
-        } catch (NoSuchElementException $e) {
-            throw new \RuntimeException(sprintf('Page does not contain a body.'));
-        }
-    }
-
     public function getBrowser()
     {
         if (null === $this->browser) {
@@ -89,7 +127,7 @@ abstract class AbstractWebDriverContext extends BehatContext
     protected function getUrl($url)
     {
         if (!preg_match('#^https?://#', $url)) {
-            $url = $this->baseUrl . '/'.ltrim($url, '/');
+            $url = rtrim($this->baseUrl, '/').'/'.ltrim($url, '/');
         }
 
         return $url;
@@ -125,5 +163,15 @@ abstract class AbstractWebDriverContext extends BehatContext
         }
 
         return $text;
+    }
+
+    protected function unescape($value)
+    {
+        return str_replace('""', '"', $value);
+    }
+
+    protected function escape($value)
+    {
+        return str_replace('"', '""', $value);
     }
 }

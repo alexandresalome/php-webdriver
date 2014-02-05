@@ -57,13 +57,15 @@ Available steps
 
     Then I should see "**some text**"
 
+    Then I should see **3** "**some text**"
+
+    Then I should see **14** "**xpath=//a**"
+
+    Then I should see **3** "**css=a#link**"
+
     Then I not should see "**some text**"
 
-**Elements assertions**
-
-    Then I should see **14** **xpath** elements "**//a**"
-
-    Then I should see **3** **css** elements "**a#link**"
+    Then I not should see "**xpath=//a**"
 
 **Page manipulation**
 
@@ -79,9 +81,9 @@ Available steps
 
     When I click on "**some text**"
 
-    When I click on **xpath** "**//td//a**"
+    When I click on "**xpath=//td//a**"
 
-    When I click on **css** "**td a**"
+    When I click on "**css=td a**"
 
 **Form filling**
 

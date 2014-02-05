@@ -1,12 +1,11 @@
-PHP WebDriver
-=============
+PHP WebDriver - Library and Behat extension
+===========================================
 
-This library allows you to manipulate browsers remotely.
+This library allows you to manipulate browsers remotely, using a raw PHP API or a Behat extension.
 
-**WebDriver** was initiated by Selenium-group and consists of a Restful API to
-manipulate a browser remotely (cookies, forms, DOM inspection, screenshots...).
+**WebDriver** was initiated by Selenium-group and consists of a Restful API to manipulate a browser remotely (cookies, forms, DOM inspection, screenshots...).
 
-This library provides a PHP interface for WebDriver manipulation.
+This library provides a PHP interface for WebDriver server manipulation.
 
 Documentation:
 
@@ -30,12 +29,17 @@ Add the library to your **composer.json**:
 
     {
         "require": {
-            "alexandresalome/php-webdriver": "~0.5"
+            "alexandresalome/php-webdriver": "~1.0"
         }
     }
 
 Changelog
 :::::::::
+
+=======
+**v1.0**
+
+* Cleanup Behat sentences and retry in case of failure
 
 **v0.5**
 
