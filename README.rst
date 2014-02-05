@@ -36,7 +36,6 @@ Add the library to your **composer.json**:
 Changelog
 :::::::::
 
-=======
 **v1.0**
 
 * Cleanup Behat sentences and retry in case of failure
@@ -74,6 +73,17 @@ Changelog
 * Element crawling
 * Javascript methods
 * Client & Browser management
+
+Roadmap
+:::::::
+
+**v1.0**
+
+* Behat extension tests
+
+**Unplanned**
+
+* Complete WebDriver implementation
 
 References
 ::::::::::
