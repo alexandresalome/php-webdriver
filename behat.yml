@@ -1,0 +1,6 @@
+default:
+    context:
+        class: FeatureContext
+    extensions:
+        WebDriver\Behat\WebDriverExtension\Extension:
+            base_url: http://php-webdriver.dev/

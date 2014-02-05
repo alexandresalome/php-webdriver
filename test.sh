@@ -6,7 +6,7 @@ if [ ! -f composer.phar ]; then
 fi
 
 if [ ! -d vendor ]; then
-    php composer.phar install --prefer-source
+    php composer.phar install
 fi
 
 phpunit

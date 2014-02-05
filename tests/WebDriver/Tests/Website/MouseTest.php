@@ -14,7 +14,7 @@ use WebDriver\By;
 
 class MouseTest extends AbstractTestCase
 {
-    public function testElementValues()
+    public function testElementMoveTo()
     {
         $browser = $this->getBrowser();
         $browser->open($this->getUrl('mouse.php'));
@@ -25,5 +25,15 @@ class MouseTest extends AbstractTestCase
         $browser->element(By::css('.hover-wrapper .title'))->moveTo();
 
         $this->assertContains('You see this text because of hover', $browser->getText());
+    }
+
+    public function testBrowserMoveTo()
+    {
+        $this->markTestSkipped('Fails...');
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('mouse.php'));
+
+        $browser->moveTo(20, 200);
+        $this->assertContains('Position: 10-15', $browser->getText());
     }
 }

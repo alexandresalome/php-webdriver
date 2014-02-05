@@ -47,6 +47,8 @@ Available steps
 
     When I am on "**/page**"
 
+    Then I should be on "**/page**"
+
     When I delete cookie "**name**"
 
 **Page assertions**

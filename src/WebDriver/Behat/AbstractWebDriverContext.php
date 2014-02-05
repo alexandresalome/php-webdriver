@@ -111,6 +111,9 @@ abstract class AbstractWebDriverContext extends BehatContext
         }
     }
 
+    /**
+     * @return Browser
+     */
     public function getBrowser()
     {
         if (null === $this->browser) {

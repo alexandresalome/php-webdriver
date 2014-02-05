@@ -12,7 +12,7 @@
          bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="PHP Selenium Library Test Suite">
+        <testsuite name="PHP-WebDriver test suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
@@ -20,7 +20,7 @@
 <!--
     <php>
         <server name="WD_SERVER_URL" value="http://localhost:4444/wd/hub" />
-        <server name="WD_WEBSITE_URL" value="http://wd-website.dev/" />
+        <server name="WD_WEBSITE_URL" value="http://php-webdriver.dev/" />
         <server name="WD_BROWSER" value="firefox" />
     </php>
 -->

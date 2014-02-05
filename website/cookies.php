@@ -1,3 +1,11 @@
+<?php
+if (isset($_GET['create']) && $_GET['create'] == 'foo') {
+    setcookie('foo', 'value of the foo cookie');
+    header('Location: cookies.php');
+
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -26,5 +34,6 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+        <p><a href="cookies.php?create=foo">Create foo cookie</a>
     </body>
 </html>
