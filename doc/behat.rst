@@ -51,11 +51,13 @@ Available steps
 
     When I delete cookie "**name**"
 
-**Page assertions**
-
-    Then I should be on "**/page**"
-
     Then title should be "**some text**"
+
+    When I scroll to bottom
+
+    When I scroll to top
+
+**Page assertions**
 
     Then I should see "**some text**"
 
@@ -68,16 +70,6 @@ Available steps
     Then I not should see "**some text**"
 
     Then I not should see "**xpath=//a**"
-
-**Page manipulation**
-
-    When I scroll to bottom
-
-    When I scroll to top
-
-**Mouse**
-
-    When I move mouse to "**css=#field**"
 
 **Elements manipulation**
 
@@ -92,6 +84,10 @@ Available steps
     When I fill "**My field label**" with "**some value**"
 
     When I fill:
+
+**Mouse**
+
+    When I move mouse to "**css=#field**"
 
 .. code-block:: text
 
