@@ -38,7 +38,8 @@ Changelog
 
 **v1.0**
 
-* Cleanup Behat sentences and retry in case of failure
+* Cleanup Behat sentences
+* Retry "should see" tests in case of failure (for Ajax features)
 
 **v0.5**
 
