@@ -36,10 +36,15 @@ Add the library to your **composer.json**:
 Changelog
 :::::::::
 
-**v1.0**
+**v0.6**
 
 * Cleanup Behat sentences
 * Retry "should see" tests in case of failure (for Ajax features)
+
+**BC break**
+
+* Behat: **I should see 3 xpath elements "//a"** has been removed in favor of **I should see 3 "xpath=//a"**
+* Behat: **I click on xpath "//a"** has been removed in favor of **I click on "xpath=//a"**
 
 **v0.5**
 
