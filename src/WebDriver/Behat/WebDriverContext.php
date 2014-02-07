@@ -80,7 +80,7 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
-     * @Then /^I should see (\d+) (xpath|tag|css|class|id|name) elements "((?:[^"]|"")+)"$/
+     * @Then /^I should see (\d+) (xpath|tag|css|class|id|name) elements? "((?:[^"]|"")+)"$/
      */
     public function iShouldSeeElements($count, $type, $value)
     {
