@@ -108,7 +108,8 @@ class WebDriverContext extends AbstractWebDriverContext
     {
         $text = $this->unescape($text);
         $selector = $this->parseSelector($text);
-        if (!$text instanceof By) {
+
+        if (!$selector instanceof By) {
             $selector = By::xpath(strtr(self::CLICKABLE_TEXT_XPATH, array('{text}' => Xpath::quote($text))));
         }
 
