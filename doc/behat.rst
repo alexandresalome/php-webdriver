@@ -51,6 +51,8 @@ Available steps
 
     When I delete cookie "**name**"
 
+    When I delete cookies
+
     Then title should be "**some text**"
 
     When I scroll to bottom

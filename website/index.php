@@ -12,6 +12,7 @@
             <li><a href="form.php">Page to test form stuff</a></li>
             <li><a href="cookies.php">Cookies page</a></li>
             <li><a href="mouse.php">Mouse tests</a></li>
+            <li><a href="request.php">What is your request?</a></li>
         </ul>
         <div id="danger-zone">
             <h2>DANGER ZONE</h2>

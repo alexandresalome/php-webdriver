@@ -12,8 +12,10 @@ class WebDriverContext extends AbstractWebDriverContext
 {
     /**
      * @BeforeScenario
+     *
+     * @When /^I delete cookies$/
      */
-    public function deleteCookies()
+    public function iDeleteCookies()
     {
         $this->getBrowser()->getCookies()->deleteAll();
     }

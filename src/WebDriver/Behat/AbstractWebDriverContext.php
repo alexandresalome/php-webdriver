@@ -46,11 +46,15 @@ abstract class AbstractWebDriverContext extends BehatContext
      *
      * @return mixed return value of closure
      */
-    public function tryRepeating(\Closure $closure, $time = self::DEFAULT_SHOULD_SEE_TIMEOUT)
+    public function tryRepeating(\Closure $closure, $time = null)
     {
+        if (null === $time) {
+            $time = $this->shouldSeeTimeout;
+        }
+
         $last = null;
         $count = 0;
-        while ($time > 0) {
+        do {
             $count++;
             try {
                 return $closure($this->getBrowser());
@@ -61,7 +65,7 @@ abstract class AbstractWebDriverContext extends BehatContext
             $wait = min(1000, $time);
             $time -= $wait;
             usleep($wait*1000);
-        }
+        } while ($time > 0);
 
         throw new \RuntimeException(sprintf('Repeatedly failed, %s time: %s', $count, $last->getMessage()), 0, $last);
 
@@ -89,9 +93,9 @@ abstract class AbstractWebDriverContext extends BehatContext
 
             return $obj->element($by);
         } catch (NoSuchElementException $e) {
-            throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowserVisibleText()));
+            throw new \RuntimeException(sprintf('Element "%s" not found in page (visible text: "%s").', $by->toString(), $this->getBrowser()->getText()));
         } catch (ExceptionInterface $e) {
-            throw new \RuntimeException(sprintf('Error while searching for element "%s" : %s (visible text: "%s").', $by->toString(), $e->getMessage(), $this->getBrowserVisibleText()));
+            throw new \RuntimeException(sprintf('Error while searching for element "%s" : %s (visible text: "%s").', $by->toString(), $e->getMessage(), $this->getBrowser()->getText()));
         }
     }
 
@@ -107,7 +111,7 @@ abstract class AbstractWebDriverContext extends BehatContext
 
             return $obj->elements($by);
         } catch (ExceptionInterface $e) {
-            throw new \RuntimeException(sprintf('Error while searching for element "%s" : %s (visible text: "%s").', $by->toString(), $e->getMessage(), $this->getBrowserVisibleText()));
+            throw new \RuntimeException(sprintf('Error while searching for element "%s" : %s (visible text: "%s").', $by->toString(), $e->getMessage(), $this->getBrowser()->getText()));
         }
     }
 
@@ -127,7 +131,7 @@ abstract class AbstractWebDriverContext extends BehatContext
         return $this->browser;
     }
 
-    protected function getUrl($url)
+    public function getUrl($url = '/')
     {
         if (!preg_match('#^https?://#', $url)) {
             $url = rtrim($this->baseUrl, '/').'/'.ltrim($url, '/');

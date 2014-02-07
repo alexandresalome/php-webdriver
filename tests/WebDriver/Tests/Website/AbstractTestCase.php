@@ -51,7 +51,7 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return string The URL
      */
-    public function getUrl($file)
+    public function getUrl($file = '/')
     {
         if (!isset($_SERVER['WD_WEBSITE_URL'])) {
             $this->markTestSkipped('website URL is not defined in environment variable');
@@ -65,6 +65,6 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
             $url .= '/';
         }
 
-        return $url.$file;
+        return $url.ltrim($file, '/');
     }
 }
