@@ -59,11 +59,11 @@ class ElementTest extends AbstractTestCase
     public function testNesting()
     {
         $browser = $this->getBrowser();
-        $browser->open($this->getUrl('index.php'));
+        $browser->open($this->getUrl('tree.php'));
 
         $zone = $browser->element(By::id('my-home'));
 
-        $this->assertCount(2, $zone->elements(By::css('.floor')), "Two floors");
+        $this->assertCount(2, $zone->elements(By::css('.floor')));
         $this->assertCount(2, $zone->elements(By::css('.bathroom')));
         $this->assertCount(1, $zone->element(By::css('.first-floor'))->elements(By::css('.bathroom')));
     }

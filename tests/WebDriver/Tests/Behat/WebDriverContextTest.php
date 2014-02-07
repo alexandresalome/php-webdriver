@@ -2,8 +2,10 @@
 
 namespace WebDriver\Tests\Behat;
 
+use Behat\Gherkin\Node\TableNode;
 use WebDriver\Behat\WebDriverContext;
 use WebDriver\Browser;
+use WebDriver\By;
 use WebDriver\Tests\Website\AbstractTestCase;
 
 class WebDriverContextTest extends AbstractTestCase
@@ -66,6 +68,7 @@ class WebDriverContextTest extends AbstractTestCase
         foreach (array('not-rand.php', '/foo/rand.php') as $incorrect) {
             try {
                 $ctx->iShouldBeOn($incorrect);
+                $this->fail();
             } catch (\Exception $e) {
                 // OK
             }
@@ -83,6 +86,7 @@ class WebDriverContextTest extends AbstractTestCase
         foreach (array('foo', 'Sample', 'website', 'Sample website  ') as $incorrect) {
             try {
                 $ctx->titleShouldBe($incorrect);
+               $this->fail();
             } catch (\Exception $e) {
                 // OK
             }
@@ -110,6 +114,7 @@ class WebDriverContextTest extends AbstractTestCase
         $browser->open($this->getUrl());
         try {
             $ctx->iClickOn('Not existing text');
+            $this->fail();
         } catch (\Exception $e) {
             // OK
         }
@@ -118,6 +123,7 @@ class WebDriverContextTest extends AbstractTestCase
         $browser->open($this->getUrl());
         try {
             $ctx->iClickOn('xpath=//abbr');
+            $this->fail();
         } catch (\Exception $e) {
             // OK
         }
@@ -137,6 +143,125 @@ class WebDriverContextTest extends AbstractTestCase
         $this->assertContains('Random strike', $browser->getText());
     }
 
+    public function testIShouldSee()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('/tree.php'));
+
+        // correct
+        $ctx->iShouldSee("2 ", "First floor");
+        $ctx->iShouldSee("", "My home");
+        $ctx->iShouldSee("1 ", "My home");
+
+        // incorrect
+        try {
+            $ctx->iShouldSee("2 ", "First floor");
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+
+        // correct
+        $ctx->iShouldSee("2 ", "css=.home");
+        $ctx->iShouldSee("", "css=#my-home");
+        $ctx->iShouldSee("1 ", "css=#my-home");
+
+        // incorrect
+        try {
+            $ctx->iShouldSee("", "css=.home");
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+    }
+
+    public function testIShouldNotSee()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('/tree.php'));
+
+        // correct
+        $ctx->iShouldNotSee("Unknown floor");
+
+        // incorrect
+        try {
+            $ctx->iShouldNotSee("My home");
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+
+        // correct
+        $ctx->iShouldNotSee("css=.building");
+
+        // incorrect
+        try {
+            $ctx->iShouldNotSee("css=.home");
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+    }
+
+    public function testIFill()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('form.php'));
+
+        // Fill EVERYTHING é/
+        $table = new TableNode(<<<TABLE
+| A text field | some value |
+| A checkbox | 1 |
+| Radio #1 | 1 |
+| Select | foo label |
+TABLE
+        );
+
+        $ctx->iFill($table);
+        $browser->element(By::id('submit'))->click();
+        $text = $browser->getText();
+
+        $this->assertContains('Text field: some value', $text);
+        $this->assertContains('Checkbox is checked', $text);
+        $this->assertContains('Radio: 1', $text);
+        $this->assertContains('Select: foo', $text);
+
+        // check, verify, uncheck, verify
+        $table = new TableNode('| A checkbox | 1 |');
+        $ctx->iFill($table);
+        $this->assertTrue($browser->element(By::id('checkbox'))->isSelected());
+        $table = new TableNode('| A checkbox | 0 |');
+        $ctx->iFill($table);
+        $this->assertFalse($browser->element(By::id('checkbox'))->isSelected());
+
+        // address a field by ID
+        $browser->open($this->getUrl('form.php'));
+        $ctx->iFill(new TableNode('| id=checkbox | 1 |'));
+        $this->assertTrue($browser->element(By::id('checkbox'))->isSelected());
+    }
+
+    public function testIDeleteCookie()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('cookies.php')); // be on proper page to set/delete concerned cookies
+        $browser->getCookies()->deleteAll();
+        $browser->getCookies()->set('foo', 'foo value');
+        $browser->getCookies()->set('bar', 'bar value');
+        $browser->refresh();
+
+        $text = $browser->getText();
+        $this->assertContains('foo value', $text);
+        $this->assertContains('bar value', $text);
+
+        $ctx->iDeleteCookie('bar');
+        $browser->refresh();
+
+        $text = $browser->getText();
+        $this->assertContains('foo value', $text);
+        $this->assertNotContains('bar value', $text);
+
+    }
+
     // Abstract method tests
 
     public function testGetUrl()
@@ -151,13 +276,11 @@ class WebDriverContextTest extends AbstractTestCase
 
     private function getContext(Browser $browser)
     {
-
         $ctx = new WebDriverContext();
         $ctx->setShouldSeeTimeout(0);
         $ctx->setBrowserInformations(function() use ($browser) {
             return $browser;
         }, $this->getUrl());
-
 
         return $ctx;
     }
