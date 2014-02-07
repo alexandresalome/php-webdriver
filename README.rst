@@ -1,15 +1,25 @@
-PHP WebDriver - Library and Behat extension
-===========================================
+PHP WebDriver - WebDriver client and Behat extension
+====================================================
 
-This library allows you to manipulate browsers remotely, using a raw PHP API or a Behat extension.
+* `Tests status <https://travis-ci.org/alexandresalome/php-webdriver>`_ |test_status|
+
+.. |test_status| image:: https://travis-ci.org/alexandresalome/php-webdriver.png
+   :alt: Build status
+   :target: https://travis-ci.org/alexandresalome/php-webdriver
+
+This library provides 2 things:
+
+* A library with a proper API
+* A Behat extension to ease testing through a browser
 
 **WebDriver** was initiated by Selenium-group and consists of a Restful API to manipulate a browser remotely (cookies, forms, DOM inspection, screenshots...).
 
 This library provides a PHP interface for WebDriver server manipulation.
 
-Documentation:
+Documentation
+-------------
 
-* The library
+* **The library**
 
   * `The Client object <doc/client.rst>`_
   * `The Browser object <doc/browser.rst>`_
@@ -17,11 +27,14 @@ Documentation:
   * `Using mouse <doc/mouse.rst>`_
   * `Cookies <doc/cookies.rst>`_
 
-* `Behat extension <doc/behat.rst>`_
+* **Behat extension**
+
+  * `Behat extension <doc/behat.rst>`_
+
 * `Testing <doc/tests.rst>`_
 
 Installation
-::::::::::::
+------------
 
 Add the library to your **composer.json**:
 
@@ -29,12 +42,24 @@ Add the library to your **composer.json**:
 
     {
         "require": {
-            "alexandresalome/php-webdriver": "~1.0"
+            "alexandresalome/php-webdriver": "~0.6"
         }
     }
 
+
+Roadmap
+:::::::
+
+**v0.6**
+
+* Tests and integration trough travis-ci.org
+
+**Unplanned**
+
+* Complete WebDriver implementation
+
 Changelog
-:::::::::
+---------
 
 **v0.6**
 
@@ -79,17 +104,6 @@ Changelog
 * Element crawling
 * Javascript methods
 * Client & Browser management
-
-Roadmap
-:::::::
-
-**v1.0**
-
-* Behat extension tests
-
-**Unplanned**
-
-* Complete WebDriver implementation
 
 References
 ::::::::::
