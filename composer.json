@@ -1,6 +1,6 @@
 {
     "name": "alexandresalome/php-webdriver",
-    "description": "WebDriver client for PHP with Behat extension",
+    "description": "PHP-WebDriver is a client for WebDriver and a Behat extension",
 
     "license": "MIT",
 
