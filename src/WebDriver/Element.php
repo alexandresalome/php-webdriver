@@ -99,6 +99,18 @@ class Element
     }
 
     /**
+     * Indicates if element is enabled, or not.
+     *
+     * Buttons and inputs can be disabled.
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->requestValue('enabled');
+    }
+
+    /**
      * Clears the field value.
      */
     public function clear()

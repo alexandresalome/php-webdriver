@@ -36,7 +36,13 @@ Element API
 
     // indicates if the element is visible on screen
     $element->isDisplayed();
-    // ...
+
+    // indicates if the element is enabled (for buttons and input)
+    $element->isEnabled();
+
+    // tests if a checkbox or a radio is selected
+    $element->isSelected();
+
 
 Upload a file
 :::::::::::::

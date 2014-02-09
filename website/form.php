@@ -33,6 +33,7 @@
             </p>
             <p>
                 <button type="submit" id="submit">Submit</button>
+                <button type="submit" disabled="disabled" id="submit-disabled">Submit (disabled)</button>
             </p>
         </form>
         <?php if (count($_POST)): ?>

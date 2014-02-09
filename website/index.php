@@ -14,7 +14,9 @@
             <li><a href="mouse.php">Mouse tests</a></li>
             <li><a href="request.php">What is your request?</a></li>
             <li><a href="tree.php">A tree with lot of informations, for node processing</a></li>
+            <li><a href="index.php" onclick="window.open('index.php', '_blank', 'modal=yes'); return false;">Pop-up</a></li>
         </ul>
+        <h2 id="hidden-element" style="display: none;">Hidden element</h2>
         <div id="danger-zone">
             <h2>DANGER ZONE</h2>
             <p><?php echo 'You are on page'.(isset($_GET['page']) ? $_GET['page'] : 1); ?></p>

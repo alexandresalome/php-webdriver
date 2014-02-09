@@ -86,4 +86,20 @@ class ElementTest extends AbstractTestCase
         $this->assertRegExp('/\?page=1$/', $elements[0]->getAttribute('href'));
         $this->assertRegExp('/\?page=3$/', $elements[2]->getAttribute('href'));
     }
+
+    public function testEnabled()
+    {
+        $browser = $this->getBrowser()->open($this->getUrl('form.php'));
+
+        $this->assertTrue($browser->element(By::id('submit'))->isEnabled());
+        $this->assertFalse($browser->element(By::id('submit-disabled'))->isEnabled());
+    }
+
+    public function testDisplayed()
+    {
+        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+
+        $this->assertTrue($browser->element(By::id('danger-zone'))->isDisplayed());
+        $this->assertFalse($browser->element(By::id('hidden-element'))->isDisplayed());
+    }
 }
