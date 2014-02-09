@@ -31,10 +31,10 @@ class WindowsTest extends AbstractTestCase
     {
         $browser = $this->getBrowser()->open($this->getUrl('index.php'));
 
-        $this->assertCount(1, $browser->getWindows()->getAll());
+        $count = count($browser->getWindows()->getAll());
 
         $browser->element(By::linkText('Pop-up'))->click();
-        $this->assertCount(2, $all = $browser->getWindows()->getAll());
+        $this->assertCount($count + 1, $all = $browser->getWindows()->getAll());
 
         $browser->element(By::linkText('Another page'))->click();
         $orig = $browser->getWindows()->getCurrent();
@@ -66,7 +66,7 @@ class WindowsTest extends AbstractTestCase
 
         // current window, make it small to make it movable
         $win->setSize(100, 100)->setPosition(100, 200);
-        usleep(50000);
+        usleep(500000);
 
         $size = $win->getPosition();
 
@@ -84,7 +84,7 @@ class WindowsTest extends AbstractTestCase
 
         $win->setSize(100, 100);
         $win->maximize();
-        usleep(50000);
+        usleep(500000);
         $size = $win->getSize();
 
         $this->assertGreaterThan(100, $size[0]);
