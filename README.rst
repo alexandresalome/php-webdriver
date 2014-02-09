@@ -3,11 +3,19 @@ PHP WebDriver
 
 **PHP client and Behat extension**
 
-* `Tests status <https://travis-ci.org/alexandresalome/php-webdriver>`_ |test_status|
+|test_status| |last_version| |downloads|
 
 .. |test_status| image:: https://travis-ci.org/alexandresalome/php-webdriver.png
    :alt: Build status
    :target: https://travis-ci.org/alexandresalome/php-webdriver
+
+.. |last_version| image:: https://poser.pugx.org/alexandresalome/php-webdriver/v/stable.png
+   :alt: Latest stable version
+   :target: https://packagist.org/packages/alexandresalome/php-webdriver
+
+.. |downloads| image:: https://poser.pugx.org/alexandresalome/php-webdriver/downloads.png
+   :alt: Total Downloads
+   :target: https://packagist.org/packages/alexandresalome/php-webdriver
 
 This library provides 2 things:
 
