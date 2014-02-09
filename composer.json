@@ -18,7 +18,7 @@
         "symfony/process": "~2.1"
     },
 
-    "config": {
-        "bin-dir": "bin/"
+    "require-dev": {
+        "behat/behat": "~2.4"
     }
 }
