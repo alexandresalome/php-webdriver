@@ -41,6 +41,7 @@ class WindowsTest extends AbstractTestCase
         $other = array_values(array_diff($all, array($orig)))[0];
 
         $browser->getWindows()->focus($other);
+        sleep(1); // time for window manager
         $this->assertContains('Welcome to sample website', $browser->getText());
 
         $browser->getWindows()->closeCurrent();
@@ -54,9 +55,15 @@ class WindowsTest extends AbstractTestCase
         $win     = $browser->getWindows();
 
         // current window
-        $size = $win->setSize(400, 300)->getSize();
-        $this->assertEquals(400, $size[0]);
-        $this->assertEquals(300, $size[1]);
+        $size = $win->setSize(400, 300);
+        sleep(1); // time for window manager
+        $size = $win->getPosition();
+
+        // Linux sticks to a grid, let's be... flexible!
+        $this->assertGreaterThan(350, $size[0]);
+        $this->assertLessThan(450, $size[0]);
+        $this->assertGreaterThan(250, $size[1]);
+        $this->assertLessThan(350, $size[1]);
     }
 
     public function testPosition()
@@ -66,8 +73,7 @@ class WindowsTest extends AbstractTestCase
 
         // current window, make it small to make it movable
         $win->setSize(100, 100)->setPosition(100, 200);
-        usleep(500000);
-
+        sleep(1); // time for window manager
         $size = $win->getPosition();
 
         // Linux sticks to a grid, let's be... flexible!
@@ -82,9 +88,8 @@ class WindowsTest extends AbstractTestCase
         $browser = $this->getBrowser()->open($this->getUrl('index.php'));
         $win     = $browser->getWindows();
 
-        $win->setSize(100, 100);
-        $win->maximize();
-        usleep(500000);
+        $win->setSize(100, 100)->maximize();
+        sleep(1); // time for window manager
         $size = $win->getSize();
 
         $this->assertGreaterThan(100, $size[0]);
