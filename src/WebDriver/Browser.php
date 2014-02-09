@@ -40,6 +40,11 @@ class Browser
     private $cookieBag;
 
     /**
+     * @var WindowBag
+     */
+    private $windowList;
+
+    /**
      * @var boolean
      */
     protected $closeOnDestruct = true;
@@ -68,6 +73,9 @@ class Browser
         $this->sessionId  = $sessionId;
     }
 
+    /**
+     * @return CookieBag
+     */
     public function getCookies()
     {
         if (null === $this->cookieBag) {
@@ -75,6 +83,18 @@ class Browser
         }
 
         return $this->cookieBag;
+    }
+
+    /**
+     * @return WindowList
+     */
+    public function getWindows()
+    {
+        if (null === $this->windowList) {
+            $this->windowList = new WindowList($this);
+        }
+
+        return $this->windowList;
     }
 
     /**

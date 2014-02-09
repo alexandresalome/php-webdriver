@@ -69,6 +69,7 @@ Changelog
 ---------
 **dev-master**
 
+* Manipulate windows size and position
 * Execute code asynchronously: ``$browser->executeAsync('...')``
 
 **v0.6**

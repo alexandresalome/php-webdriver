@@ -85,6 +85,68 @@ If your script takes too much time, a **ScriptTimeoutException** will be thrown.
 * `Reference of execute method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute>`_
 * `Reference of execute_async method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute_async>`_
 
+Handling windows
+----------------
+
+If you have multiple windows to handle, this section is for you. Your WebDriver session
+is composed of one or many windows.
+
+You can get the list of windows by calling ``getAll()`` method on **WindowList**. You can know
+the current window's name by calling ``getCurrent()``:
+
+.. code-block:: php
+
+    $windows = $browser->getWindows()->getAll();
+    $current = $browser->getWindows()->getCurrent();
+
+If you want to switch to a given window, use method ``focus($name)``:
+
+.. code-block:: php
+
+    $browser->getWindows()->focus($windows[1]);
+
+You can close current window using ``closeCurrent()``:
+
+.. code-block:: php
+
+    $browser->getWindows()->closeCurrent();
+
+Window size
+-----------
+
+If you want to know the size of a window, use method ``getSize()``:
+
+.. code-block:: php
+
+    list($width, $height) = $browser->getWindows()->getSize();
+
+And if you want to change it:
+
+.. code-block:: php
+
+    $browser->getWindows()->setSize(400, 300);
+
+And if you want to maximize:
+
+.. code-block:: php
+
+    $browser->getWindows()->maximize();
+
+Window position
+---------------
+
+If you want to know the position of a window, use method ``getPosition()``:
+
+.. code-block:: php
+
+    list($x, $y) = $browser->getWindows()->getPosition();
+
+And if you want to change it:
+
+.. code-block:: php
+
+    $browser->getWindows()->setPosition(400, 300);
+
 Finish the browser
 ------------------
 
