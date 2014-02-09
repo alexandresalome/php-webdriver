@@ -39,10 +39,16 @@ class ElementTest extends AbstractTestCase
 
         $textField = $browser->element(By::id('text'))->type('foo');
         $browser->element(By::id('submit'))->click();
+        $this->assertContains('Text field: foo', $browser->getText());
     }
 
     public function testUpload()
     {
+        if ($this->getBrowserName() === 'opera') {
+            // https://github.com/operasoftware/operadriver/issues/84
+            $this->markTestSkipped();
+        }
+
         $browser = $this->getBrowser();
         $browser->open($this->getUrl('form.php'));
         $tmpFile = tempnam(sys_get_temp_dir(), 'wdtest_');

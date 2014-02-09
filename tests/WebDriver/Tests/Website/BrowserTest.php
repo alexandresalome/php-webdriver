@@ -48,9 +48,9 @@ class BrowserTest extends AbstractTestCase
         $this->assertEquals('Sample website', $title);
 
         // Arguments usage
-        $expected = array('a', 'b', 3, true);
-        $actual   = $browser->execute('return arguments;', $expected);
-        $this->assertEquals($expected, $actual, 'Casting through browser is successfully done');
+        $expected = array(3, 4, true);
+        $actual   = $browser->execute('return [arguments[0] + arguments[1], !arguments[2]];', $expected);
+        $this->assertEquals(array(7, false), $actual);
     }
 
     public function testUrl()
@@ -104,7 +104,6 @@ class BrowserTest extends AbstractTestCase
 
         $source = $browser->getSource();
         $this->assertContains('This comment is only viewable with source code', $source);
-        $this->assertContains('<!DOCTYPE html>', $source);
         $this->assertContains('<head>', $source);
         $this->assertContains('<body>', $source);
     }

@@ -69,13 +69,13 @@ class Element
     }
 
     /**
-     * Returns the tag name.
+     * Returns the tag name, in lowercase.
      *
      * @return string
      */
     public function getTagName()
     {
-        return $this->requestValue('name');
+        return strtolower($this->requestValue('name'));
     }
 
     /**
