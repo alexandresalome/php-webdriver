@@ -18,26 +18,24 @@ From this *Client* object, you will create different browsers:
     $browser = $client->createBrowser('firefox'); // Short version
 
 The *Browser* provides facilities to manipulate the browser, like ``open``,
-``back``, and so on. More on this in next chapter!
+``refresh``... more on this in next chapter!
 
 Capabilities
 ------------
 
-If you're not very exhaustive about
-
-We use a *Capabilities* object to express your browser expectations.
-
-You define first the browser you want (firefox, internet explorer) and can tune
-lot of flags, like the platform or the version:
+A *Capabilities* object is used to specify the browser you want. Instanciate it with a browser name, like this:
 
 .. code-block:: php
 
-    $capabilities = new WebDriver\Capabilities('internet explorer');
+    use WebDriver\Capabilities;
+
+    $capabilities = new Capabilities('internet explorer');
     $capabilities->platform = 'WINDOWS';
     $capabilities->version = '6';
-    $client->createBrowser($capabilities); // Heehaa
 
-See sourcecode for an exhaustive list of features.
+    $browser = $client->createBrowser($capabilities);
+
+See `Capabilities specification <http://www.w3.org/TR/webdriver/#browser-capabilities>`_ for details about it.
 
 Getting status of the server
 ----------------------------

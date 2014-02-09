@@ -7,7 +7,7 @@ before_script:
     - sudo apt-get update -qq
 
     # Apache
-    - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5
+    - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-imagick
     - sudo sed -i -e "s,/var/www,$(pwd)/website,g" /etc/apache2/sites-available/default
     - sudo sed -i -e "s,AllowOverride None,AllowOverride All,g" /etc/apache2/sites-available/default
     - cat /etc/apache2/envvars
