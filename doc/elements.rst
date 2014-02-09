@@ -43,6 +43,8 @@ Element API
     // tests if a checkbox or a radio is selected
     $element->isSelected();
 
+    // test if two elements are referencing same node:
+    $element->equals($otherElement);
 
 Upload a file
 :::::::::::::

@@ -102,4 +102,19 @@ class ElementTest extends AbstractTestCase
         $this->assertTrue($browser->element(By::id('danger-zone'))->isDisplayed());
         $this->assertFalse($browser->element(By::id('hidden-element'))->isDisplayed());
     }
+
+    public function testEquals()
+    {
+        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+
+        $a = $browser->element(By::id('danger-zone'));
+        $b = $browser->element(By::css('#danger-zone'));
+        $c = $browser->element(By::id('hidden-element'));
+
+        $this->assertTrue($a->equals($a));
+        $this->assertTrue($a->equals($b));
+        $this->assertTrue($b->equals($a));
+        $this->assertFalse($a->equals($c));
+        $this->assertFalse($c->equals($a));
+    }
 }

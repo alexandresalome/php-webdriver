@@ -67,10 +67,12 @@ Add the library to your **composer.json**:
 
 Changelog
 ---------
+
 **dev-master**
 
 * Manipulate windows size and position
 * Execute code asynchronously: ``$browser->executeAsync('...')``
+* Test if 2 elements are equals: ``$element->equals($otherElement)``
 
 **v0.6**
 

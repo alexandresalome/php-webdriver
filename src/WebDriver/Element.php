@@ -168,9 +168,20 @@ class Element
         return $this->browser->request($verb, sprintf('element/%s/%s', $this->id, $path), $content, $headers);
     }
 
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function equals(Element $element)
+    {
+        return $this->requestValue('equals/'.$element->getId());
     }
 
     /**
