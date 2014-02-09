@@ -235,6 +235,10 @@ class Browser
      */
     public function close()
     {
+        if (null === $this->sessionId) {
+            return;
+        }
+
         $this->client->closeBrowser($this->getSessionId());
         $this->sessionId = null;
 

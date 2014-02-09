@@ -29,8 +29,15 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return WebDriver\Browser
      */
-    public function getBrowser()
+    public function getBrowser($create = false)
     {
+        if ($create) {
+            $browser = Browser::create($this->getBrowserName(), $this->getServerUrl());
+            $browser->closeOnDestruct();
+
+            return $browser;
+        }
+
         if (null === self::$browser) {
             self::$browser = Browser::create($this->getBrowserName(), $this->getServerUrl());
             self::$browser->closeOnDestruct();

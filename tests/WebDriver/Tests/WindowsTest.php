@@ -21,19 +21,17 @@ class WindowsTest extends AbstractTestCase
 {
     public function testGetCurrent()
     {
-        $this->markTestSkipped('Travis integration fails...');
-
-        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser(true)->open($this->getUrl('index.php'));
 
         $actual = $browser->getWindows()->getCurrent();
         $this->assertTrue(is_string($actual));
+
+        $browser->close();
     }
 
     public function testCollection()
     {
-        $this->markTestSkipped('Travis integration fails...');
-
-        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser(true)->open($this->getUrl('index.php'));
 
         $count = count($browser->getWindows()->getAll());
 
@@ -45,64 +43,65 @@ class WindowsTest extends AbstractTestCase
         $other = array_values(array_diff($all, array($orig)))[0];
 
         $browser->getWindows()->focus($other);
-        sleep(1); // time for window manager
         $this->assertContains('Welcome to sample website', $browser->getText());
 
         $browser->getWindows()->closeCurrent();
         $browser->getWindows()->focus($orig);
         $this->assertContains('You know... some other page', $browser->getText());
+
+        $browser->close();
     }
 
     public function testSize()
     {
-        $this->markTestSkipped('Travis integration fails...');
-
-        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser(true)->open($this->getUrl('index.php'));
         $win     = $browser->getWindows();
 
         // current window
-        $size = $win->setSize(400, 300);
-        sleep(1); // time for window manager
-        $size = $win->getPosition();
+        $size = $win->setSize(400, 300)->getSize();
 
-        // Linux sticks to a grid, let's be... flexible!
+        // system might stick to a grid
         $this->assertGreaterThan(350, $size[0]);
         $this->assertLessThan(450, $size[0]);
         $this->assertGreaterThan(250, $size[1]);
         $this->assertLessThan(350, $size[1]);
+
+        $browser->close();
     }
 
     public function testPosition()
     {
-        $this->markTestSkipped('Travis integration fails...');
-
-        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser(true)->open($this->getUrl('index.php'));
         $win     = $browser->getWindows();
 
         // current window, make it small to make it movable
-        $win->setSize(100, 100)->setPosition(100, 200);
-        sleep(1); // time for window manager
+        $size = $win
+            ->setSize(100, 100)
+            ->setPosition(100, 200)
+        ;
         $size = $win->getPosition();
 
-        // Linux sticks to a grid, let's be... flexible!
+        // system might stick to a grid
         $this->assertGreaterThan(80, $size[0]);
         $this->assertLessThan(120, $size[0]);
         $this->assertGreaterThan(180, $size[1]);
         $this->assertLessThan(220, $size[1]);
+
+        $browser->close();
     }
 
     public function testMaximize()
     {
-        $this->markTestSkipped('Travis integration fails...');
-
-        $browser = $this->getBrowser()->open($this->getUrl('index.php'));
+        $browser = $this->getBrowser(true)->open($this->getUrl('index.php'));
         $win     = $browser->getWindows();
 
-        $win->setSize(100, 100)->maximize();
-        sleep(1); // time for window manager
+        $size = $win->setSize(100, 100)->maximize();
+        sleep(1); // time for WM
         $size = $win->getSize();
 
         $this->assertGreaterThan(100, $size[0]);
         $this->assertGreaterThan(100, $size[1]);
+
+        $browser->close();
     }
 }
