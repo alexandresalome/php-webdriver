@@ -6,7 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use WebDriver\Behat\WebDriverContext;
 use WebDriver\Browser;
 use WebDriver\By;
-use WebDriver\Tests\Website\AbstractTestCase;
+use WebDriver\Tests  \AbstractTestCase;
 
 class WebDriverContextTest extends AbstractTestCase
 {

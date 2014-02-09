@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace WebDriver\Tests\Website;
+namespace WebDriver\Tests  ;
 
 use WebDriver\By;
 

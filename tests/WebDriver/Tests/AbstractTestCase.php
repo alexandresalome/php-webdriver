@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace WebDriver\Tests\Website;
+namespace WebDriver\Tests  ;
 
 use WebDriver\Browser;
 
@@ -31,17 +31,25 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getBrowser()
     {
-        if (!isset($_SERVER['WD_SERVER_URL']) || !isset($_SERVER['WD_BROWSER'])) {
-            $this->markTestSkipped('server URL or browser is not defined in environment variable');
-
-            return;
-        }
         if (null === self::$browser) {
-            self::$browser = Browser::create($_SERVER['WD_BROWSER'], $_SERVER['WD_SERVER_URL']);
+            self::$browser = Browser::create($this->getBrowserName(), $this->getServerUrl());
             self::$browser->closeOnDestruct();
         }
 
         return self::$browser;
+    }
+
+    public function getServerUrl()
+    {
+        return isset($_SERVER['WD_SERVER_URL']) ? $_SERVER['WD_SERVER_URL'] : 'http://localhost:4444';
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrowserName()
+    {
+        return isset($_SERVER['WD_BROWSER']) ? $_SERVER['WD_BROWSER'] : 'firefox';
     }
 
     /**
@@ -53,18 +61,8 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
      */
     public function getUrl($file = '/')
     {
-        if (!isset($_SERVER['WD_WEBSITE_URL'])) {
-            $this->markTestSkipped('website URL is not defined in environment variable');
+        $url = isset($_SERVER['WD_WEBSITE_URL']) ? $_SERVER['WD_WEBSITE_URL'] : 'http://localhost';
 
-            return;
-        }
-
-        $url = $_SERVER['WD_WEBSITE_URL'];
-
-        if (!preg_match('#/$#', $url)) {
-            $url .= '/';
-        }
-
-        return $url.ltrim($file, '/');
+        return rtrim($url, '/').'/'.ltrim($file, '/');
     }
 }
