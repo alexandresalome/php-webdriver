@@ -67,6 +67,9 @@ Add the library to your **composer.json**:
 
 Changelog
 ---------
+**dev-master**
+
+* Execute code asynchronously: ``$browser->executeAsync('...')``
 
 **v0.6**
 

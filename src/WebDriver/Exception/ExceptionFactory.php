@@ -55,6 +55,8 @@ class ExceptionFactory
             return new InvalidCookieDomainException($message);
         } elseif ($status == self::STATUS_UNEXPECTED_ALERT_OPEN) {
             return new UnexpectedAlertOpenException($message);
+        } elseif ($status == self::STATUS_SCRIPT_TIMEOUT) {
+            return new ScriptTimeoutException($message);
         }
 
         throw new LibraryException(sprintf('An error occured: #%s: %s', $status, $message));

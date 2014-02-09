@@ -11,6 +11,7 @@
 namespace WebDriver\Tests  ;
 
 use WebDriver\By;
+use WebDriver\Exception\ScriptTimeoutException;
 
 /**
  * Browser-related features (no page crawling).
@@ -51,6 +52,25 @@ class BrowserTest extends AbstractTestCase
         $expected = array(3, 4, true);
         $actual   = $browser->execute('return [arguments[0] + arguments[1], !arguments[2]];', $expected);
         $this->assertEquals(array(7, false), $actual);
+    }
+
+    public function testExecuteAsync()
+    {
+        $browser = $this->getBrowser()->open($this->getUrl('other.php'));
+
+        // Normal
+        $browser->setScriptTimeout(2000);
+        $actual = $browser->executeAsync('var callback = arguments[arguments.length - 1]; window.setTimeout(function () { callback("foo"); }, 500);');
+        $this->assertEquals("foo", $actual);
+
+        // Timed-out
+        $browser->setScriptTimeout(100);
+        try {
+            $browser->executeAsync('var callback = arguments[arguments.length - 1]; window.setTimeout(function () { callback("foo"); }, 300);');
+            $this->fail();
+        } catch (ScriptTimeoutException $e) {
+            // OK
+        }
     }
 
     public function testUrl()

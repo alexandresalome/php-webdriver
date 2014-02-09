@@ -114,6 +114,35 @@ class Browser
     }
 
     /**
+     * Executes a Javascript code in browser and waits for callback to be executed:
+     *
+     *     $browser->executeAsync('var callback = arguments[arguments.length - 1]; setTimeout(function () { callback(); }, 5000);');
+     *
+     * Make sure you have properly configured script timeout, or execution will fail
+     * if callback is not executed:
+     *
+     *     $browser->setScriptTimeout(5000); //ms
+     *
+     * @param string $javascript The javascript snippet to execute
+     * @param array  $args       Arguments to pass to snippet (accessible by arguments[0], ...)
+     *
+     * @throws ScriptTimeoutException callback not invoked before script timeout
+     *
+     * @return Browser
+     */
+    public function executeAsync($javascript, array $args = array())
+    {
+        $response = $this->request('POST', 'execute_async', json_encode(array(
+            'script' => $javascript,
+            'args'   => $args
+        )));
+
+        $data = json_decode($response->getContent(), true);
+
+        return $data['value'];
+    }
+
+    /**
      * Moves the mouse to a given position.
      *
      * @param int     $x       X offset
