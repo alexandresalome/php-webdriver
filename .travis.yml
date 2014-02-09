@@ -1,6 +1,5 @@
 language: php
 php:      [ "5.4" ]
-env:      [ "WD_BROWSER=firefox", "WD_BROWSER=chrome" ]
 script:   "./test.sh"
 
 # Inspired from http://knpuniversity.com/screencast/question-answer-day/travis-ci
@@ -30,5 +29,5 @@ before_script:
     - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.39.0.jar"
     - "java -jar selenium-server-standalone-2.39.0.jar > /dev/null 2>/dev/null &"
 
-    # Browser
-    - './.travis-browser.sh $WD_BROWSER'
+    # Firefox
+    - sudo apt-get install -y --force-yes firefox
