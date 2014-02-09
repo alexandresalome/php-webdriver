@@ -41,7 +41,7 @@ class AbstractTestCase extends \PHPUnit_Framework_TestCase
 
     public function getServerUrl()
     {
-        return isset($_SERVER['WD_SERVER_URL']) ? $_SERVER['WD_SERVER_URL'] : 'http://localhost:4444';
+        return isset($_SERVER['WD_SERVER_URL']) ? $_SERVER['WD_SERVER_URL'] : 'http://localhost:4444/wd/hub';
     }
 
     /**
