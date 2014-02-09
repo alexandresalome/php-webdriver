@@ -1,5 +1,7 @@
-PHP WebDriver - WebDriver client and Behat extension
-====================================================
+PHP WebDriver
+=============
+
+**PHP client and Behat extension**
 
 * `Tests status <https://travis-ci.org/alexandresalome/php-webdriver>`_ |test_status|
 
@@ -9,12 +11,21 @@ PHP WebDriver - WebDriver client and Behat extension
 
 This library provides 2 things:
 
-* A library with a proper API
+* A library with a proper API to manipulate a WebDriver instance
 * A Behat extension to ease testing through a browser
 
 **WebDriver** was initiated by Selenium-group and consists of a Restful API to manipulate a browser remotely (cookies, forms, DOM inspection, screenshots...).
 
-This library provides a PHP interface for WebDriver server manipulation.
+This library provides a PHP interface for WebDriver server manipulation:
+
+.. code-block:: php
+
+    $client  = new WebDriver\Client('http://localhost:4444');
+    $browser = $client->createBrowser('firefox');
+
+    $browser->open('http://google.fr');
+    $browser->element(By::name('q'))->type('Hello');
+    $browser->element(By::css('input[type=submit]'))->click();
 
 Documentation
 -------------
@@ -46,30 +57,16 @@ Add the library to your **composer.json**:
         }
     }
 
-
-Roadmap
-:::::::
-
-**v0.6**
-
-* Tests and integration trough travis-ci.org
-
-**Unplanned**
-
-* Complete WebDriver implementation
-
 Changelog
 ---------
 
 **v0.6**
 
 * Cleanup Behat sentences
-* Retry "should see" tests in case of failure (for Ajax features)
-
-**BC break**
-
-* Behat: **I should see 3 xpath elements "//a"** has been removed in favor of **I should see 3 "xpath=//a"**
-* Behat: **I click on xpath "//a"** has been removed in favor of **I click on "xpath=//a"**
+* Repeat up to 5 time a test before failing
+* Tests and integration trough travis-ci.org
+* **BC break**: **I should see 3 xpath elements "//a"** has been removed in favor of **I should see 3 "xpath=//a"**
+* **BC break**: **I click on xpath "//a"** has been removed in favor of **I click on "xpath=//a"**
 
 **v0.5**
 
