@@ -151,6 +151,7 @@ class WebDriverContextTest extends AbstractTestCase
         // correct
         $ctx->iShouldSee("2 ", "First floor");
         $ctx->iShouldSee("", "My home");
+        $ctx->iShouldSee("", "Bedroom"); // 2 times on screen
         $ctx->iShouldSee("1 ", "My home");
 
         // incorrect

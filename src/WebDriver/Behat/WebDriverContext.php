@@ -123,7 +123,7 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     public function iShouldSee($count, $text)
     {
-        $count = '' === $count ? 1 : (int) $count;
+        $count = '' === $count ? '' : (int) $count;
         $text = $this->unescape($text);
 
         $selector = $this->parseSelector($text);
@@ -133,14 +133,23 @@ class WebDriverContext extends AbstractWebDriverContext
             if ($selector instanceof By) {
                 $elements = $this->getElements($selector);
 
-                if (count($elements) != $count) {
+                if ($count === '') { // no text means "at least one"
+                    if (count($elements) == 0) {
+                        throw new \InvalidArgumentException(sprintf("Expected at least one elements, got %s (by: %s).", count($elements), $selector->toString()));
+                    }
+                } elseif ($count != count($elements)) {
                     throw new \InvalidArgumentException(sprintf("Expected %s elements, got %s (by: %s).", $count, count($elements), $selector->toString()));
                 }
+
             } else {
                 $all = $this->getBrowser()->getText();
                 $actual = substr_count($all, $selector);
 
-                if ($count !== $actual) {
+                if ($count === '') { // no text means "at least one"
+                    if ($actual == 0) {
+                        throw new \RuntimeException('Unable to find "'.$selector.'" in visible text:'."\n".$all);
+                    }
+                } elseif ($count != $actual) {
                     throw new \RuntimeException('Unable to find "'.$selector.'" in visible text '.$count.' time (found '.$actual.' time) :'."\n".$all);
                 }
             }
