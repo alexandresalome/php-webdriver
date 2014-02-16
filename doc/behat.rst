@@ -53,6 +53,10 @@ Available steps
 
     When I refresh
 
+    When I go back
+
+    When I go toward
+
     When I am on "**/page**"
 
     Then I should be on "**/page**"

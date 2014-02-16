@@ -29,6 +29,22 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @When /^I go back$/
+     */
+    public function iGoBack()
+    {
+        $this->getBrowser()->back();
+    }
+
+    /**
+     * @When /^I go forward$/
+     */
+    public function iGoForward()
+    {
+        $this->getBrowser()->forward();
+    }
+
+    /**
      * @Given /^I am on "((?:[^"]|"")+)"$/
      */
     public function iAmOn($url)

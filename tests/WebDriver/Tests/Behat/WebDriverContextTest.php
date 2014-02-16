@@ -38,6 +38,21 @@ class WebDriverContextTest extends AbstractTestCase
 
     }
 
+    public function testIGoBackAndForward()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+
+        $browser->open($this->getUrl('/'));
+        $browser->open($this->getUrl('/other.php'));
+
+        $ctx->iGoBack();
+        $this->assertNotContains('You know... some other page', $browser->getText());
+        $this->assertContains('Welcome to sample website', $browser->getText());
+        $ctx->iGoForward();
+        $this->assertContains('You know... some other page', $browser->getText());
+        $this->assertNotContains('Welcome to sample website', $browser->getText());
+    }
+
     public function testIAmOn()
     {
         $ctx = $this->getContext($browser = $this->getBrowser());
