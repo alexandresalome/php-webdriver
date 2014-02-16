@@ -119,7 +119,7 @@ class Client
     {
         $response = $this->request('GET', '/status');
 
-        return ClientStatus::fromArray(json_decode($content, true));
+        return ClientStatus::fromArray(json_decode($response->getContent(), true));
     }
 
     /**

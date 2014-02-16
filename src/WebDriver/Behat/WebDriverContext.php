@@ -62,7 +62,7 @@ class WebDriverContext extends AbstractWebDriverContext
         $url = $this->unescape($url);
 
         $this->tryRepeating(function ($browser) use ($url) {
-            $currentUrl = $this->browser->getUrl();
+            $currentUrl = $browser->getUrl();
             $checkedUrl = $this->getUrl($url);
 
             if ($currentUrl !== $checkedUrl) {
@@ -158,7 +158,7 @@ class WebDriverContext extends AbstractWebDriverContext
                 }
 
             } else {
-                $all = $this->getBrowser()->getText();
+                $all = $browser->getText();
                 $actual = substr_count($all, $selector);
 
                 if ($count === '') { // no text means "at least one"

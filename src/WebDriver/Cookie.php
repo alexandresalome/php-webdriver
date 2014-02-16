@@ -81,6 +81,10 @@ class Cookie
         $isSecure  = isset($array['secure']) ? $array['secure'] : null;
         $expiry    = isset($array['expiry']) ? \DateTime::createFromFormat('U', $array['expiry']) : null;
 
+        if (false === $expiry) {
+            throw new \InvalidArgumentException(sprintf('Unable to parse cookie expiry: "%s".', $array['expiry']));
+        }
+
         return new self($name, $value, $path, $domain, $isSecure, $expiry);
     }
 
@@ -156,7 +160,7 @@ class Cookie
 
     public function setSecure($secure)
     {
-        $this->secure = $secure;
+        $this->isSecure = $secure;
 
         return $this;
     }
@@ -168,7 +172,7 @@ class Cookie
 
     public function setExpiry(\DateTime $expiry = null)
     {
-        $this->name = $name;
+        $this->expiry = $expiry;
 
         return $this;
     }
