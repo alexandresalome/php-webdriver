@@ -11,32 +11,26 @@ use WebDriver\Util\Xpath;
 
 abstract class AbstractWebDriverContext extends BehatContext
 {
-    /**
-     * Timeout to wait for text to be visible (in ms).
-     */
-    const DEFAULT_SHOULD_SEE_TIMEOUT = 5000;
-
     const CLICKABLE_TEXT_XPATH = '//a[contains(normalize-space(.),{text})]|//input[@type="submit" and contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.),{text})]|//button[contains(normalize-space(@value), {text})]|//button[contains(normalize-space(.), {text})]';
     const LABEL_TO_INPUT_XPATH = '//*[(self::select or self::input or self::textarea) and @id=//label[contains(normalize-space(.), {text})]/@for]|//*[(self::select or self::input or self::textarea) and contains(normalize-space(@placeholder), {text})]';
 
-    protected $baseUrl;
-    protected $browserReference;
     protected $browser;
 
-    protected $shouldSeeTimeout = self::DEFAULT_SHOULD_SEE_TIMEOUT;
+    protected $browserReference;
+    protected $baseUrl;
+    protected $timeout;
 
-    /**
-     * Set timeout for "shouldSee" methods.
-     *
-     * @param int $shouldSeeTimeout (in milliseconds)
-     *
-     * @return WebDriverContext
-     */
-    public function setShouldSeeTimeout($shouldSeeTimeout)
+
+    public function setBrowserInformations($browserReference, $baseUrl, $timeout)
     {
-        $this->shouldSeeTimeout = $shouldSeeTimeout;
+        if (!is_callable($browserReference)) {
+            throw new \InvalidArgumentException(sprintf('Expected a callable, got a "%s".', is_object($browserReference) ? get_class($browserReference) : gettype($browserReference)));
+        }
 
-        return $this;
+        $this->browser = null;
+        $this->browserReference = $browserReference;
+        $this->baseUrl = rtrim($baseUrl, '/');
+        $this->timeout = $timeout;
     }
 
     /**
@@ -49,7 +43,7 @@ abstract class AbstractWebDriverContext extends BehatContext
     public function tryRepeating(\Closure $closure, $time = null)
     {
         if (null === $time) {
-            $time = $this->shouldSeeTimeout;
+            $time = $this->timeout;
         }
 
         $last = null;
@@ -69,18 +63,6 @@ abstract class AbstractWebDriverContext extends BehatContext
 
         throw new \RuntimeException(sprintf('Repeatedly failed, %s time: %s', $count, $last->getMessage()), 0, $last);
 
-    }
-
-
-    public function setBrowserInformations($browserReference, $baseUrl)
-    {
-        if (!is_callable($browserReference)) {
-            throw new \InvalidArgumentException(sprintf('Expected a callable, got a "%s".', is_object($browserReference) ? get_class($browserReference) : gettype($browserReference)));
-        }
-
-        $this->baseUrl = rtrim($baseUrl, '/');
-        $this->browserReference = $browserReference;
-        $this->browser = null;
     }
 
     /**

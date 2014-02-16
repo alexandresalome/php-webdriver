@@ -278,10 +278,9 @@ TABLE
     private function getContext(Browser $browser)
     {
         $ctx = new WebDriverContext();
-        $ctx->setShouldSeeTimeout(0);
         $ctx->setBrowserInformations(function() use ($browser) {
             return $browser;
-        }, $this->getUrl());
+        }, $this->getUrl(), 0);
 
         return $ctx;
     }

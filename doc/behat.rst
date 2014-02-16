@@ -3,18 +3,6 @@ Behat extension
 
 This library provides tools for Behat, to help you testing in a web browser.
 
-When you `added package to your composer file <../README.rst>`_, configure
-Behat like this:
-
-.. code-block:: yaml
-
-    default:
-        extensions:
-            WebDriver\Behat\WebDriverExtension\Extension:
-                base_url: http://localhost/
-                browser:  chrome
-                timeout:  5000
-
 In your **FeatureContext** class, add WebDriver's context:
 
 .. code-block:: php
@@ -28,6 +16,26 @@ In your **FeatureContext** class, add WebDriver's context:
             $this->useContext('webdriver', new WebDriverContext());
         }
     }
+
+You can configure this extension in your **behat.yml** file:
+
+.. code-block:: yaml
+
+    default:
+        extensions:
+            WebDriver\Behat\WebDriverExtension\Extension:
+                url:      http://localhost:4444/wd/hub
+                base_url: http://localhost/
+                browser:  firefox
+                timeout:  5000
+
+**Configuration options**
+
+* **url**: endpoint URL of selenium server
+* **base_url**: URL to your application
+* **browser**: browser name to use
+* **timeout**: time duration for retrying after failures
+
 
 Step escaping
 -------------

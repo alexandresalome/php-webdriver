@@ -33,14 +33,14 @@ class ContextInitializer implements InitializerInterface
         $initializer = $this;
         $context->setBrowserInformations(function () use ($initializer) {
             return $initializer->getBrowser();
-        }, $this->baseUrl);
+        }, $this->baseUrl, $this->timeout);
     }
 
     public function getBrowser()
     {
         if (null === $this->browser) {
             $this->browser = $this->client->createBrowser($this->getCapabilities());
-            $this->browser->setImplicitTimeout($this->timeout);
+            $this->browser->setImplicitTimeout(0); // managed by context class
         }
 
         return $this->browser;
