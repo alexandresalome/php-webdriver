@@ -61,18 +61,19 @@ Add the library to your **composer.json**:
 
     {
         "require": {
-            "alexandresalome/php-webdriver": "~0.6"
+            "alexandresalome/php-webdriver": "~0.7"
         }
     }
 
 Changelog
 ---------
 
-**dev-master**
+**v0.7**
 
 * Manipulate windows size and position
 * Execute code asynchronously: ``$browser->executeAsync('...')``
 * Test if 2 elements are equals: ``$element->equals($otherElement)``
+* *Behat* new steps: I move forward, I move back
 
 **v0.6**
 
