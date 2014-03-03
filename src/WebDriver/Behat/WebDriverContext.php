@@ -204,7 +204,9 @@ class WebDriverContext extends AbstractWebDriverContext
             $selector = By::xpath(strtr(self::LABEL_TO_INPUT_XPATH, array('{text}' => Xpath::quote($field))));
         }
 
-        $field = $this->getElement($selector);
+        $field = $this->tryRepeating(function () use ($selector) {
+            return $this->getElement($selector);
+        });
 
         if ($field->getTagName() == 'select') {
             $field->element(By::xpath('.//option[contains(., '.Xpath::quote($value).')]'))->click();
