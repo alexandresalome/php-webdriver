@@ -19,6 +19,7 @@
             <argument>%behat.webdriver.base_url%</argument>
             <argument>%behat.webdriver.browser%</argument>
             <argument>%behat.webdriver.timeout%</argument>
+            <argument>%behat.webdriver.proxy%</argument>
 
             <tag name="behat.context.initializer" />
         </service>

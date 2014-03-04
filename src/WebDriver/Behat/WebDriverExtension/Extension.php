@@ -28,6 +28,7 @@ class Extension implements ExtensionInterface
         $container->setParameter('behat.webdriver.base_url', $config['base_url']);
         $container->setParameter('behat.webdriver.browser', $config['browser']);
         $container->setParameter('behat.webdriver.timeout', $config['timeout']);
+        $container->setParameter('behat.webdriver.proxy', $config['proxy']);
     }
 
     /**
@@ -48,6 +49,9 @@ class Extension implements ExtensionInterface
                 ->end()
                 ->scalarNode('timeout')
                     ->defaultValue(5000)
+                ->end()
+                ->scalarNode('proxy')
+                    ->defaultValue(null)
                 ->end()
             ->end()
         ;

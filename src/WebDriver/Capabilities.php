@@ -132,6 +132,11 @@ class Capabilities
      */
     public $nativeEvents;
 
+    /**
+     * An ftp/http/https proxy url for the browser.
+     */
+    public $proxy;
+
     public function __construct($browserName)
     {
         $this->browserName = $browserName;
@@ -167,6 +172,15 @@ class Capabilities
             if (null !== $this->$capacityFlag) {
                 $result[$capacityFlag] = (boolean) $this->$capacityFlag;
             }
+        }
+
+        if ($this->proxy) {
+            $result['proxy'] = array(
+                'proxyType' => 'manual',
+                'httpProxy' => $this->proxy,
+                'sslProxy'  => $this->proxy,
+                'ftpProxy'  => $this->proxy
+            );
         }
 
         return $result;
