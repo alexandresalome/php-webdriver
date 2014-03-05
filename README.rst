@@ -68,6 +68,10 @@ Add the library to your **composer.json**:
 Changelog
 ---------
 
+**v0.8**
+
+* *Behat* new steps for form assertions
+
 **v0.7**
 
 * Manipulate windows size and position
