@@ -173,6 +173,44 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @Then /^I should see "((?:[^"]|"")*)" in "((?:[^"]|"")*)"$/
+     */
+    public function iShouldSeeIn($text, $selector)
+    {
+        $text = $this->unescape($text);
+        $selector = $this->parseSelector($this->unescape($selector));
+
+        if (!$selector instanceof By) {
+            throw new \InvalidArgumentException(sprintf('In sentence "I should see <text> in <selector>", selector should start with id= or css= (or xpath, or tag, ...).'));
+        }
+
+        $this->tryRepeating(function () use ($selector, $text) {
+            $element = $this->getElement($selector);
+
+            // Select
+            if ($element->getTagName() === 'select') {
+                foreach ($element->elements(By::tag('option')) as $option) {
+                    if ($option->isSelected()) {
+                        $actual = $option->getText();
+
+                        break;
+                    }
+                }
+
+                $actual = null;
+            } elseif ($element->getTagName() === 'input') {
+                if (in_array($element->getAttribute('type'), array('checkbox', 'radio')) {
+                    $actual = $element->isSelected() ? 1 : 0;
+                }
+            }
+
+            if ($actual != $text) {
+                throw new \RuntimeException(sprintf('Expected "%s" to be "%s", got "%s".', $selector->toString(), $text, $actual));
+            }
+        });
+    }
+
+    /**
      * @Then /^I should not see "((?:[^"]|"")*)"$/
      */
     public function iShouldNotSee($text)

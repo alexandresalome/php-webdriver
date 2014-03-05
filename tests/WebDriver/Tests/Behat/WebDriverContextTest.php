@@ -191,6 +191,23 @@ class WebDriverContextTest extends AbstractTestCase
         }
     }
 
+    public function testIShouldSeeIn()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('/tree.php'));
+
+        try {
+            $ctx->iShouldSeeIn('foo', 'bar');
+        } catch (\Exception $e) {
+            // OK
+        }
+
+        // select test
+        $this->iShouldSeeIn('', 'id=select')
+        $this->iFillWith('Select', 'bar label');
+        $this->iShouldSeeIn('bar label', 'id=select')
+    }
+
     public function testIShouldNotSee()
     {
         $ctx = $this->getContext($browser = $this->getBrowser());
