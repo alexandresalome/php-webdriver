@@ -173,6 +173,60 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @Then /^I should see "((?:[^"]|"")*)" in field "((?:[^"]|"")*)"$/
+     */
+    public function iShouldSeeInField($text, $selector)
+    {
+        $text = $this->unescape($text);
+        $selector = $this->parseSelector($this->unescape($selector));
+
+        if (!$selector instanceof By) {
+            $selector = By::xpath(strtr(self::LABEL_TO_INPUT_XPATH, array('{text}' => Xpath::quote($selector))));
+        }
+
+        $this->tryRepeating(function () use ($selector, $text) {
+            $element = $this->getElement($selector);
+            $actual  = null;
+
+            // Select
+            if ($element->getTagName() === 'select') {
+                foreach ($element->elements(By::tag('option')) as $option) {
+                    if ($option->isSelected()) {
+                        $actual = $option->getText();
+
+                        break;
+                    }
+                }
+            } elseif ($element->getTagName() === 'input') {
+                // Radio / Checkbox
+                if (in_array($element->getAttribute('type'), array('checkbox', 'radio'))) {
+                    $actual = $element->isSelected() ? 1 : 0;
+                // Text / Date / ?
+                } else {
+                    $actual = $element->getAttribute('value');
+                }
+            } else {
+                throw new \RuntimeException(sprintf('Unable to read element type "%s".', $element->getTagName()));
+            }
+
+            if ($actual != $text) {
+                throw new \RuntimeException(sprintf('Expected "%s" to be "%s", got "%s".', $selector->toString(), $text, $actual));
+            }
+        });
+    }
+
+    /**
+     * @When /^I should see in fields:$/
+     */
+    public function iShouldSeeInFields(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $key => $value) {
+            $this->iShouldSeeInField($this->escape($value), $this->escape($key));
+        }
+
+    }
+
+    /**
      * @Then /^I should not see "((?:[^"]|"")*)"$/
      */
     public function iShouldNotSee($text)
