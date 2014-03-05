@@ -191,21 +191,85 @@ class WebDriverContextTest extends AbstractTestCase
         }
     }
 
-    public function testIShouldSeeIn()
+    public function testIShouldSeeInField()
     {
         $ctx = $this->getContext($browser = $this->getBrowser());
-        $browser->open($this->getUrl('/tree.php'));
+        $browser->open($this->getUrl('/form.php'));
 
+        // not-existing
         try {
-            $ctx->iShouldSeeIn('foo', 'bar');
+            $ctx->iShouldSeeInField('foo', 'bar');
+            $this->fail();
+        } catch (\Exception $e) {
+        }
+
+        // <input type="text"> with correct value
+        $ctx->iShouldSeeInField('', 'id=text');
+        $ctx->iFillWith('id=text', 'foobar');
+        $ctx->iShouldSeeInField('foobar', 'id=text');
+
+        // <input type="text"> with incorrect value
+        try {
+            $ctx->iShouldSeeInField('foobar', 'id=text');
+            $this->fail();
         } catch (\Exception $e) {
             // OK
         }
 
-        // select test
-        $this->iShouldSeeIn('', 'id=select')
-        $this->iFillWith('Select', 'bar label');
-        $this->iShouldSeeIn('bar label', 'id=select')
+        // <input type="checkbox"> with correct value
+        $ctx->iShouldSeeInField('0', 'id=checkbox');
+        $ctx->iFillWith('id=checkbox', '1');
+        $ctx->iShouldSeeInField('1', 'id=checkbox');
+
+        // <input type="checkbox"> with incorrect value
+        try {
+            $ctx->iShouldSeeInField('0', 'id=checkbox');
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+
+        // <select> with correct value
+        $ctx->iShouldSeeInField('', 'id=select');
+        $ctx->iFillWith('Select', 'bar label');
+        $ctx->iShouldSeeInField('bar label', 'id=select');
+
+        // <select> with incorrect value
+        try {
+            $ctx->iShouldSeeInField('foobar', 'id=select');
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
+    }
+
+    public function testIShouldSeeInFields()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('form.php'));
+
+        $ctx->iFillWith('A text field', 'some value');
+        $ctx->iFillWith('Select', 'bar label');
+
+        $table = new TableNode(<<<TABLE
+| A text field | some value |
+| Select | bar label |
+TABLE
+        );
+
+        $ctx->iShouldSeeInFields($table);
+
+        $table = new TableNode(<<<TABLE
+| A text field | invalid |
+TABLE
+        );
+
+        try {
+            $ctx->iShouldSeeInFields($table);
+            $this->fail();
+        } catch (\Exception $e) {
+            // OK
+        }
     }
 
     public function testIShouldNotSee()

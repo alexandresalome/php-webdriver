@@ -99,9 +99,18 @@ Available steps
 
     When I fill:
 
-**Mouse**
+.. code-block:: text
 
-    When I move mouse to "**css=#field**"
+    | My field label         | Value of the field |
+    | css=input[type=radio]  | 1                  | # 1 for checked, 0 for unchecked
+    | xpath=//input          | foobar             |
+    | A select field         | The option label   |
+
+**Form assertions**
+
+    Then I should see "some text" in field "Some field"
+
+    Then I should see in fields:
 
 .. code-block:: text
 
@@ -109,6 +118,10 @@ Available steps
     | css=input[type=radio]  | 1                  | # 1 for checked, 0 for unchecked
     | xpath=//input          | foobar             |
     | A select field         | The option label   |
+
+**Mouse**
+
+    When I move mouse to "**css=#field**"
 
 Create new browser steps
 ------------------------
