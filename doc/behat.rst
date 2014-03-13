@@ -27,6 +27,7 @@ You can configure this extension in your **behat.yml** file:
                 url:      http://localhost:4444/wd/hub
                 base_url: http://localhost/
                 browser:  firefox
+                browser_fullscreen: true
                 timeout:  5000
 
 **Configuration options**
@@ -34,6 +35,7 @@ You can configure this extension in your **behat.yml** file:
 * **url**: endpoint URL of selenium server
 * **base_url**: URL to your application
 * **browser**: browser name to use
+* **browser_fullscreen**: option to enforce browser to use all available window screen
 * **timeout**: time duration for retrying after failures
 
 

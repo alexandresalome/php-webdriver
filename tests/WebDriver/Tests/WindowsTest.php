@@ -104,4 +104,5 @@ class WindowsTest extends AbstractTestCase
 
         $browser->close();
     }
+
 }

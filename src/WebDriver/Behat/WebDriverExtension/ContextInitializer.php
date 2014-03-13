@@ -13,15 +13,17 @@ class ContextInitializer implements InitializerInterface
     protected $client;
     protected $baseUrl;
     protected $browserName;
+    protected $browserFullScreen;
     protected $browser;
     protected $timeout;
     protected $proxy;
 
-    public function __construct(Client $client, $baseUrl, $browserName = 'firefox', $timeout = 5000, $proxy = null)
+    public function __construct(Client $client, $baseUrl, $browserName = 'firefox', $browserFullScreen = true, $timeout = 5000, $proxy = null)
     {
         $this->client      = $client;
         $this->baseUrl     = $baseUrl;
         $this->browserName = $browserName;
+        $this->browserFullScreen = $browserFullScreen;
         $this->timeout     = $timeout;
         $this->proxy   = $proxy;
     }
@@ -35,7 +37,11 @@ class ContextInitializer implements InitializerInterface
     {
         $initializer = $this;
         $context->setBrowserInformations(function () use ($initializer) {
-            return $initializer->getBrowser();
+            $browser = $initializer->getBrowser();
+            if (true === $this->browserFullScreen) {
+                $browser->getWindows()->maximize();
+            }
+            return $browser;
         }, $this->baseUrl, $this->timeout);
     }
 
