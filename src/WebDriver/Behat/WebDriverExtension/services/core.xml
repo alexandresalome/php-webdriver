@@ -18,6 +18,7 @@
             <argument type="service" id="behat.webdriver.client" />
             <argument>%behat.webdriver.base_url%</argument>
             <argument>%behat.webdriver.browser%</argument>
+            <argument>%behat.webdriver.brower_fullscreen%</argument>
             <argument>%behat.webdriver.timeout%</argument>
             <argument>%behat.webdriver.proxy%</argument>
 
