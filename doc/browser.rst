@@ -57,7 +57,7 @@ Different type of timeouts exist with Selenium:
     $browser->setScriptTimeout(5000); // milliseconds
     $browser->setAsyncScriptTimeout(5000); // milliseconds
     $browser->setPageLoadTimeout(5000); // milliseconds
-    $browser->setImplicitTimeout(5n000); // milliseconds
+    $browser->setImplicitTimeout(5000); // milliseconds
 
 Executing Javascript
 --------------------
