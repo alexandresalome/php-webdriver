@@ -192,9 +192,7 @@ class WebDriverContext extends AbstractWebDriverContext
             if ($element->getTagName() === 'select') {
                 foreach ($element->elements(By::tag('option')) as $option) {
                     if ($option->isSelected()) {
-                        $actual = $option->getText();
-
-                        break;
+                        $actual .= $option->getText().(null === $actual ? '' : "\n");
                     }
                 }
             } elseif ($element->getTagName() === 'input') {
@@ -209,7 +207,7 @@ class WebDriverContext extends AbstractWebDriverContext
                 throw new \RuntimeException(sprintf('Unable to read element type "%s".', $element->getTagName()));
             }
 
-            if ($actual != $text) {
+            if (false === strpos($actual, $text)) {
                 throw new \RuntimeException(sprintf('Expected "%s" to be "%s", got "%s".', $selector->toString(), $text, $actual));
             }
         });
@@ -220,8 +218,11 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     public function iShouldSeeInFields(TableNode $table)
     {
-        foreach ($table->getRowsHash() as $key => $value) {
-            $this->iShouldSeeInField($this->escape($value), $this->escape($key));
+        foreach ($table->getRows() as $value) {
+            if (!isset($value[0]) || !isset($value[1])) {
+                throw new \InvalidArgumentException(sprintf('Expected a TableNode with 2 columns, got %s columns.', count($value)));
+            }
+            $this->iShouldSeeInField($this->escape($value[1]), $this->escape($value[0]));
         }
 
     }
@@ -239,8 +240,12 @@ class WebDriverContext extends AbstractWebDriverContext
      */
     public function iFill(TableNode $table)
     {
-        foreach ($table->getRowsHash() as $key => $value) {
-            $this->iFillWith($this->escape($key), $this->escape($value));
+        foreach ($table->getRows() as $value) {
+            if (!isset($value[0]) || !isset($value[1])) {
+                throw new \InvalidArgumentException(sprintf('Expected a Table with 2 columns, got %s columns.', count($value)));
+            }
+
+            $this->iFillWith($this->escape($value[0]), $this->escape($value[1]));
         }
 
     }
