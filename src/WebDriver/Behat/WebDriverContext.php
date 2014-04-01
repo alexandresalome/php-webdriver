@@ -207,7 +207,9 @@ class WebDriverContext extends AbstractWebDriverContext
                 throw new \RuntimeException(sprintf('Unable to read element type "%s".', $element->getTagName()));
             }
 
-            if (false === strpos($actual, $text)) {
+            if ($text == '' && $actual != '') {
+                throw new \RuntimeException(sprintf('Expected "%s" to be empty, got "%s".', $selector->toString(), $actual));
+            } elseif ($text != '' && false === strpos($actual, $text)) {
                 throw new \RuntimeException(sprintf('Expected "%s" to be "%s", got "%s".', $selector->toString(), $text, $actual));
             }
         });
