@@ -71,6 +71,7 @@ Changelog
 **v0.8**
 
 * *Behat* new steps for form assertions
+* Maximize window for testing
 
 **v0.7**
 
