@@ -121,6 +121,16 @@ Available steps
     | xpath=//input          | foobar             |
     | A select field         | The option label   |
 
+**Alert messages**
+
+    When I confirm alert message
+
+    When I dismiss alert message
+
+    Then alert text should be "**some text**"
+
+    I answer alert with "**some text**"
+
 **Mouse**
 
     When I move mouse to "**css=#field**"

@@ -235,6 +235,51 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @Then /^I accept alert$/
+     */
+    public function iAcceptAlert()
+    {
+        $this->tryRepeating(function ($browser) {
+            $browser->acceptAlert();
+        });
+    }
+
+    /**
+     * @Then /^I dismiss alert$/
+     */
+    public function iDismissAlert()
+    {
+        $this->tryRepeating(function ($browser) {
+            $browser->dismissAlert();
+        });
+    }
+
+    /**
+     * @Then /^alert text should be "((?:[^"]|"")*)"$/
+     */
+    public function alertTextShouldBe($text)
+    {
+        $text = $this->unescape($text);
+        $this->tryRepeating(function ($browser) use ($text) {
+            $actual = $browser->getAlertText();
+            if (false === strpos($actual, $text)) {
+                throw new \RuntimeException(sprintf('Unable to find text "%" in alert "%s".', $text, $actual));
+            }
+        });
+    }
+
+    /**
+     * @Then /^I answer alert with "((?:[^"]|"")*)"$/
+     */
+    public function iAnswerAlertWith($text)
+    {
+        $text = $this->unescape($text);
+        $this->tryRepeating(function ($browser) use ($text) {
+            $actual = $browser->answerAlert($text);
+        });
+    }
+
+    /**
      * @When /^I fill:$/
      */
     public function iFill(TableNode $table)

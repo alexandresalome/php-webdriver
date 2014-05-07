@@ -68,6 +68,10 @@ Add the library to your **composer.json**:
 Changelog
 ---------
 
+**v0.9**
+
+* Alert messages
+
 **v0.8**
 
 * *Behat* new steps for form assertions
