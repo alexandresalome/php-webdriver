@@ -359,6 +359,26 @@ TABLE
 
     }
 
+    public function testIAcceptAlertMessage()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('alert.php'));
+
+        $ctx->iClickOn('Alert');
+        $ctx->iAcceptAlertMessage();
+        $ctx->iShouldSee('', 'alerted');
+    }
+
+    public function testIDismissAlertMessage()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('alert.php'));
+
+        $ctx->iClickOn('Confirm');
+        $ctx->iDismissAlertMessage();
+        $ctx->iShouldSee('', 'dismissed');
+    }
+
     // Abstract method tests
 
     public function testGetUrl()

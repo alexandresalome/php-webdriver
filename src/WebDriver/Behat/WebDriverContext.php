@@ -235,6 +235,26 @@ class WebDriverContext extends AbstractWebDriverContext
     }
 
     /**
+     * @Then /^I accept alert message$/
+     */
+    public function iAcceptAlertMessage()
+    {
+        $this->tryRepeating(function ($browser) {
+            $browser->acceptAlert();
+        });
+    }
+
+    /**
+     * @Then /^I dismiss alert message$/
+     */
+    public function iDismissAlertMessage()
+    {
+        $this->tryRepeating(function ($browser) {
+            $browser->dismissAlert();
+        });
+    }
+
+    /**
      * @When /^I fill:$/
      */
     public function iFill(TableNode $table)
