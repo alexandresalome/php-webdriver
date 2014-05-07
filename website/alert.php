@@ -13,6 +13,7 @@
                 <button id="reset" onclick="test_reset()">Reset</button>
                 <button id="alert" onclick="test_alert()">Alert</button>
                 <button id="confirm" onclick="test_confirm()">Confirm</button>
+                <button id="prompt" onclick="test_prompt()">Prompt</button>
             </p>
         </div>
         <script type="text/javascript">
@@ -23,8 +24,21 @@
 
             function test_alert()
             {
-                alert("ALERT");
+                alert("ALERT!");
                 document.getElementById('alert-feedback').innerHTML = 'alerted';
+            }
+
+
+            function test_prompt()
+            {
+                val = prompt("PROMPT?");
+
+                console.log(val);
+                if (null === val) {
+                    document.getElementById('alert-feedback').innerHTML = 'not answered';
+                } else {
+                    document.getElementById('alert-feedback').innerHTML = 'answered: ' + val;
+                }
             }
 
             function test_confirm()

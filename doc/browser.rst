@@ -88,17 +88,32 @@ If your script takes too much time, a **ScriptTimeoutException** will be thrown.
 Alert messages
 --------------
 
-You can handle the ``acceptAlert()`` method to simulate the click on "OK" button of the currently displayed alert:
+You can use the ``acceptAlert()`` method to simulate the click on "OK" button of the currently displayed alert:
 
 .. code-block:: php
 
     $browser->acceptAlert();
 
-This method also work for ``confirm()`` dialogs. If you want to click "Cancel" in the confirmation dialog, use method ``dismissAlert()``:
+This method also work for ``confirm()`` dialogs.
+
+If you want to click "Cancel" in the confirmation dialog, use method ``dismissAlert()``:
 
 .. code-block:: php
 
     $browser->dismissAlert();
+
+To get the message of the alert, use ``getAlertText()``:
+
+.. code-block:: php
+
+    $browser->getAlertText();
+
+And to give an answer to prompt messages, use ``answerAlert()``:
+
+.. code-block:: php
+
+    $browser->answerAlert("my answer");
+    $browser->acceptAlert();
 
 Handling windows
 ----------------

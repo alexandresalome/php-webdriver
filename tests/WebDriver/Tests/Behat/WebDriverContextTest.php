@@ -359,23 +359,54 @@ TABLE
 
     }
 
-    public function testIAcceptAlertMessage()
+    public function testIAcceptAlert()
     {
         $ctx = $this->getContext($browser = $this->getBrowser());
         $browser->open($this->getUrl('alert.php'));
 
         $ctx->iClickOn('Alert');
-        $ctx->iAcceptAlertMessage();
+        $ctx->iAcceptAlert();
         $ctx->iShouldSee('', 'alerted');
     }
 
-    public function testIDismissAlertMessage()
+    public function testAlertTextShouldBe()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('alert.php'));
+
+        $ctx->iClickOn('Alert');
+        $ctx->alertTextShouldBe('ALERT!');
+        $ctx->iAcceptAlert();
+
+        $ctx->iClickOn('Confirm');
+        $ctx->alertTextShouldBe('CONFIRM?');
+        $ctx->iAcceptAlert();
+        $ctx->iShouldSee('', 'confirmed');
+    }
+
+    public function testIAnswerAlertWith()
+    {
+        $ctx = $this->getContext($browser = $this->getBrowser());
+        $browser->open($this->getUrl('alert.php'));
+
+        $ctx->iClickOn('Prompt');
+        $ctx->alertTextShouldBe('PROMPT?');
+        $ctx->iAnswerAlertWith("foobar");
+        $ctx->iAcceptAlert();
+        $ctx->iShouldSee('', 'answered: foobar');
+
+        $ctx->iClickOn('Prompt');
+        $ctx->iDismissAlert();
+        $ctx->iShouldSee('', 'not answered');
+    }
+
+    public function testIDismissAlert()
     {
         $ctx = $this->getContext($browser = $this->getBrowser());
         $browser->open($this->getUrl('alert.php'));
 
         $ctx->iClickOn('Confirm');
-        $ctx->iDismissAlertMessage();
+        $ctx->iDismissAlert();
         $ctx->iShouldSee('', 'dismissed');
     }
 

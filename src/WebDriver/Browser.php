@@ -127,6 +127,31 @@ class Browser
     }
 
     /**
+     * Gets the text of the currently displayed JavaScript alert(), confirm(),
+     * or prompt() dialog.
+     *
+     * @return string the alert text
+     */
+    public function getAlertText()
+    {
+        return $this->requestValue('alert_text');
+    }
+
+    /**
+     * Sends keystrokes to a JavaScript prompt() dialog.
+     *
+     * @param string $text
+     *
+     * @return Browser fluid interface
+     */
+    public function answerAlert($text)
+    {
+        $this->request('POST', 'alert_text', json_encode(array('text' => $text)));
+
+        return $this;
+    }
+
+    /**
      * Dismisses the currently displayed alert dialog. For confirm() and
      * prompt() dialogs, this is equivalent to clicking the 'Cancel' button.
      * For alert() dialogs, this is equivalent to clicking the 'OK' button.

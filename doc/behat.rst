@@ -127,6 +127,10 @@ Available steps
 
     When I dismiss alert message
 
+    Then alert text should be "**some text**"
+
+    I answer alert with "**some text**"
+
 **Mouse**
 
     When I move mouse to "**css=#field**"
