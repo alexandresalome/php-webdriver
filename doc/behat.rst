@@ -123,9 +123,9 @@ Available steps
 
 **Alert messages**
 
-    When I confirm alert message
+    When I confirm alert
 
-    When I dismiss alert message
+    When I dismiss alert
 
     Then alert text should be "**some text**"
 
