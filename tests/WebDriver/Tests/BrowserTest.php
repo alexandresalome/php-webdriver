@@ -127,4 +127,32 @@ class BrowserTest extends AbstractTestCase
         $this->assertContains('<head>', $source);
         $this->assertContains('<body>', $source);
     }
+
+    public function testAcceptAlert()
+    {
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('alert.php'));
+
+        $browser->element(By::id('alert'))->click();
+        $browser->acceptAlert();
+        $this->assertContains('alerted', $browser->getText());
+
+        $browser->element(By::id('confirm'))->click();
+        $browser->acceptAlert();
+        $this->assertContains('confirmed', $browser->getText());
+    }
+
+    public function testDismissAlert()
+    {
+        $browser = $this->getBrowser();
+        $browser->open($this->getUrl('alert.php'));
+
+        $browser->element(By::id('alert'))->click();
+        $browser->dismissAlert();
+        $this->assertContains('alerted', $browser->getText());
+
+        $browser->element(By::id('confirm'))->click();
+        $browser->dismissAlert();
+        $this->assertContains('dismissed', $browser->getText());
+    }
 }

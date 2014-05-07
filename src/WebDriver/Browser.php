@@ -114,6 +114,33 @@ class Browser
     }
 
     /**
+     * Accepts the currently displayed alert dialog. Usually, this is
+     * equivalent to clicking on the 'OK' button in the dialog.
+     *
+     * @return Browser fluid interface
+     */
+    public function acceptAlert()
+    {
+        $this->request('POST', 'accept_alert');
+
+        return $this;
+    }
+
+    /**
+     * Dismisses the currently displayed alert dialog. For confirm() and
+     * prompt() dialogs, this is equivalent to clicking the 'Cancel' button.
+     * For alert() dialogs, this is equivalent to clicking the 'OK' button.
+     *
+     * @return Browser fluid interface
+     */
+    public function dismissAlert()
+    {
+        $this->request('POST', 'dismiss_alert');
+
+        return $this;
+    }
+
+    /**
      * Run a Javascript snippet on browser.
      *
      * @param string $javascript The javascript snippet to execute

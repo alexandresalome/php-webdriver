@@ -121,6 +121,12 @@ Available steps
     | xpath=//input          | foobar             |
     | A select field         | The option label   |
 
+**Alert messages**
+
+    When I confirm alert message
+
+    When I dismiss alert message
+
 **Mouse**
 
     When I move mouse to "**css=#field**"

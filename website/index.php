@@ -11,6 +11,7 @@
             <li><a href="other.php">Another page</a></li>
             <li><a href="form.php">Page to test form stuff</a></li>
             <li><a href="cookies.php">Cookies page</a></li>
+            <li><a href="alert.php">Alerts page</a></li>
             <li><a href="mouse.php">Mouse tests</a></li>
             <li><a href="request.php">What is your request?</a></li>
             <li><a href="tree.php">A tree with lot of informations, for node processing</a></li>

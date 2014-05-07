@@ -85,6 +85,21 @@ If your script takes too much time, a **ScriptTimeoutException** will be thrown.
 * `Reference of execute method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute>`_
 * `Reference of execute_async method <https://code.google.com/p/selenium/wiki/JsonWireProtocol#/session/:sessionId/execute_async>`_
 
+Alert messages
+--------------
+
+You can handle the ``acceptAlert()`` method to simulate the click on "OK" button of the currently displayed alert:
+
+.. code-block:: php
+
+    $browser->acceptAlert();
+
+This method also work for ``confirm()`` dialogs. If you want to click "Cancel" in the confirmation dialog, use method ``dismissAlert()``:
+
+.. code-block:: php
+
+    $browser->dismissAlert();
+
 Handling windows
 ----------------
 

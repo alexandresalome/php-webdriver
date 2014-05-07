@@ -55,6 +55,8 @@ class ExceptionFactory
             return new InvalidCookieDomainException($message);
         } elseif ($status == self::STATUS_UNEXPECTED_ALERT_OPEN) {
             return new UnexpectedAlertOpenException($message);
+        } elseif ($status == self::STATUS_NO_ALERT_OPEN_ERROR) {
+            return new NoAlertOpenErrorException($message);
         } elseif ($status == self::STATUS_SCRIPT_TIMEOUT) {
             return new ScriptTimeoutException($message);
         }
