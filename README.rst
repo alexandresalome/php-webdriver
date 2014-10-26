@@ -1,6 +1,16 @@
 PHP WebDriver
 =============
 
+DEPRECATED
+----------
+
+This library is deprecated, because another implementation exists and is more reliable: the **Facebook PHP-WebDriver** implementation https://github.com/facebook/php-webdriver
+
+This library won't be maintained anymore.
+
+Description
+-----------
+
 **PHP client and Behat extension**
 
 |test_status| |last_version| |downloads|
